@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickSpark Tools | 20+ Frontend Utilities</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --bg-input: #0d0d12;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --border-color: #2a2a3a;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        .light-mode {
+            --bg-primary: #f5f5f7;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f0f0f5;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a5a;
+            --text-muted: #8a8a9a;
+            --border-color: #e0e0e8;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .logo i {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .back-btn.visible {
+            display: flex;
+        }
+
+        .theme-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        .theme-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        /* Main Container */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Home View */
+        #homeView {
+            display: block;
+        }
+
+        .home-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .home-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .home-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Category Filter */
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tool-card-preview {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .tool-card-preview:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .tool-card-preview .tool-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .tool-card-preview h3 {
+            font-size: 1.15rem;
+            color: var(--text-primary);
+        }
+
+        .tool-card-preview p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .tool-card-preview .tool-category {
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Tool View */
+        #toolView {
+            display: none;
+        }
+
+        #toolView.active {
+            display: block;
+        }
+
+        #homeView.hidden {
+            display: none;
+        }
+
+        .tool-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tool-header .tool-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+
+        .tool-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-header p {
+            color: var(--text-secondary);
+        }
+
+        .tool-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2rem;
+        }
+
+        /* Form Elements */
+        label {
+            display: block;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        textarea, input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+            resize: vertical;
+        }
+
+        textarea {
+            min-height: 140px;
+        }
+
+        textarea:focus, input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .btn-success {
+            background: var(--accent-success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--accent-warning);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--accent-danger);
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Result Box */
+        .result-box {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+
+        .result-box .result-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-box .result-content {
+            color: var(--text-primary);
+            word-break: break-word;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .result-box pre {
+            font-family: 'Consolas', 'Monaco', monospace;
+            white-space: pre-wrap;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .copy-btn {
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        /* Input Groups */
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Specific Tool Styles */
+        .color-preview {
+            height: 80px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            margin: 1rem 0;
+        }
+
+        .diff-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .diff-added { background: rgba(16, 185, 129, 0.2); padding: 8px; border-radius: 4px; }
+        .diff-removed { background: rgba(239, 68, 68, 0.2); padding: 8px; border-radius: 4px; }
+
+        /* Wheel Styles */
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            width: 250px;
+            height: 250px;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                #6366f1, #8b5cf6, #a855f7, #d946ef,
+                #ec4899, #f43f5e, #ef4444, #f97316,
+                #eab308, #84cc16, #22c55e, #10b981
+            );
+            transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1);
+            position: relative;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 20px solid var(--accent-danger);
+            z-index: 10;
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            border: 3px solid var(--border-color);
+        }
+
+        /* Quote Card */
+        .quote-card {
+            background: var(--bg-input);
+            border-left: 4px solid var(--accent-primary);
+            padding: 2rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 1.5rem 0;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .quote-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .quote-author {
+            text-align: right;
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        /* Checkbox/Radio Styles */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .home-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-content {
+                padding: 1.25rem;
+            }
+
+            .tool-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .diff-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn-group .btn {
+                width: 100%;
+            }
+
+            .wheel-wrapper {
+                width: 200px;
+                height: 200px;
+            }
+
+            .wheel-center {
+                width: 60px;
+                height: 60px;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 0.75rem 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .category-filter {
+                gap: 0.35rem;
+            }
+
+            .filter-btn {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo" onclick="showHome()">
+                <i class="fas fa-bolt"></i>
+                <span>QuickSpark</span>
+            </div>
+            <div class="header-actions">
+                <button class="back-btn" id="backBtn" onclick="showHome()">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>All Tools</span>
+                </button>
+                <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home View -->
+        <div id="homeView">
+            <div class="home-header">
+                <h1>QuickSpark Tools</h1>
+                <p>20+ powerful utilities that run entirely in your browser</p>
+            </div>
+
+            <div class="category-filter">
+                <button class="filter-btn active" data-filter="all">All Tools</button>
+                <button class="filter-btn" data-filter="text">Text</button>
+                <button class="filter-btn" data-filter="number">Numbers</button>
+                <button class="filter-btn" data-filter="code">Code</button>
+                <button class="filter-btn" data-filter="color">Colors</button>
+                <button class="filter-btn" data-filter="random">Random</button>
+                <button class="filter-btn" data-filter="quote">Quotes</button>
+            </div>
+
+            <div class="tools-grid" id="toolsGrid">
+                <!-- Tools will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Tool View -->
+        <div id="toolView">
+            <div class="tool-container" id="toolContainer">
+                <!-- Active tool will be rendered here -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>QuickSpark Tools © 2024 • No backend required • 100% browser-based</p>
+    </footer>
+
+    <script>
+        // ==========================================
+        // Tool Definitions
+        // ==========================================
+        const tools = [
+            { id: 'wordCounter', name: 'Word Counter', desc: 'Count words, characters, and lines in your text', icon: 'fa-file-word', category: 'text' },
+            { id: 'charCounter', name: 'Character Counter', desc: 'Count characters with and without spaces', icon: 'fa-text-height', category: 'text' },
+            { id: 'caseConverter', name: 'Case Converter', desc: 'Convert text to uppercase, lowercase, title case', icon: 'fa-font', category: 'text' },
+            { id: 'lineBreaks', name: 'Remove Line Breaks', desc: 'Remove line breaks and extra spaces from text', icon: 'fa-align-left', category: 'text' },
+            { id: 'reverseText', name: 'Reverse Text', desc: 'Reverse the order of characters in your text', icon: 'fa-exchange-alt', category: 'text' },
+            { id: 'loremIpsum', name: 'Lorem Ipsum', desc: 'Generate placeholder text for your designs', icon: 'fa-paragraph', category: 'text' },
+            { id: 'findReplace', name: 'Find & Replace', desc: 'Find and replace text in your content', icon: 'fa-search', category: 'text' },
+            { id: 'sortLines', name: 'Sort Lines', desc: 'Sort text lines alphabetically or by length', icon: 'fa-sort-alpha-down', category: 'text' },
+            { id: 'countWord', name: 'Count Specific Word', desc: 'Count occurrences of a specific word', icon: 'fa-search-plus', category: 'text' },
+            { id: 'textDiff', name: 'Text Diff', desc: 'Compare two texts and see differences', icon: 'fa-code-branch', category: 'text' },
+            { id: 'textToSpeech', name: 'Text to Speech', desc: 'Convert text to spoken audio', icon: 'fa-volume-up', category: 'text' },
+            { id: 'randomNumber', name: 'Random Number', desc: 'Generate random numbers in a range', icon: 'fa-dice', category: 'number' },
+            { id: 'numberConverter', name: 'Number Converter', desc: 'Convert between binary, decimal, and hex', icon: 'fa-calculator', category: 'number' },
+            { id: 'colorConverter', name: 'Color Converter', desc: 'Convert between HEX and RGB colors', icon: 'fa-palette', category: 'color' },
+            { id: 'urlEncoder', name: 'URL Encoder', desc: 'Encode and decode URLs', icon: 'fa-link', category: 'code' },
+            { id: 'morseCode', name: 'Morse Code', desc: 'Translate text to and from Morse code', icon: 'fa-wifi', category: 'code' },
+            { id: 'asciiArt', name: 'ASCII Art', desc: 'Convert text to ASCII art', icon: 'fa-paint-brush', category: 'code' },
+            { id: 'namePicker', name: 'Name Picker', desc: 'Pick a random name with spinning wheel', icon: 'fa-random', category: 'random' },
+            { id: 'passwordGen', name: 'Password Generator', desc: 'Generate secure random passwords', icon: 'fa-key', category: 'random' },
+            { id: 'quoteGen', name: 'Quote Generator', desc: 'Get inspirational quotes by category', icon: 'fa-quote-right', category: 'quote' }
+        ];
+
+        // ==========================================
+        // Theme Toggle
+        // ==========================================
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.querySelector('#themeBtn i');
+            icon.classList.toggle('fa-sun');
+            icon.classList.toggle('fa-moon');
+        }
+
+        // ==========================================
+        // Navigation
+        // ==========================================
+        function showHome() {
+            document.getElementById('homeView').classList.remove('hidden');
+            document.getElementById('toolView').classList.remove('active');
+            document.getElementById('backBtn').classList.remove('visible');
+        }
+
+        function showTool(toolId) {
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('toolView').classList.add('active');
+            document.getElementById('backBtn').classList.add('visible');
+            renderTool(toolId);
+        }
+
+        // ==========================================
+        // Render Tools Grid
+        // ==========================================
+        function renderToolsGrid(filter = 'all') {
+            const grid = document.getElementById('toolsGrid');
+            grid.innerHTML = '';
+            
+            const filteredTools = filter === 'all' ? tools : tools.filter(t => t.category === filter);
+            
+            filteredTools.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = 'tool-card-preview';
+                card.onclick = () => showTool(tool.id);
+                card.innerHTML = `
+                    <div class="tool-icon"><i class="fas ${tool.icon}"></i></div>
+                    <span class="tool-category">${tool.category}</span>
+                    <h3>${tool.name}</h3>
+                    <p>${tool.desc}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderToolsGrid(btn.dataset.filter);
+            });
+        });
+
+        // ==========================================
+        // Tool Renderers
+        // ==========================================
+        function renderTool(toolId) {
+            const container = document.getElementById('toolContainer');
+            const tool = tools.find(t => t.id === toolId);
+            
+            let html = `
+                <div class="tool-header">
+                    <div class="tool-icon"><i class="fas ${tool.icon}"></i></div>
+                    <h2>${tool.name}</h2>
+                    <p>${tool.desc}</p>
+                </div>
+                <div class="tool-content">
+            `;
+            
+            switch(toolId) {
+                case 'wordCounter':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter your text</label>
+                            <textarea id="wcInput" placeholder="Type or paste your text here..."></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="countWords()"><i class="fas fa-calculator"></i> Count</button>
+                        <div class="result-box">
+                            <div class="result-label">Results</div>
+                            <div class="result-content" id="wcResult">Words: 0 | Characters: 0 | Lines: 0</div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'charCounter':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter your text</label>
+                            <textarea id="ccInput" placeholder="Type or paste your text here..."></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="countChars()"><i class="fas fa-calculator"></i> Count</button>
+                        <div class="result-box">
+                            <div class="result-label">Results</div>
+                            <div class="result-content" id="ccResult">Characters: 0 | Without spaces: 0</div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'caseConverter':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter your text</label>
+                            <textarea id="caseInput" placeholder="Type or paste your text here..."></textarea>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" onclick="convertCase('upper')">UPPERCASE</button>
+                            <button class="btn btn-primary btn-sm" onclick="convertCase('lower')">lowercase</button>
+                            <button class="btn btn-primary btn-sm" onclick="convertCase('title')">Title Case</button>
+                            <button class="btn btn-primary btn-sm" onclick="convertCase('sentence')">Sentence case</button>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('caseResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="caseResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'lineBreaks':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter text with line breaks</label>
+                            <textarea id="lbInput" placeholder="Paste text with line breaks..."></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="removeLineBreaks()"><i class="fas fa-compress"></i> Remove Line Breaks</button>
+                        <div class="result-box">
+                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('lbResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="lbResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'reverseText':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter your text</label>
+                            <textarea id="revInput" placeholder="Type or paste your text here..."></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="reverseText()"><i class="fas fa-exchange-alt"></i> Reverse</button>
+                        <div class="result-box">
+                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('revResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="revResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'loremIpsum':
+                    html += `
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Amount</label>
+                                <input type="number" id="loremCount" value="3" min="1" max="20">
+                            </div>
+                            <div class="input-group">
+                                <label>Type</label>
+                                <select id="loremType">
+                                    <option value="paragraphs">Paragraphs</option>
+                                    <option value="sentences">Sentences</option>
+                                    <option value="words">Words</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateLorem()"><i class="fas fa-magic"></i> Generate</button>
+                        <div class="result-box">
+                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('loremResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="loremResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'findReplace':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter your text</label>
+                            <textarea id="frInput" placeholder="Type or paste your text here..."></textarea>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Find</label>
+                                <input type="text" id="frFind" placeholder="Text to find">
+                            </div>
+                            <div class="input-group">
+                                <label>Replace with</label>
+                                <input type="text" id="frReplace" placeholder="Replacement text">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="findReplace()"><i class="fas fa-exchange-alt"></i> Replace All</button>
+                        <div class="result-box">
+                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('frResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="frResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'sortLines':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter text (one item per line)</label>
+                            <textarea id="sortInput" placeholder="Enter items, one per line..."></textarea>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" onclick="sortLines('az')">A → Z</button>
+                            <button class="btn btn-primary btn-sm" onclick="sortLines('za')">Z → A</button>
+                            <button class="btn btn-primary btn-sm" onclick="sortLines('short')">Shortest</button>
+                            <button class="btn btn-primary btn-sm" onclick="sortLines('long')">Longest</button>
+                            <button class="btn btn-primary btn-sm" onclick="sortLines('reverse')">Reverse</button>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('sortResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="sortResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'countWord':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter your text</label>
+                            <textarea id="cwInput" placeholder="Type or paste your text here..."></textarea>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Word to count</label>
+                                <input type="text" id="cwWord" placeholder="Enter word">
+                            </div>
+                        </div>
+                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+                            <input type="checkbox" id="cwCase"> Case sensitive
+                        </label>
+                        <button class="btn btn-primary" onclick="countSpecificWord()"><i class="fas fa-search"></i> Count</button>
+                        <div class="result-box">
+                            <div class="result-label">Result</div>
+                            <div class="result-content" id="cwResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'textDiff':
+                    html += `
+                        <div class="diff-grid">
+                            <div class="input-group">
+                                <label>Original text</label>
+                                <textarea id="diffOriginal" placeholder="Enter original text..."></textarea>
+                            </div>
+                            <div class="input-group">
+                                <label>Changed text</label>
+                                <textarea id="diffChanged" placeholder="Enter changed text..."></textarea>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="compareDiff()"><i class="fas fa-balance-scale"></i> Compare</button>
+                        <div class="result-box">
+                            <div class="result-label">Differences</div>
+                            <div class="result-content" id="diffResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'textToSpeech':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter text to speak</label>
+                            <textarea id="ttsInput" placeholder="Type or paste text to be spoken..."></textarea>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Voice</label>
+                                <select id="ttsVoice"></select>
+                            </div>
+                            <div class="input-group">
+                                <label>Speed: <span id="ttsRateVal">1.0</span></label>
+                                <input type="range" id="ttsRate" min="0.5" max="2" step="0.1" value="1">
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-success" onclick="speakText()"><i class="fas fa-play"></i> Speak</button>
+                            <button class="btn btn-warning" onclick="pauseText()"><i class="fas fa-pause"></i> Pause</button>
+                            <button class="btn btn-danger" onclick="stopText()"><i class="fas fa-stop"></i> Stop</button>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Status</div>
+                            <div class="result-content" id="ttsStatus">Ready to speak</div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'randomNumber':
+                    html += `
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Minimum</label>
+                                <input type="number" id="rnMin" value="1">
+                            </div>
+                            <div class="input-group">
+                                <label>Maximum</label>
+                                <input type="number" id="rnMax" value="100">
+                            </div>
+                            <div class="input-group">
+                                <label>Count</label>
+                                <input type="number" id="rnCount" value="1" min="1" max="50">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateRandomNumber()"><i class="fas fa-dice"></i> Generate</button>
+                        <div class="result-box">
+                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('rnResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="rnResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'numberConverter':
+                    html += `
+                        <div class="input-group">
+                            <label>Binary</label>
+                            <input type="text" id="ncBin" placeholder="e.g., 1010">
+                        </div>
+                        <div class="input-group">
+                            <label>Decimal</label>
+                            <input type="number" id="ncDec" placeholder="e.g., 10">
+                        </div>
+                        <div class="input-group">
+                            <label>Hexadecimal</label>
+                            <input type="text" id="ncHex" placeholder="e.g., A">
+                        </div>
+                        <button class="btn btn-primary" onclick="convertNumber()"><i class="fas fa-sync"></i> Convert</button>
+                        <div class="result-box">
+                            <div class="result-label">Result</div>
+                            <div class="result-content" id="ncResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'colorConverter':
+                    html += `
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>HEX Color</label>
+                                <input type="text" id="colorHex" value="#6366f1" placeholder="#000000">
+                            </div>
+                            <div class="input-group">
+                                <label>RGB Color</label>
+                                <input type="text" id="colorRgb" placeholder="rgb(0, 0, 0)">
+                            </div>
+                        </div>
+                        <div class="color-preview" id="colorPreview" style="background: #6366f1;"></div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="hexToRgb()">HEX → RGB</button>
+                            <button class="btn btn-primary" onclick="rgbToHex()">RGB → HEX</button>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Result</div>
+                            <div class="result-content" id="colorResult">HEX: #6366f1 | RGB: rgb(99, 102, 241)</div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'urlEncoder':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter URL or text</label>
+                            <textarea id="urlInput" placeholder="Enter URL or text to encode/decode..."></textarea>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="encodeUrl()"><i class="fas fa-lock"></i> Encode</button>
+                            <button class="btn btn-primary" onclick="decodeUrl()"><i class="fas fa-unlock"></i> Decode</button>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('urlResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="urlResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'morseCode':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter text or Morse code</label>
+                            <textarea id="morseInput" placeholder="Enter text or Morse code..."></textarea>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="textToMorse()">Text → Morse</button>
+                            <button class="btn btn-primary" onclick="morseToText()">Morse → Text</button>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('morseResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="morseResult"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'asciiArt':
+                    html += `
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Text (max 10 chars)</label>
+                                <input type="text" id="asciiInput" maxlength="10" placeholder="HELLO">
+                            </div>
+                            <div class="input-group">
+                                <label>Style</label>
+                                <select id="asciiStyle">
+                                    <option value="standard">Standard</option>
+                                    <option value="block">Block</option>
+                                    <option value="bubble">Bubble</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateAscii()"><i class="fas fa-magic"></i> Generate</button>
+                        <div class="result-box">
+                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('asciiResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <pre class="result-content" id="asciiResult"></pre>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'namePicker':
+                    html += `
+                        <div class="input-group">
+                            <label>Enter names (one per line)</label>
+                            <textarea id="nameInput" placeholder="Alice\nBob\nCharlie\nDiana">Alice\nBob\nCharlie\nDiana\nEthan\nFiona</textarea>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="pickRandomName()"><i class="fas fa-dice"></i> Pick Random</button>
+                            <button class="btn btn-warning" onclick="spinWheel()"><i class="fas fa-sync"></i> Spin Wheel</button>
+                        </div>
+                        <div class="wheel-container">
+                            <div class="wheel-wrapper">
+                                <div class="wheel-pointer"></div>
+                                <div class="wheel" id="wheel"></div>
+                                <div class="wheel-center" id="wheelCenter">?</div>
+                            </div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Selected</div>
+                            <div class="result-content" id="nameResult">Click a button to pick a name</div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'passwordGen':
+                    html += `
+                        <div class="input-group">
+                            <label>Length: <span id="pwLenVal">16</span></label>
+                            <input type="range" id="pwLen" min="6" max="64" value="16" oninput="document.getElementById('pwLenVal').textContent=this.value">
+                        </div>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" id="pwUpper" checked> Uppercase (A-Z)</label>
+                            <label><input type="checkbox" id="pwLower" checked> Lowercase (a-z)</label>
+                            <label><input type="checkbox" id="pwNumbers" checked> Numbers (0-9)</label>
+                            <label><input type="checkbox" id="pwSymbols" checked> Symbols (!@#$%)</label>
+                        </div>
+                        <button class="btn btn-primary" onclick="generatePassword()"><i class="fas fa-key"></i> Generate</button>
+                        <div class="result-box">
+                            <div class="result-label">Password <button class="copy-btn" onclick="copyResult('pwResult')"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="pwResult" style="font-family: monospace; letter-spacing: 1px;"></div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'quoteGen':
+                    html += `
+                        <div class="input-group">
+                            <label>Category</label>
+                            <select id="quoteCategory">
+                                <option value="motivation">Motivation</option>
+                                <option value="success">Success</option>
+                                <option value="love">Love</option>
+                                <option value="wisdom">Wisdom</option>
+                                <option value="leadership">Leadership</option>
+                                <option value="creativity">Creativity</option>
+                                <option value="happiness">Happiness</option>
+                                <option value="life">Life</option>
+                                <option value="courage">Courage</option>
+                                <option value="patience">Patience</option>
+                                <option value="humor">Humor</option>
+                                <option value="change">Change</option>
+                                <option value="friendship">Friendship</option>
+                                <option value="time">Time</option>
+                                <option value="failure">Failure</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateQuote()"><i class="fas fa-quote-right"></i> New Quote</button>
+                        <div class="quote-card">
+                            <div class="quote-text" id="quoteText">"Click the button to get an inspiring quote"</div>
+                            <div class="quote-author" id="quoteAuthor"></div>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm" onclick="copyQuote()"><i class="fas fa-copy"></i> Copy</button>
+                            <button class="btn btn-success btn-sm" onclick="tweetQuote()"><i class="fab fa-twitter"></i> Tweet</button>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            html += '</div>';
+            container.innerHTML = html;
+            
+            // Initialize tool-specific features
+            if (toolId === 'textToSpeech') initTTS();
+        }
+
+        // ==========================================
+        // Tool Functions
+        // ==========================================
+        
+        // Word Counter
+        function countWords() {
+            const text = document.getElementById('wcInput').value;
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            const chars = text.length;
+            const lines = text.split('\n').length;
+            document.getElementById('wcResult').textContent = `Words: ${words} | Characters: ${chars} | Lines: ${lines}`;
+        }
+        
+        // Character Counter
+        function countChars() {
+            const text = document.getElementById('ccInput').value;
+            const chars = text.length;
+            const noSpaces = text.replace(/\s/g, '').length;
+            document.getElementById('ccResult').textContent = `Characters: ${chars} | Without spaces: ${noSpaces}`;
+        }
+        
+        // Case Converter
+        function convertCase(type) {
+            const text = document.getElementById('caseInput').value;
+            let result = '';
+            switch(type) {
+                case 'upper': result = text.toUpperCase(); break;
+                case 'lower': result = text.toLowerCase(); break;
+                case 'title': result = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()); break;
+                case 'sentence': result = text.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g, c => c.toUpperCase()); break;
+            }
+            document.getElementById('caseResult').textContent = result;
+        }
+        
+        // Line Breaks
+        function removeLineBreaks() {
+            const text = document.getElementById('lbInput').value;
+            document.getElementById('lbResult').textContent = text.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+        }
+        
+        // Reverse Text
+        function reverseText() {
+            const text = document.getElementById('revInput').value;
+            document.getElementById('revResult').textContent = text.split('').reverse().join('');
+        }
+        
+        // Lorem Ipsum
+        const loremSentences = [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
+            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia."
+        ];
+        
+        function generateLorem() {
+            const count = parseInt(document.getElementById('loremCount').value) || 3;
+            const type = document.getElementById('loremType').value;
+            let result = '';
+            
+            if (type === 'paragraphs') {
+                for (let i = 0; i < count; i++) {
+                    let para = '';
+                    for (let j = 0; j < 4; j++) {
+                        para += loremSentences[Math.floor(Math.random() * loremSentences.length)] + ' ';
+                    }
+                    result += para.trim() + '\n\n';
+                }
+            } else if (type === 'sentences') {
+                for (let i = 0; i < count; i++) {
+                    result += loremSentences[Math.floor(Math.random() * loremSentences.length)] + ' ';
+                }
+            } else {
+                const words = "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor".split(' ');
+                for (let i = 0; i < count; i++) {
+                    result += words[Math.floor(Math.random() * words.length)] + ' ';
+                }
+            }
+            document.getElementById('loremResult').textContent = result.trim();
+        }
+        
+        // Find & Replace
+        function findReplace() {
+            const text = document.getElementById('frInput').value;
+            const find = document.getElementById('frFind').value;
+            const replace = document.getElementById('frReplace').value;
+            if (!find) return;
+            const regex = new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+            const count = (text.match(regex) || []).length;
+            document.getElementById('frResult').innerHTML = text.replace(regex, replace) + `<br><small style="color: var(--text-muted)">Replaced ${count} occurrence(s)</small>`;
+        }
+        
+        // Sort Lines
+        function sortLines(type) {
+            const lines = document.getElementById('sortInput').value.split('\n').filter(l => l.trim());
+            let sorted;
+            switch(type) {
+                case 'az': sorted = lines.sort(); break;
+                case 'za': sorted = lines.sort().reverse(); break;
+                case 'short': sorted = lines.sort((a, b) => a.length - b.length); break;
+                case 'long': sorted = lines.sort((a, b) => b.length - a.length); break;
+                case 'reverse': sorted = lines.reverse(); break;
+            }
+            document.getElementById('sortResult').textContent = sorted.join('\n');
+        }
+        
+        // Count Specific Word
+        function countSpecificWord() {
+            const text = document.getElementById('cwInput').value;
+            const word = document.getElementById('cwWord').value;
+            const caseSensitive = document.getElementById('cwCase').checked;
+            if (!word) return;
+            const regex = new RegExp(`\\b${word}\\b`, caseSensitive ? 'g' : 'gi');
+            const count = (text.match(regex) || []).length;
+            document.getElementById('cwResult').textContent = `"${word}" appears ${count} time(s)`;
+        }
+        
+        // Text Diff
+        function compareDiff() {
+            const original = document.getElementById('diffOriginal').value;
+            const changed = document.getElementById('diffChanged').value;
+            if (original === changed) {
+                document.getElementById('diffResult').innerHTML = '<span style="color: var(--accent-success)">Texts are identical</span>';
+                return;
+            }
+            document.getElementById('diffResult').innerHTML = `
+                <div class="diff-grid" style="margin-top: 0.5rem;">
+                    <div class="diff-removed">- ${original}</div>
+                    <div class="diff-added">+ ${changed}</div>
+                </div>
+            `;
+        }
+        
+        // Text to Speech
+        function initTTS() {
+            const select = document.getElementById('ttsVoice');
+            const rate = document.getElementById('ttsRate');
+            
+            function loadVoices() {
+                const voices = speechSynthesis.getVoices();
+                select.innerHTML = '<option value="">Default</option>';
+                voices.forEach(v => {
+                    select.innerHTML += `<option value="${v.name}">${v.name} (${v.lang})</option>`;
+                });
+            }
+            
+            speechSynthesis.onvoiceschanged = loadVoices;
+            loadVoices();
+            
+            rate.oninput = () => document.getElementById('ttsRateVal').textContent = rate.value;
+        }
+        
+        function speakText() {
+            const text = document.getElementById('ttsInput').value;
+            if (!text) return;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = parseFloat(document.getElementById('ttsRate').value);
+            const voiceName = document.getElementById('ttsVoice').value;
+            if (voiceName) {
+                utterance.voice = speechSynthesis.getVoices().find(v => v.name === voiceName);
+            }
+            utterance.onstart = () => document.getElementById('ttsStatus').textContent = 'Speaking...';
+            utterance.onend = () => document.getElementById('ttsStatus').textContent = 'Finished';
+            speechSynthesis.speak(utterance);
+        }
+        
+        function pauseText() {
+            if (speechSynthesis.paused) {
+                speechSynthesis.resume();
+                document.getElementById('ttsStatus').textContent = 'Speaking...';
+            } else {
+                speechSynthesis.pause();
+                document.getElementById('ttsStatus').textContent = 'Paused';
+            }
+        }
+        
+        function stopText() {
+            speechSynthesis.cancel();
+            document.getElementById('ttsStatus').textContent = 'Stopped';
+        }
+        
+        // Random Number
+        function generateRandomNumber() {
+            const min = parseInt(document.getElementById('rnMin').value) || 1;
+            const max = parseInt(document.getElementById('rnMax').value) || 100;
+            const count = parseInt(document.getElementById('rnCount').value) || 1;
+            const numbers = [];
+            for (let i = 0; i < count; i++) {
+                numbers.push(Math.floor(Math.random() * (max - min + 1)) + min);
+            }
+            document.getElementById('rnResult').textContent = numbers.join(', ');
+        }
+        
+        // Number Converter
+        function convertNumber() {
+            const bin = document.getElementById('ncBin').value.trim();
+            const dec = document.getElementById('ncDec').value.trim();
+            const hex = document.getElementById('ncHex').value.trim();
+            let decimal;
+            
+            if (bin) decimal = parseInt(bin, 2);
+            else if (dec) decimal = parseInt(dec);
+            else if (hex) decimal = parseInt(hex, 16);
+            else return;
+            
+            document.getElementById('ncBin').value = decimal.toString(2);
+            document.getElementById('ncDec').value = decimal;
+            document.getElementById('ncHex').value = decimal.toString(16).toUpperCase();
+            document.getElementById('ncResult').textContent = `Binary: ${decimal.toString(2)} | Decimal: ${decimal} | Hex: ${decimal.toString(16).toUpperCase()}`;
+        }
+        
+        // Color Converter
+        function hexToRgb() {
+            let hex = document.getElementById('colorHex').value.trim();
+            if (!hex.startsWith('#')) hex = '#' + hex;
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            const rgb = `rgb(${r}, ${g}, ${b})`;
+            document.getElementById('colorRgb').value = rgb;
+            document.getElementById('colorPreview').style.background = hex;
+            document.getElementById('colorResult').textContent = `HEX: ${hex} | RGB: ${rgb}`;
+        }
+        
+        function rgbToHex() {
+            const rgb = document.getElementById('colorRgb').value;
+            const match = rgb.match(/(\d+),\s*(\d+),\s*(\d+)/);
+            if (!match) return;
+            const hex = '#' + [match[1], match[2], match[3]].map(x => parseInt(x).toString(16).padStart(2, '0')).join('').toUpperCase();
+            document.getElementById('colorHex').value = hex;
+            document.getElementById('colorPreview').style.background = hex;
+            document.getElementById('colorResult').textContent = `HEX: ${hex} | RGB: ${rgb}`;
+        }
+        
+        // URL Encoder
+        function encodeUrl() {
+            document.getElementById('urlResult').textContent = encodeURIComponent(document.getElementById('urlInput').value);
+        }
+        
+        function decodeUrl() {
+            try {
+                document.getElementById('urlResult').textContent = decodeURIComponent(document.getElementById('urlInput').value);
+            } catch(e) {
+                document.getElementById('urlResult').textContent = 'Invalid encoded URL';
+            }
+        }
+        
+        // Morse Code
+        const morseMap = {'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.', ' ': '/'};
+        const reverseMorse = Object.fromEntries(Object.entries(morseMap).map(([k, v]) => [v, k]));
+        
+        function textToMorse() {
+            const text = document.getElementById('morseInput').value.toUpperCase();
+            document.getElementById('morseResult').textContent = text.split('').map(c => morseMap[c] || '').join(' ');
+        }
+        
+        function morseToText() {
+            const morse = document.getElementById('morseInput').value;
+            document.getElementById('morseResult').textContent = morse.split(' ').map(m => reverseMorse[m] || '').join('');
+        }
+        
+        // ASCII Art
+        const asciiChars = {
+            standard: {
+                'A': "  A  \n A A \nAAAAA\nA   A\nA   A", 'B': "BBBB \nB   B\nBBBB \nB   B\nBBBB ", 'C': " CCC \nC    \nC    \nC    \n CCC ",
+                'D': "DDD  \nD  D \nD   D\nD  D \nDDD  ", 'E': "EEEEE\nE    \nEEE  \nE    \nEEEEE", 'F': "FFFFF\nF    \nFFF  \nF    \nF    ",
+                'G': " GGG \nG    \nG  GG\nG   G\n GGG ", 'H': "H   H\nH   H\nHHHHH\nH   H\nH   H", 'I': "IIIII\n  I  \n  I  \n  I  \nIIIII",
+                'J': "JJJJJ\n   J \n   J \nJ  J \n JJ  ", 'K': "K   K\nK  K \nKKK  \nK  K \nK   K", 'L': "L    \nL    \nL    \nL    \nLLLLL",
+                'M': "M   M\nMM MM\nM M M\nM   M\nM   M", 'N': "N   N\nNN  N\nN N N\nN  NN\nN   N", 'O': " OOO \nO   O\nO   O\nO   O\n OOO ",
+                'P': "PPPP \nP   P\nPPPP \nP    \nP    ", 'Q': " QQQ \nQ   Q\nQ Q Q\nQ  Q \n QQ Q", 'R': "RRRR \nR   R\nRRRR \nR  R \nR   R",
+                'S': " SSS \nS    \n SSS \n    S\n SSS ", 'T': "TTTTT\n  T  \n  T  \n  T  \n  T  ", 'U': "U   U\nU   U\nU   U\nU   U\n UUU ",
+                'V': "V   V\nV   V\nV   V\n V V \n  V  ", 'W': "W   W\nW   W\nW W W\nWW WW\nW   W", 'X': "X   X\n X X \n  X  \n X X \nX   X",
+                'Y': "Y   Y\n Y Y \n  Y  \n  Y  \n  Y  ", 'Z': "ZZZZZ\n   Z \n  Z  \n Z   \nZZZZZ", ' ': "     \n     \n     \n     \n     "
+            },
+            block: {
+                'A': "  █  \n █ █ \n█████\n█   █\n█   █", 'B': "████ \n█   █\n████ \n█   █\n████ ", 'C': " ███ \n█    \n█    \n█    \n ███ ",
+                'D': "███  \n█  █ \n█   █\n█  █ \n███  ", 'E': "█████\n█    \n███  \n█    \n█████", 'F': "█████\n█    \n███  \n█    \n█    ",
+                'G': " ███ \n█    \n█  ██\n█   █\n ███ ", 'H': "█   █\n█   █\n█████\n█   █\n█   █", 'I': "█████\n  █  \n  █  \n  █  \n█████",
+                'J': "█████\n   █ \n   █ \n█  █ \n ██  ", 'K': "█   █\n█  █ \n███  \n█  █ \n█   █", 'L': "█    \n█    \n█    \n█    \n█████",
+                'M': "█   █\n██ ██\n█ █ █\n█   █\n█   █", 'N': "█   █\n██  █\n█ █ █\n█  ██\n█   █", 'O': " ███ \n█   █\n█   █\n█   █\n ███ ",
+                'P': "████ \n█   █\n████ \n█    \n█    ", 'Q': " ███ \n█   █\n█ █ █\n█  █ \n ██ █", 'R': "████ \n█   █\n████ \n█  █ \n█   █",
+                'S': " ███ \n█    \n ███ \n    █\n ███ ", 'T': "█████\n  █  \n  █  \n  █  \n  █  ", 'U': "█   █\n█   █\n█   █\n█   █\n ███ ",
+                'V': "█   █\n█   █\n█   █\n █ █ \n  █  ", 'W': "█   █\n█   █\n█ █ █\n██ ██\n█   █", 'X': "█   █\n █ █ \n  █  \n █ █ \n█   █",
+                'Y': "█   █\n █ █ \n  █  \n  █  \n  █  ", 'Z': "█████\n   █ \n  █  \n █   \n█████", ' ': "     \n     \n     \n     \n     "
+            },
+            bubble: {
+                'A': "  ○  \n ○ ○ \n○○○○○\n○   ○\n○   ○", 'B': "○○○○ \n○   ○\n○○○○ \n○   ○\n○○○○ ", 'C': " ○○○ \n○    \n○    \n○    \n ○○○ ",
+                'D': "○○○  \n○  ○ \n○   ○\n○  ○ \n○○○  ", 'E': "○○○○○\n○    \n○○○  \n○    \n○○○○○", 'F': "○○○○○\n○    \n○○○  \n○    \n○    ",
+                'G': " ○○○ \n○    \n○  ○○\n○   ○\n ○○○ ", 'H': "○   ○\n○   ○\n○○○○○\n○   ○\n○   ○", 'I': "○○○○○\n  ○  \n  ○  \n  ○  \n○○○○○",
+                'J': "○○○○○\n   ○ \n   ○ \n○  ○ \n ○○  ", 'K': "○   ○\n○  ○ \n○○○  \n○  ○ \n○   ○", 'L': "○    \n○    \n○    \n○    \n○○○○○",
+                'M': "○   ○\n○○ ○○\n○ ○ ○\n○   ○\n○   ○", 'N': "○   ○\n○○  ○\n○ ○ ○\n○  ○○\n○   ○", 'O': " ○○○ \n○   ○\n○   ○\n○   ○\n ○○○ ",
+                'P': "○○○○ \n○   ○\n○○○○ \n○    \n○    ", 'Q': " ○○○ \n○   ○\n○ ○ ○\n○  ○ \n ○○ ○", 'R': "○○○○ \n○   ○\n○○○○ \n○  ○ \n○   ○",
+                'S': " ○○○ \n○    \n ○○○ \n    ○\n ○○○ ", 'T': "○○○○○\n  ○  \n  ○  \n  ○  \n  ○  ", 'U': "○   ○\n○   ○\n○   ○\n○   ○\n ○○○ ",
+                'V': "○   ○\n○   ○\n○   ○\n ○ ○ \n  ○  ", 'W': "○   ○\n○   ○\n○ ○ ○\n○○ ○○\n○   ○", 'X': "○   ○\n ○ ○ \n  ○  \n ○ ○ \n○   ○",
+                'Y': "○   ○\n ○ ○ \n  ○  \n  ○  \n  ○  ", 'Z': "○○○○○\n   ○ \n  ○  \n ○   \n○○○○○", ' ': "     \n     \n     \n     \n     "
+            }
+        };
+        
+        function generateAscii() {
+            const text = document.getElementById('asciiInput').value.toUpperCase();
+            const style = document.getElementById('asciiStyle').value;
+            const chars = asciiChars[style];
+            let result = ['', '', '', '', ''];
+            
+            for (const char of text) {
+                const art = chars[char] || chars[' '];
+                const lines = art.split('\n');
+                for (let i = 0; i < 5; i++) {
+                    result[i] += (lines[i] || '     ') + '  ';
+                }
+            }
+            document.getElementById('asciiResult').textContent = result.join('\n');
+        }
+        
+        // Name Picker
+        function pickRandomName() {
+            const names = document.getElementById('nameInput').value.split('\n').filter(n => n.trim());
+            if (!names.length) return;
+            const picked = names[Math.floor(Math.random() * names.length)];
+            document.getElementById('nameResult').textContent = '🎉 ' + picked;
+            document.getElementById('wheelCenter').textContent = picked;
+        }
+        
+        function spinWheel() {
+            const names = document.getElementById('nameInput').value.split('\n').filter(n => n.trim());
+            if (!names.length) return;
+            const wheel = document.getElementById('wheel');
+            const rotation = 1800 + Math.random() * 1800;
+            wheel.style.transform = `rotate(${rotation}deg)`;
+            
+            setTimeout(() => {
+                const picked = names[Math.floor(Math.random() * names.length)];
+                document.getElementById('nameResult').textContent = '🎉 ' + picked;
+                document.getElementById('wheelCenter').textContent = picked;
+            }, 4000);
+        }
+        
+        // Password Generator
+        function generatePassword() {
+            const len = parseInt(document.getElementById('pwLen').value);
+            let chars = '';
+            if (document.getElementById('pwUpper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (document.getElementById('pwLower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
+            if (document.getElementById('pwNumbers').checked) chars += '0123456789';
+            if (document.getElementById('pwSymbols').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            if (!chars) return;
+            let password = '';
+            for (let i = 0; i < len; i++) {
+                password += chars[Math.floor(Math.random() * chars.length)];
+            }
+            document.getElementById('pwResult').textContent = password;
+        }
+        
+        // Quote Generator - 35 quotes per category
+        const quotes = {
+            motivation: [
+                {text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt"},
+                {text: "It always seems impossible until it's done.", author: "Nelson Mandela"},
+                {text: "The only way to do great work is to love what you do.", author: "Steve Jobs"},
+                {text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt"},
+                {text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson"},
+                {text: "You are never too old to set another goal or to dream a new dream.", author: "C.S. Lewis"},
+                {text: "What you get by achieving your goals is not as important as what you become.", author: "Zig Ziglar"},
+                {text: "Act as if what you do makes a difference. It does.", author: "William James"},
+                {text: "Success is not how high you have climbed, but how you make a positive difference.", author: "Roy T. Bennett"},
+                {text: "The secret of getting ahead is getting started.", author: "Mark Twain"},
+                {text: "With the new day comes new strength and new thoughts.", author: "Eleanor Roosevelt"},
+                {text: "Your limitation—it's only your imagination.", author: "Unknown"},
+                {text: "Push yourself, because no one else is going to do it for you.", author: "Unknown"},
+                {text: "Great things never come from comfort zones.", author: "Unknown"},
+                {text: "Dream it. Wish it. Do it.", author: "Unknown"},
+                {text: "Success doesn't just find you. You have to go out and get it.", author: "Unknown"},
+                {text: "The harder you work for something, the greater you'll feel when you achieve it.", author: "Unknown"},
+                {text: "Dream bigger. Do bigger.", author: "Unknown"},
+                {text: "Don't stop when you're tired. Stop when you're done.", author: "Unknown"},
+                {text: "Wake up with determination. Go to bed with satisfaction.", author: "Unknown"},
+                {text: "Do something today that your future self will thank you for.", author: "Sean Patrick Flanery"},
+                {text: "Little things make big days.", author: "Unknown"},
+                {text: "It's going to be hard, but hard does not mean impossible.", author: "Unknown"},
+                {text: "Don't wait for opportunity. Create it.", author: "Unknown"},
+                {text: "Sometimes we're tested not to show our weaknesses, but to discover our strengths.", author: "Unknown"},
+                {text: "The key to success is to focus on goals, not obstacles.", author: "Unknown"},
+                {text: "Dream it. Believe it. Build it.", author: "Unknown"},
+                {text: "Stay positive. Work hard. Make it happen.", author: "Unknown"},
+                {text: "The only limit to our realization of tomorrow is our doubts of today.", author: "Franklin D. Roosevelt"},
+                {text: "Everything you've ever wanted is on the other side of fear.", author: "George Addair"},
+                {text: "You miss 100% of the shots you don't take.", author: "Wayne Gretzky"},
+                {text: "The only person you are destined to become is the person you decide to be.", author: "Ralph Waldo Emerson"},
+                {text: "Go confidently in the direction of your dreams. Live the life you have imagined.", author: "Henry David Thoreau"},
+                {text: "The two most important days in your life are the day you are born and the day you find out why.", author: "Mark Twain"},
+                {text: "Whether you think you can or you think you can't, you're right.", author: "Henry Ford"}
+            ],
+            success: [
+                {text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill"},
+                {text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney"},
+                {text: "Success usually comes to those who are too busy to be looking for it.", author: "Henry David Thoreau"},
+                {text: "Don't be afraid to give up the good to go for the great.", author: "John D. Rockefeller"},
+                {text: "I find that the harder I work, the more luck I seem to have.", author: "Thomas Jefferson"},
+                {text: "Success is walking from failure to failure with no loss of enthusiasm.", author: "Winston Churchill"},
+                {text: "The road to success and the road to failure are almost exactly the same.", author: "Colin R. Davis"},
+                {text: "Success is not the key to happiness. Happiness is the key to success.", author: "Albert Schweitzer"},
+                {text: "There are no secrets to success. It is the result of preparation and hard work.", author: "Colin Powell"},
+                {text: "Success seems to be connected with action. Successful people keep moving.", author: "Conrad Hilton"},
+                {text: "Try not to become a man of success. Rather become a man of value.", author: "Albert Einstein"},
+                {text: "A successful man is one who can lay a firm foundation with the bricks others throw at him.", author: "David Brinkley"},
+                {text: "In order to succeed, we must first believe that we can.", author: "Nikos Kazantzakis"},
+                {text: "What seems to us as bitter trials are often blessings in disguise.", author: "Oscar Wilde"},
+                {text: "The only place where success comes before work is in the dictionary.", author: "Vidal Sassoon"},
+                {text: "Success is liking yourself, liking what you do, and liking how you do it.", author: "Maya Angelou"},
+                {text: "Opportunities don't happen. You create them.", author: "Chris Grosser"},
+                {text: "Success is not in what you have, but who you are.", author: "Bo Bennett"},
+                {text: "The successful warrior is the average man, with laser-like focus.", author: "Bruce Lee"},
+                {text: "All progress takes place outside the comfort zone.", author: "Michael John Bobak"},
+                {text: "Success is not measured by what you accomplish, but by the opposition you encounter.", author: "Orison Swett Marden"},
+                {text: "If you really look closely, most overnight successes took a long time.", author: "Steve Jobs"},
+                {text: "The only way to achieve the impossible is to believe it is possible.", author: "Charles Kingsleigh"},
+                {text: "Coming together is a beginning; keeping together is progress; working together is success.", author: "Henry Ford"},
+                {text: "Success is how high you bounce when you hit bottom.", author: "George S. Patton"},
+                {text: "If you want to achieve greatness stop asking for permission.", author: "Unknown"},
+                {text: "Things work out best for those who make the best of how things work out.", author: "John Wooden"},
+                {text: "To live a creative life, we must lose our fear of being wrong.", author: "Joseph Chilton Pearce"},
+                {text: "If you are not willing to risk the usual, you will have to settle for the ordinary.", author: "Jim Rohn"},
+                {text: "Before anything else, preparation is the key to success.", author: "Alexander Graham Bell"},
+                {text: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier"},
+                {text: "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will.", author: "Vince Lombardi"},
+                {text: "Success is not about the destination, it's about the journey.", author: "Zig Ziglar"},
+                {text: "The secret of success is to do the common thing uncommonly well.", author: "John D. Rockefeller"},
+                {text: "Success is where preparation meets opportunity.", author: "Seneca"}
+            ],
+            love: [
+                {text: "The best thing to hold onto in life is each other.", author: "Audrey Hepburn"},
+                {text: "Love is composed of a single soul inhabiting two bodies.", author: "Aristotle"},
+                {text: "Where there is love there is life.", author: "Mahatma Gandhi"},
+                {text: "The giving of love is an education in itself.", author: "Eleanor Roosevelt"},
+                {text: "Being deeply loved gives you strength; loving deeply gives you courage.", author: "Lao Tzu"},
+                {text: "You know you're in love when you can't fall asleep because reality is finally better than your dreams.", author: "Dr. Seuss"},
+                {text: "A loving heart is the truest wisdom.", author: "Charles Dickens"},
+                {text: "Love all, trust a few, do wrong to none.", author: "William Shakespeare"},
+                {text: "The greatest thing you'll ever learn is just to love and be loved in return.", author: "Eden Ahbez"},
+                {text: "To love and be loved is to feel the sun from both sides.", author: "David Viscott"},
+                {text: "Love is when the other person's happiness is more important than your own.", author: "H. Jackson Brown Jr."},
+                {text: "The best and most beautiful things in this world cannot be seen or even heard, but must be felt with the heart.", author: "Helen Keller"},
+                {text: "Love does not dominate; it cultivates.", author: "Johann Wolfgang von Goethe"},
+                {text: "At the touch of love everyone becomes a poet.", author: "Plato"},
+                {text: "Love recognizes no barriers.", author: "Maya Angelou"},
+                {text: "There is only one happiness in this life, to love and be loved.", author: "George Sand"},
+                {text: "Life without love is like a tree without blossoms or fruit.", author: "Khalil Gibran"},
+                {text: "Love is a friendship set to music.", author: "Joseph Campbell"},
+                {text: "Keep love in your heart. A life without it is like a sunless garden.", author: "Oscar Wilde"},
+                {text: "Love is the whole thing. We are only pieces.", author: "Rumi"},
+                {text: "Immature love says I love you because I need you. Mature love says I need you because I love you.", author: "Erich Fromm"},
+                {text: "The art of love is largely the art of persistence.", author: "Albert Ellis"},
+                {text: "True love stories never have endings.", author: "Richard Bach"},
+                {text: "Love is an untamed force. When we try to control it, it destroys us.", author: "Paulo Coelho"},
+                {text: "One word frees us of all the weight and pain of life: That word is love.", author: "Sophocles"},
+                {text: "We loved with a love that was more than love.", author: "Edgar Allan Poe"},
+                {text: "Love is friendship that has caught fire.", author: "Ann Landers"},
+                {text: "In dreams and in love there are no impossibilities.", author: "Janos Arnay"},
+                {text: "Love is patient, love is kind. It does not envy, it does not boast, it is not proud.", author: "1 Corinthians 13:4"},
+                {text: "The heart wants what it wants.", author: "Emily Dickinson"},
+                {text: "Love is the only force capable of transforming an enemy into a friend.", author: "Martin Luther King Jr."},
+                {text: "To love is to receive a glimpse of heaven.", author: "Karen Sunde"},
+                {text: "Love is the master key that opens the gates of happiness.", author: "Oliver Wendell Holmes"},
+                {text: "Love is the greatest refreshment in life.", author: "Pablo Picasso"},
+                {text: "Love is like a beautiful flower which I may not touch, but whose fragrance makes the garden a place of delight just the same.", author: "Helen Keller"}
+            ],
+            wisdom: [
+                {text: "The only true wisdom is in knowing you know nothing.", author: "Socrates"},
+                {text: "Knowing yourself is the beginning of all wisdom.", author: "Aristotle"},
+                {text: "Turn your wounds into wisdom.", author: "Oprah Winfrey"},
+                {text: "The measure of intelligence is the ability to change.", author: "Albert Einstein"},
+                {text: "Knowledge speaks, but wisdom listens.", author: "Jimi Hendrix"},
+                {text: "Wisdom is not a product of schooling but of the lifelong attempt to acquire it.", author: "Albert Einstein"},
+                {text: "The fool doth think he is wise, but the wise man knows himself to be a fool.", author: "William Shakespeare"},
+                {text: "It is the mark of an educated mind to entertain a thought without accepting it.", author: "Aristotle"},
+                {text: "By three methods we may learn wisdom: by reflection, by imitation, and by experience.", author: "Confucius"},
+                {text: "The doorstep to the temple of wisdom is a knowledge of our own ignorance.", author: "Benjamin Franklin"},
+                {text: "Science is organized knowledge. Wisdom is organized life.", author: "Immanuel Kant"},
+                {text: "A wise man learns more from his enemies than a fool from his friends.", author: "Baltasar Gracián"},
+                {text: "The truest wisdom is a resolute determination.", author: "Napoleon Bonaparte"},
+                {text: "Never mistake knowledge for wisdom. One helps you make a living; the other helps you make a life.", author: "Sandra Carey"},
+                {text: "Wisdom begins in wonder.", author: "Socrates"},
+                {text: "Common sense is genius dressed in its working clothes.", author: "Ralph Waldo Emerson"},
+                {text: "In seeking wisdom thou art wise; in imagining that thou hast attained it, thou art a fool.", author: "Lord Chesterfield"},
+                {text: "Wisdom is the reward you get for a lifetime of listening when you'd have preferred to talk.", author: "Doug Larson"},
+                {text: "True wisdom comes to each of us when we realize how little we understand about life.", author: "Socrates"},
+                {text: "He who knows others is wise; he who knows himself is enlightened.", author: "Lao Tzu"},
+                {text: "The wise man does at once what the fool does finally.", author: "Niccolò Machiavelli"},
+                {text: "Wisdom is knowing what to do next; virtue is doing it.", author: "David Starr Jordan"},
+                {text: "A wise man will make more opportunities than he finds.", author: "Francis Bacon"},
+                {text: "It requires wisdom to understand wisdom; the music is nothing if the audience is deaf.", author: "Walter Lippmann"},
+                {text: "Wisdom outweighs any wealth.", author: "Sophocles"},
+                {text: "The only medicine for suffering, crime, and all other woes of mankind, is wisdom.", author: "Thomas Huxley"},
+                {text: "Where is the wisdom we have lost in knowledge?", author: "T.S. Eliot"},
+                {text: "We can be knowledgeable with other men's knowledge, but we cannot be wise with other men's wisdom.", author: "Michel de Montaigne"},
+                {text: "The invariable mark of wisdom is to see the miraculous in the common.", author: "Ralph Waldo Emerson"},
+                {text: "Wisdom is the daughter of experience.", author: "Leonardo da Vinci"},
+                {text: "The wise find pleasure in water; the virtuous find pleasure in hills.", author: "Confucius"},
+                {text: "Wisdom is not wisdom when it is derived from books alone.", author: "Horace"},
+                {text: "The older I grow, the more I distrust the familiar doctrine that age brings wisdom.", author: "H.L. Mencken"},
+                {text: "Wisdom is the right use of knowledge.", author: "Charles Spurgeon"},
+                {text: "A wise man can learn more from a foolish question than a fool can learn from a wise answer.", author: "Bruce Lee"}
+            ],
+            leadership: [
+                {text: "A leader is one who knows the way, goes the way, and shows the way.", author: "John C. Maxwell"},
+                {text: "Leadership is not about being in charge. It's about taking care of those in your charge.", author: "Simon Sinek"},
+                {text: "The greatest leader is not the one who does the greatest things.", author: "Ronald Reagan"},
+                {text: "Innovation distinguishes between a leader and a follower.", author: "Steve Jobs"},
+                {text: "The function of leadership is to produce more leaders, not more followers.", author: "Ralph Nader"},
+                {text: "Before you are a leader, success is all about growing yourself. When you become a leader, success is all about growing others.", author: "Jack Welch"},
+                {text: "A genuine leader is not a searcher for consensus but a molder of consensus.", author: "Martin Luther King Jr."},
+                {text: "The task of leadership is not to put greatness into people, but to elicit it, for the greatness is there already.", author: "John Buchan"},
+                {text: "Leadership is solving problems. The day soldiers stop bringing you their problems is the day you stopped leading them.", author: "Colin Powell"},
+                {text: "The art of leadership is saying no, not yes. It is very easy to say yes.", author: "Tony Blair"},
+                {text: "Effective leadership is putting first things first.", author: "Stephen Covey"},
+                {text: "A leader takes people where they want to go. A great leader takes people where they don't necessarily want to go.", author: "Rosalynn Carter"},
+                {text: "To handle yourself, use your head; to handle others, use your heart.", author: "Eleanor Roosevelt"},
+                {text: "The quality of a leader is reflected in the standards they set for themselves.", author: "Ray Kroc"},
+                {text: "Leadership and learning are indispensable to each other.", author: "John F. Kennedy"},
+                {text: "The pessimist complains about the wind. The optimist expects it to change. The leader adjusts the sails.", author: "John Maxwell"},
+                {text: "Management is doing things right; leadership is doing the right things.", author: "Peter Drucker"},
+                {text: "Become the kind of leader that people would follow voluntarily.", author: "Brian Tracy"},
+                {text: "Don't tell people how to do things, tell them what to do and let them surprise you with their results.", author: "George S. Patton"},
+                {text: "If your actions inspire others to dream more, learn more, do more and become more, you are a leader.", author: "John Quincy Adams"},
+                {text: "Nearly all men can stand adversity, but if you want to test a man's character, give him power.", author: "Abraham Lincoln"},
+                {text: "Leaders think and talk about solutions. Followers think and talk about problems.", author: "Brian Tracy"},
+                {text: "The growth and development of people is the highest calling of leadership.", author: "Harvey S. Firestone"},
+                {text: "Outstanding leaders go out of their way to boost the self-esteem of their personnel.", author: "Sam Walton"},
+                {text: "He who has learned to disagree without being disagreeable has discovered the most valuable secret of diplomacy.", author: "Robert Estabrook"},
+                {text: "You don't need a title to be a leader.", author: "Mark Sanborn"},
+                {text: "Average leaders raise the bar on themselves; good leaders raise the bar for others; great leaders inspire others to raise their own bar.", author: "Orrin Woodward"},
+                {text: "Real leadership is leaders recognizing that they serve the people that they lead.", author: "Pete Hoekstra"},
+                {text: "The best leaders are those most interested in surrounding themselves with assistants and associates smarter than they are.", author: "John C. Maxwell"},
+                {text: "A leader's job is not to do the work for others, it's to help others figure out how to do it themselves.", author: "Simon Sinek"},
+                {text: "The greatest leader is not necessarily the one who does the greatest things. He is the one that gets the people to do the greatest things.", author: "Ronald Reagan"},
+                {text: "Leadership is the capacity to translate vision into reality.", author: "Warren Bennis"},
+                {text: "The key to successful leadership today is influence, not authority.", author: "Ken Blanchard"},
+                {text: "A leader is best when people barely know he exists, when his work is done, his aim fulfilled, they will say: we did it ourselves.", author: "Lao Tzu"},
+                {text: "The challenge of leadership is to be strong, but not rude; be kind, but not weak; be bold, but not bully.", author: "Jim Rohn"}
+            ],
+            creativity: [
+                {text: "Creativity is intelligence having fun.", author: "Albert Einstein"},
+                {text: "The worst enemy to creativity is self-doubt.", author: "Sylvia Plath"},
+                {text: "Creativity takes courage.", author: "Henri Matisse"},
+                {text: "You can't use up creativity. The more you use, the more you have.", author: "Maya Angelou"},
+                {text: "Creativity is just connecting things.", author: "Steve Jobs"},
+                {text: "Creativity is inventing, experimenting, growing, taking risks, breaking rules, making mistakes, and having fun.", author: "Mary Lou Cook"},
+                {text: "The chief enemy of creativity is good sense.", author: "Pablo Picasso"},
+                {text: "Creativity is allowing yourself to make mistakes. Art is knowing which ones to keep.", author: "Scott Adams"},
+                {text: "Curiosity about life in all of its aspects is still the secret of great creative people.", author: "Leo Burnett"},
+                {text: "There is no doubt that creativity is the most important human resource of all.", author: "Edward de Bono"},
+                {text: "Creativity is the power to connect the seemingly unconnected.", author: "William Plomer"},
+                {text: "The desire to create is one of the deepest yearnings of the human soul.", author: "Dieter F. Uchtdorf"},
+                {text: "Imagination is the beginning of creation. You imagine what you desire.", author: "George Bernard Shaw"},
+                {text: "An essential aspect of creativity is not being afraid to fail.", author: "Edwin Land"},
+                {text: "Clean out a corner of your mind and creativity will instantly fill it.", author: "Dee Hock"},
+                {text: "Every child is an artist. The problem is how to remain an artist once we grow up.", author: "Pablo Picasso"},
+                {text: "Making the simple complicated is commonplace; making the complicated simple, that's creativity.", author: "Charles Mingus"},
+                {text: "Creative thinking is not a talent, it is a skill that can be learned.", author: "Edward de Bono"},
+                {text: "The secret to creativity is knowing how to hide your sources.", author: "Albert Einstein"},
+                {text: "Inspiration exists, but it has to find you working.", author: "Pablo Picasso"},
+                {text: "Creativity involves breaking out of established patterns in order to look at things in a different way.", author: "Edward de Bono"},
+                {text: "Don't think. Thinking is the enemy of creativity.", author: "Ray Bradbury"},
+                {text: "Others have seen what is and asked why. I have seen what could be and asked why not.", author: "Pablo Picasso"},
+                {text: "Creativity requires the courage to let go of certainties.", author: "Erich Fromm"},
+                {text: "The creative adult is the child who survived.", author: "Ursula K. Le Guin"},
+                {text: "Logic will get you from A to B. Imagination will take you everywhere.", author: "Albert Einstein"},
+                {text: "A creative life is an amplified life. It's a bigger life, a happier life, an expanded life.", author: "Elizabeth Gilbert"},
+                {text: "Creativity is a wild mind and a disciplined eye.", author: "Dorothy Parker"},
+                {text: "To be creative means to be in love with life.", author: "Osho"},
+                {text: "The creative process is a process of surrender, not control.", author: "Julia Cameron"},
+                {text: "Creativity is seeing what others see and thinking what no one else ever thought.", author: "Albert Einstein"},
+                {text: "The world always seems brighter when you've just made something that wasn't there before.", author: "Neil Gaiman"},
+                {text: "Creativity is intelligence having fun.", author: "Albert Einstein"},
+                {text: "You can't use up creativity. The more you use, the more you have.", author: "Maya Angelou"},
+                {text: "Creativity is the way I share my soul with the world.", author: "Brené Brown"}
+            ],
+            happiness: [
+                {text: "Happiness is not something ready-made. It comes from your own actions.", author: "Dalai Lama"},
+                {text: "The purpose of our lives is to be happy.", author: "Dalai Lama"},
+                {text: "Happiness depends upon ourselves.", author: "Aristotle"},
+                {text: "Be happy for this moment. This moment is your life.", author: "Omar Khayyam"},
+                {text: "For every minute you are angry you lose sixty seconds of happiness.", author: "Ralph Waldo Emerson"},
+                {text: "The only thing that will make you happy is being happy with who you are.", author: "Goldie Hawn"},
+                {text: "Happiness is not a goal; it is a by-product.", author: "Eleanor Roosevelt"},
+                {text: "Most folks are as happy as they make up their minds to be.", author: "Abraham Lincoln"},
+                {text: "Count your age by friends, not years. Count your life by smiles, not tears.", author: "John Lennon"},
+                {text: "Happiness is a warm puppy.", author: "Charles M. Schulz"},
+                {text: "The secret of happiness is freedom, the secret of freedom is courage.", author: "Carrie Jones"},
+                {text: "Action may not always bring happiness; but there is no happiness without action.", author: "Benjamin Disraeli"},
+                {text: "It is not how much we have, but how much we enjoy, that makes happiness.", author: "Charles Spurgeon"},
+                {text: "Happiness is when what you think, what you say, and what you do are in harmony.", author: "Mahatma Gandhi"},
+                {text: "True happiness arises from the generous heart.", author: "Dalai Lama"},
+                {text: "Happiness is not the absence of problems, it's the ability to deal with them.", author: "Steve Maraboli"},
+                {text: "The happiness of your life depends upon the quality of your thoughts.", author: "Marcus Aurelius"},
+                {text: "Think of all the beauty still left around you and be happy.", author: "Anne Frank"},
+                {text: "Happiness is found when you stop comparing yourself to other people.", author: "Unknown"},
+                {text: "Plenty of people miss their share of happiness, not because they never found it, but because they didn't stop to enjoy it.", author: "William Feather"},
+                {text: "Success is not the key to happiness. Happiness is the key to success.", author: "Albert Schweitzer"},
+                {text: "If you want to be happy, be.", author: "Leo Tolstoy"},
+                {text: "The moments of happiness we enjoy take us by surprise. It is not that we seize them, but that they seize us.", author: "Ashley Montagu"},
+                {text: "Happiness comes from peace. Peace comes from indifference.", author: "Naval Ravikant"},
+                {text: "A joyful heart is good medicine.", author: "Proverbs 17:22"},
+                {text: "Happiness is not a destination, it is a way of life.", author: "Unknown"},
+                {text: "Let us be grateful to people who make us happy.", author: "Marcel Proust"},
+                {text: "Happiness is not about getting what you want all the time. It's about loving what you have.", author: "Unknown"},
+                {text: "The greatest happiness you can have is knowing that you do not necessarily require happiness.", author: "William Saroyan"},
+                {text: "Happiness is a butterfly, which when pursued, is always just beyond your grasp, but which, if you will sit down quietly, may alight upon you.", author: "Nathaniel Hawthorne"},
+                {text: "The purpose of our lives is to be happy.", author: "Dalai Lama"},
+                {text: "Happiness is not something you postpone for the future; it is something you design for the present.", author: "Jim Rohn"},
+                {text: "The secret of happiness is to find a congenial work.", author: "Pearl S. Buck"},
+                {text: "Happiness is not in the mere possession of money; it lies in the joy of achievement, in the thrill of creative effort.", author: "Franklin D. Roosevelt"},
+                {text: "Happiness is a choice. You can choose to be happy. There's going to be stress in life, but it's your choice whether you let it affect you or not.", author: "Valerie Bertinelli"}
+            ],
+            life: [
+                {text: "In the end, it's not the years in your life that count. It's the life in your years.", author: "Abraham Lincoln"},
+                {text: "Life is what happens when you're busy making other plans.", author: "John Lennon"},
+                {text: "Life is either a daring adventure or nothing at all.", author: "Helen Keller"},
+                {text: "The unexamined life is not worth living.", author: "Socrates"},
+                {text: "Life is really simple, but we insist on making it complicated.", author: "Confucius"},
+                {text: "Life is short, and it is up to you to make it sweet.", author: "Sarah Louise Delany"},
+                {text: "Life is 10% what happens to us and 90% how we react to it.", author: "Charles R. Swindoll"},
+                {text: "The good life is one inspired by love and guided by knowledge.", author: "Bertrand Russell"},
+                {text: "Life is a succession of lessons which must be lived to be understood.", author: "Helen Keller"},
+                {text: "In three words I can sum up everything I've learned about life: it goes on.", author: "Robert Frost"},
+                {text: "Life isn't about finding yourself. Life is about creating yourself.", author: "George Bernard Shaw"},
+                {text: "The biggest adventure you can take is to live the life of your dreams.", author: "Oprah Winfrey"},
+                {text: "Life is a journey, not a destination.", author: "Ralph Waldo Emerson"},
+                {text: "Live as if you were to die tomorrow. Learn as if you were to live forever.", author: "Mahatma Gandhi"},
+                {text: "Life is what we make it, always has been, always will be.", author: "Grandma Moses"},
+                {text: "Only a life lived for others is a life worthwhile.", author: "Albert Einstein"},
+                {text: "Life is not measured by the number of breaths we take, but by the moments that take our breath away.", author: "Maya Angelou"},
+                {text: "Don't cry because it's over, smile because it happened.", author: "Dr. Seuss"},
+                {text: "Life is inherently risky. There is only one big risk you should avoid at all costs, and that is the risk of doing nothing.", author: "Denis Waitley"},
+                {text: "Life shrinks or expands in proportion to one's courage.", author: "Anaïs Nin"},
+                {text: "Life isn't about waiting for the storm to pass, it's about learning to dance in the rain.", author: "Vivian Greene"},
+                {text: "To live is the rarest thing in the world. Most people exist, that is all.", author: "Oscar Wilde"},
+                {text: "Get busy living or get busy dying.", author: "Stephen King"},
+                {text: "Many of life's failures are people who did not realize how close they were to success when they gave up.", author: "Thomas Edison"},
+                {text: "You only live once, but if you do it right, once is enough.", author: "Mae West"},
+                {text: "Life is like riding a bicycle. To keep your balance, you must keep moving.", author: "Albert Einstein"},
+                {text: "Love the life you live. Live the life you love.", author: "Bob Marley"},
+                {text: "Life is too short to be living somebody else's dream.", author: "Hugh Hefner"},
+                {text: "The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate.", author: "Ralph Waldo Emerson"},
+                {text: "Life is really simple, but we insist on making it complicated.", author: "Confucius"},
+                {text: "The two most important days in your life are the day you are born and the day you find out why.", author: "Mark Twain"},
+                {text: "Life is what happens to you while you're busy making other plans.", author: "John Lennon"},
+                {text: "The purpose of our lives is to be happy.", author: "Dalai Lama"},
+                {text: "Life is a series of natural and spontaneous changes. Don't resist them.", author: "Lao Tzu"},
+                {text: "Life is either a daring adventure or nothing at all.", author: "Helen Keller"}
+            ],
+            courage: [
+                {text: "Courage is not the absence of fear, but the triumph over it.", author: "Nelson Mandela"},
+                {text: "You gain strength, courage, and confidence by every experience in which you really stop to look fear in the face.", author: "Eleanor Roosevelt"},
+                {text: "It takes courage to grow up and become who you really are.", author: "E.E. Cummings"},
+                {text: "Fortune favors the bold.", author: "Virgil"},
+                {text: "Do one thing every day that scares you.", author: "Eleanor Roosevelt"},
+                {text: "Courage is grace under pressure.", author: "Ernest Hemingway"},
+                {text: "Fear is a reaction. Courage is a decision.", author: "Winston Churchill"},
+                {text: "All our dreams can come true, if we have the courage to pursue them.", author: "Walt Disney"},
+                {text: "Courage is resistance to fear, mastery of fear, not absence of fear.", author: "Mark Twain"},
+                {text: "The most courageous act is still to think for yourself. Aloud.", author: "Coco Chanel"},
+                {text: "He who is not courageous enough to take risks will accomplish nothing in life.", author: "Muhammad Ali"},
+                {text: "Courage is contagious. When a brave man takes a stand, the spines of others are stiffened.", author: "Ronald Reagan"},
+                {text: "Have enough courage to trust love one more time and always one more time.", author: "Maya Angelou"},
+                {text: "Courage doesn't always roar. Sometimes courage is the quiet voice at the end of the day saying, 'I will try again tomorrow.'", author: "Mary Anne Radmacher"},
+                {text: "One isn't born courageous, one becomes it.", author: "Maya Angelou"},
+                {text: "You cannot swim for new horizons until you have courage to lose sight of the shore.", author: "William Faulkner"},
+                {text: "Courage is found in unlikely places.", author: "J.R.R. Tolkien"},
+                {text: "Courage is doing what you're afraid to do. There can be no courage unless you're scared.", author: "Eddie Rickenbacker"},
+                {text: "Leap and the net will appear.", author: "John Burroughs"},
+                {text: "Without courage, wisdom bears no fruit.", author: "Baltasar Gracián"},
+                {text: "Courage is being scared to death but saddling up anyway.", author: "John Wayne"},
+                {text: "We must build dikes of courage to hold back the flood of fear.", author: "Martin Luther King Jr."},
+                {text: "Courage is the first of human qualities because it is the quality which guarantees all others.", author: "Aristotle"},
+                {text: "Be bold, and mighty forces will come to your aid.", author: "Johann Wolfgang von Goethe"},
+                {text: "Courage is fire, and bullying is smoke.", author: "Benjamin Disraeli"},
+                {text: "The opposite of courage in our society is not cowardice, it is conformity.", author: "Rollo May"},
+                {text: "Courage is going from failure to failure without losing enthusiasm.", author: "Winston Churchill"},
+                {text: "It takes courage to stand up and speak; it also takes courage to sit down and listen.", author: "Winston Churchill"},
+                {text: "Courage starts with showing up and letting ourselves be seen.", author: "Brené Brown"},
+                {text: "Courage leads to heaven; fear leads to death.", author: "Seneca"},
+                {text: "Fear is temporary. Regret is forever.", author: "Unknown"},
+                {text: "Courage is being the only one who knows you're afraid.", author: "Franklin P. Jones"},
+                {text: "You can't be brave if you've only had wonderful things happen to you.", author: "Mary Tyler Moore"},
+                {text: "Courage is the commitment to begin without any guarantee of success.", author: "Johann Wolfgang von Goethe"},
+                {text: "The scariest moment is always just before you start.", author: "Stephen King"},
+                {text: "Sometimes even to live is an act of courage.", author: "Seneca"}
+            ],
+            patience: [
+                {text: "Patience is not simply the ability to wait—it's how we behave while we're waiting.", author: "Joyce Meyer"},
+                {text: "The two most powerful warriors are patience and time.", author: "Leo Tolstoy"},
+                {text: "Have patience. All things are difficult before they become easy.", author: "Saadi"},
+                {text: "Patience and perseverance have a magical effect before which difficulties disappear.", author: "John Quincy Adams"},
+                {text: "Nature does not hurry, yet everything is accomplished.", author: "Lao Tzu"},
+                {text: "Patience is bitter, but its fruit is sweet.", author: "Aristotle"},
+                {text: "Rivers know this: there is no hurry. We shall get there someday.", author: "A.A. Milne"},
+                {text: "He that can have patience can have what he will.", author: "Benjamin Franklin"},
+                {text: "The key to everything is patience. You get the chicken by hatching the egg, not by smashing it.", author: "Arnold H. Glasow"},
+                {text: "Patience is also a form of action.", author: "Auguste Rodin"},
+                {text: "All great achievements require time.", author: "Maya Angelou"},
+                {text: "Patience is the companion of wisdom.", author: "Saint Augustine"},
+                {text: "Genius is eternal patience.", author: "Michelangelo"},
+                {text: "One moment of patience may ward off great disaster. One moment of impatience may ruin a whole life.", author: "Chinese Proverb"},
+                {text: "Adopt the pace of nature: her secret is patience.", author: "Ralph Waldo Emerson"},
+                {text: "Patience is necessary, and one cannot reap immediately where one has sown.", author: "Søren Kierkegaard"},
+                {text: "Patience is not passive; on the contrary, it is concentrated strength.", author: "Bruce Lee"},
+                {text: "The greatest power is often simple patience.", author: "E. Joseph Cossman"},
+                {text: "Have patience with all things, but chiefly have patience with yourself.", author: "Francis de Sales"},
+                {text: "Endurance is nobler than strength, and patience than beauty.", author: "John Ruskin"},
+                {text: "Patience is the art of concealing your impatience.", author: "Guy Kawasaki"},
+                {text: "Trees that are slow to grow bear the best fruit.", author: "Molière"},
+                {text: "To lose patience is to lose the battle.", author: "Mahatma Gandhi"},
+                {text: "Patience is the calm acceptance that things can happen in a different order than the one you have in mind.", author: "David G. Allen"},
+                {text: "Slow and steady wins the race.", author: "Aesop"},
+                {text: "With love and patience, nothing is impossible.", author: "Daisaku Ikeda"},
+                {text: "The strongest of all warriors are these two—Time and Patience.", author: "Leo Tolstoy"},
+                {text: "Patience attracts happiness; it brings near that which is far.", author: "Swahili Proverb"},
+                {text: "Patience is the key to paradise.", author: "Turkish Proverb"},
+                {text: "All things come to those who wait, but only the things left by those who hustle.", author: "Abraham Lincoln"},
+                {text: "Patience is the best remedy for every trouble.", author: "Plautus"},
+                {text: "Learning patience can be a difficult experience, but once conquered you will find life is easier.", author: "Catherine Pulsifer"},
+                {text: "Patience is the ability to idle your motor when you feel like stripping your gears.", author: "Barbara Johnson"},
+                {text: "Patience is when you're supposed to be mad but you choose to understand.", author: "Unknown"},
+                {text: "Patience and fortitude conquer all things.", author: "Ralph Waldo Emerson"},
+                {text: "The more you know yourself, the more patience you have for what you see in others.", author: "Erik Erikson"}
+            ],
+            humor: [
+                {text: "A day without laughter is a day wasted.", author: "Charlie Chaplin"},
+                {text: "If you could choose one characteristic that would get you through life, choose a sense of humor.", author: "Jennifer Jones"},
+                {text: "Laughter is an instant vacation.", author: "Milton Berle"},
+                {text: "Against the assault of laughter nothing can stand.", author: "Mark Twain"},
+                {text: "People who think they know everything are a great annoyance to those of us who do.", author: "Isaac Asimov"},
+                {text: "I am so clever that sometimes I don't understand a single word of what I am saying.", author: "Oscar Wilde"},
+                {text: "If you want your children to listen, try talking softly to someone else.", author: "Ann Landers"},
+                {text: "You can't have everything. Where would you put it?", author: "Steven Wright"},
+                {text: "I used to think I was indecisive, but now I'm not too sure.", author: "Unknown"},
+                {text: "Behind every great man is a woman rolling her eyes.", author: "Jim Carrey"},
+                {text: "My fake plants died because I did not pretend to water them.", author: "Mitch Hedberg"},
+                {text: "The road to success is dotted with many tempting parking spaces.", author: "Will Rogers"},
+                {text: "I'm not arguing, I'm just explaining why I'm right.", author: "Unknown"},
+                {text: "A sense of humor is a major defense against minor troubles.", author: "Mignon McLaughlin"},
+                {text: "Humor is mankind's greatest blessing.", author: "Mark Twain"},
+                {text: "If you think you are too small to make a difference, try sleeping with a mosquito.", author: "Dalai Lama"},
+                {text: "Always remember that you are absolutely unique. Just like everyone else.", author: "Margaret Mead"},
+                {text: "Everything is funny, as long as it's happening to somebody else.", author: "Will Rogers"},
+                {text: "I refuse to join any club that would have me as a member.", author: "Groucho Marx"},
+                {text: "Life is short. Smile while you still have teeth.", author: "Mallory Hopkins"},
+                {text: "I didn't fail the test. I just found 100 ways to do it wrong.", author: "Benjamin Franklin"},
+                {text: "You grow up the day you have your first real laugh—at yourself.", author: "Ethel Barrymore"},
+                {text: "Laughter is the shortest distance between two people.", author: "Victor Borge"},
+                {text: "If at first you don't succeed, then skydiving definitely isn't for you.", author: "Steven Wright"},
+                {text: "When life gives you lemons, squirt someone in the eye.", author: "Cathy Guisewite"},
+                {text: "I have not failed. I've just found 10,000 ways that won't work.", author: "Thomas Edison"},
+                {text: "Behind every successful man stands a surprised mother-in-law.", author: "Hubert H. Humphrey"},
+                {text: "A clear conscience is usually the sign of a bad memory.", author: "Steven Wright"},
+                {text: "If you want to make God laugh, tell him about your plans.", author: "Woody Allen"},
+                {text: "Never put off till tomorrow what you can do the day after tomorrow.", author: "Mark Twain"},
+                {text: "The best way to cheer yourself up is to try to cheer somebody else up.", author: "Mark Twain"},
+                {text: "The elevator to success is out of order. You'll have to use the stairs.", author: "Joe Girard"},
+                {text: "Common sense is like deodorant. The people who need it most never use it.", author: "Unknown"},
+                {text: "If you can't live without me, why aren't you dead yet?", author: "Cynthia Heimel"},
+                {text: "Opportunity is missed by most people because it is dressed in overalls and looks like work.", author: "Thomas Edison"},
+                {text: "I find television very educational. Every time someone turns it on, I go in the other room and read a book.", author: "Groucho Marx"}
+            ],
+            change: [
+                {text: "The measure of intelligence is the ability to change.", author: "Albert Einstein"},
+                {text: "Change is the law of life. Those who look only to the past or present are certain to miss the future.", author: "John F. Kennedy"},
+                {text: "Progress is impossible without change, and those who cannot change their minds cannot change anything.", author: "George Bernard Shaw"},
+                {text: "To improve is to change; to be perfect is to change often.", author: "Winston Churchill"},
+                {text: "The secret of change is to focus all of your energy not on fighting the old, but on building the new.", author: "Socrates"},
+                {text: "Change is painful, but nothing is as painful as staying stuck somewhere you don't belong.", author: "Mandy Hale"},
+                {text: "Only the wisest and stupidest of men never change.", author: "Confucius"},
+                {text: "If you do not change direction, you may end up where you are heading.", author: "Lao Tzu"},
+                {text: "Change before you have to.", author: "Jack Welch"},
+                {text: "Life belongs to the living, and he who lives must be prepared for changes.", author: "Johann Wolfgang von Goethe"},
+                {text: "Change your thoughts and you change your world.", author: "Norman Vincent Peale"},
+                {text: "The greatest discovery of all time is that a person can change his future by merely changing his attitude.", author: "Oprah Winfrey"},
+                {text: "You must be the change you wish to see in the world.", author: "Mahatma Gandhi"},
+                {text: "When we are no longer able to change a situation, we are challenged to change ourselves.", author: "Viktor E. Frankl"},
+                {text: "Nothing is permanent except change.", author: "Heraclitus"},
+                {text: "They always say time changes things, but you actually have to change them yourself.", author: "Andy Warhol"},
+                {text: "If you want to fly, you have to give up the things that weigh you down.", author: "Toni Morrison"},
+                {text: "Change brings opportunity.", author: "Nido Qubein"},
+                {text: "Every great dream begins with a dreamer. Remember, you have within you the strength, the patience, and the passion to change the world.", author: "Harriet Tubman"},
+                {text: "Taking a new step, uttering a new word, is what people fear most.", author: "Fyodor Dostoevsky"},
+                {text: "Change almost never fails because it's too early. It almost always fails because it's too late.", author: "Seth Godin"},
+                {text: "The art of life lies in a constant readjustment to our surroundings.", author: "Kakuzo Okakura"},
+                {text: "We cannot become what we want by remaining what we are.", author: "Max DePree"},
+                {text: "Change your life today. Don't gamble on the future, act now, without delay.", author: "Simone de Beauvoir"},
+                {text: "Change is inevitable. Growth is optional.", author: "John C. Maxwell"},
+                {text: "Sometimes good things fall apart so better things can fall together.", author: "Marilyn Monroe"},
+                {text: "It's not the strongest species that survive, nor the most intelligent, but the most responsive to change.", author: "Charles Darwin"},
+                {text: "If you always do what you've always done, you'll always get what you've always got.", author: "Henry Ford"},
+                {text: "Change is hardest at the beginning, messiest in the middle, and best at the end.", author: "Robin Sharma"},
+                {text: "All that you touch you change. All that you change changes you.", author: "Octavia Butler"},
+                {text: "The price of doing the same old thing is far higher than the price of change.", author: "Bill Clinton"},
+                {text: "Change means that what was before wasn't perfect. People want things to be better.", author: "Esther Dyson"},
+                {text: "If you want things to be different, perhaps the answer is to become different yourself.", author: "Norman Vincent Peale"},
+                {text: "You never change your life until you step out of your comfort zone.", author: "Roy T. Bennett"},
+                {text: "Change happens when the pain of staying the same is greater than the pain of change.", author: "Tony Robbins"}
+            ],
+            friendship: [
+                {text: "Friendship is born at that moment when one person says to another, 'What! You too? I thought I was the only one.'", author: "C.S. Lewis"},
+                {text: "A real friend is one who walks in when the rest of the world walks out.", author: "Walter Winchell"},
+                {text: "Friendship is the only cement that will ever hold the world together.", author: "Woodrow Wilson"},
+                {text: "There is nothing on this earth more to be prized than true friendship.", author: "Thomas Aquinas"},
+                {text: "Friends show their love in times of trouble, not in happiness.", author: "Euripides"},
+                {text: "My best friend is the one who brings out the best in me.", author: "Henry Ford"},
+                {text: "A friend is someone who gives you total freedom to be yourself.", author: "Jim Morrison"},
+                {text: "Friendship doubles our joy and divides our grief.", author: "Swedish Proverb"},
+                {text: "Walking with a friend in the dark is better than walking alone in the light.", author: "Helen Keller"},
+                {text: "True friendship comes when the silence between two people is comfortable.", author: "David Tyson"},
+                {text: "A single rose can be my garden; a single friend, my world.", author: "Leo Buscaglia"},
+                {text: "Friends are the siblings God never gave us.", author: "Mencius"},
+                {text: "The only way to have a friend is to be one.", author: "Ralph Waldo Emerson"},
+                {text: "Friendship is always a sweet responsibility, never an opportunity.", author: "Khalil Gibran"},
+                {text: "A friend is one of the nicest things you can have and one of the best things you can be.", author: "Winnie the Pooh"},
+                {text: "There is nothing better than a friend, unless it is a friend with chocolate.", author: "Linda Grayson"},
+                {text: "Friends are the family you choose.", author: "Jess C. Scott"},
+                {text: "A true friend is the greatest of all blessings.", author: "François de La Rochefoucauld"},
+                {text: "The language of friendship is not words but meanings.", author: "Henry David Thoreau"},
+                {text: "Friendship isn't about whom you have known the longest. It's about who came and never left your side.", author: "Unknown"},
+                {text: "A friend to all is a friend to none.", author: "Aristotle"},
+                {text: "Friendship marks a life even more deeply than love.", author: "Elie Wiesel"},
+                {text: "Friends are those rare people who ask how we are and then wait to hear the answer.", author: "Ed Cunningham"},
+                {text: "A friend is someone who knows all about you and still loves you.", author: "Elbert Hubbard"},
+                {text: "I would rather walk with a friend in the dark, than alone in the light.", author: "Helen Keller"},
+                {text: "Good friends are like stars. You don't always see them, but you know they're always there.", author: "Unknown"},
+                {text: "A loyal friend laughs at your jokes when they're not so good, and sympathizes with your problems when they're not so bad.", author: "Arnold H. Glasow"},
+                {text: "Friendship is the golden thread that ties the heart of all the world.", author: "John Evelyn"},
+                {text: "Friends are the sunshine of life.", author: "John Hay"},
+                {text: "A true friend is someone who is there for you when he’d rather be anywhere else.", author: "Len Wein"},
+                {text: "Friends are born, not made.", author: "Henry Adams"},
+                {text: "A faithful friend is a strong defense.", author: "Thomas Aquinas"},
+                {text: "Some souls just understand each other upon meeting.", author: "N.R. Hart"},
+                {text: "Hold a true friend with both your hands.", author: "Nigerian Proverb"},
+                {text: "Friendship multiplies the good of life and divides the evil.", author: "Baltasar Gracián"},
+                {text: "In the sweetness of friendship let there be laughter.", author: "Khalil Gibran"}
+            ],
+            time: [
+                {text: "The two most powerful warriors are patience and time.", author: "Leo Tolstoy"},
+                {text: "Time is what we want most, but what we use worst.", author: "William Penn"},
+                {text: "Lost time is never found again.", author: "Benjamin Franklin"},
+                {text: "Time flies over us, but leaves its shadow behind.", author: "Nathaniel Hawthorne"},
+                {text: "Time you enjoy wasting is not wasted time.", author: "Marthe Troly-Curtin"},
+                {text: "The trouble is, you think you have time.", author: "Jack Kornfield"},
+                {text: "Better three hours too soon than a minute too late.", author: "William Shakespeare"},
+                {text: "Time is the most valuable thing a man can spend.", author: "Theophrastus"},
+                {text: "Punctuality is the thief of time.", author: "Oscar Wilde"},
+                {text: "The key is in not spending time, but in investing it.", author: "Stephen R. Covey"},
+                {text: "Time is a created thing. To say 'I don’t have time' is to say 'I don’t want to.'", author: "Lao Tzu"},
+                {text: "Time takes it all, whether you want it to or not.", author: "Stephen King"},
+                {text: "Time is more valuable than money. You can get more money, but you cannot get more time.", author: "Jim Rohn"},
+                {text: "The future is something which everyone reaches at the rate of sixty minutes an hour.", author: "C.S. Lewis"},
+                {text: "Time and tide wait for no man.", author: "Geoffrey Chaucer"},
+                {text: "Time is the longest distance between two places.", author: "Tennessee Williams"},
+                {text: "Time is a waste of money.", author: "Oscar Wilde"},
+                {text: "Time discovered truth.", author: "Seneca"},
+                {text: "Time is the wisest counselor of all.", author: "Pericles"},
+                {text: "Time stays long enough for anyone who will use it.", author: "Leonardo da Vinci"},
+                {text: "The bad news is time flies. The good news is you're the pilot.", author: "Michael Altshuler"},
+                {text: "The present time has one advantage over every other—it is our own.", author: "Charles Caleb Colton"},
+                {text: "Time, which changes people, does not alter the image we have of them.", author: "Marcel Proust"},
+                {text: "Time is what keeps everything from happening at once.", author: "Ray Cummings"},
+                {text: "Time is the school in which we learn, time is the fire in which we burn.", author: "Delmore Schwartz"},
+                {text: "We must use time as a tool, not as a couch.", author: "John F. Kennedy"},
+                {text: "Don't spend time beating on a wall, hoping to transform it into a door.", author: "Coco Chanel"},
+                {text: "Time is precious. Make sure you spend it with the right people.", author: "Unknown"},
+                {text: "Time is the most valuable thing you can spend.", author: "Benjamin Franklin"},
+                {text: "Time is free, but it's priceless.", author: "Harvey Mackay"},
+                {text: "Time brings all things to pass.", author: "Aeschylus"},
+                {text: "Time is the one thing we all have in common, but it's also the one thing we all take for granted.", author: "Unknown"},
+                {text: "Time is the most valuable currency.", author: "Unknown"},
+                {text: "Your time is limited, so don't waste it living someone else's life.", author: "Steve Jobs"},
+                {text: "Time you enjoy wasting is not wasted.", author: "John Lennon"}
+            ],
+            failure: [
+                {text: "I have not failed. I've just found 10,000 ways that won't work.", author: "Thomas Edison"},
+                {text: "Only those who dare to fail greatly can ever achieve greatly.", author: "Robert F. Kennedy"},
+                {text: "Failure is simply the opportunity to begin again, this time more intelligently.", author: "Henry Ford"},
+                {text: "Failure is success in progress.", author: "Albert Einstein"},
+                {text: "Success is stumbling from failure to failure with no loss of enthusiasm.", author: "Winston Churchill"},
+                {text: "Our greatest glory is not in never failing, but in rising every time we fall.", author: "Confucius"},
+                {text: "There is no failure except in no longer trying.", author: "Chris Bradford"},
+                {text: "Failure is delay, not defeat.", author: "Denis Waitley"},
+                {text: "The greatest mistake you can make in life is to be continually fearing you will make one.", author: "Elbert Hubbard"},
+                {text: "Failure is the condiment that gives success its flavor.", author: "Truman Capote"},
+                {text: "Don't fear failure—not failure, but low aim, is the crime.", author: "Bruce Lee"},
+                {text: "Failure is an option here. If things are not failing, you are not innovating enough.", author: "Elon Musk"},
+                {text: "Failure is the key to success; each mistake teaches us something.", author: "Morihei Ueshiba"},
+                {text: "The master has failed more times than the beginner has even tried.", author: "Stephen McCranie"},
+                {text: "Sometimes by losing a battle you find a new way to win the war.", author: "Donald Trump"},
+                {text: "It's fine to celebrate success, but it is more important to heed the lessons of failure.", author: "Bill Gates"},
+                {text: "Failures are finger posts on the road to achievement.", author: "C.S. Lewis"},
+                {text: "Most great people have attained their greatest success just one step beyond their greatest failure.", author: "Napoleon Hill"},
+                {text: "I can accept failure, everyone fails at something. But I can't accept not trying.", author: "Michael Jordan"},
+                {text: "Failure after long perseverance is much grander than never to have a striving good enough to be called a failure.", author: "George Eliot"},
+                {text: "There is no innovation and creativity without failure. Period.", author: "Brené Brown"},
+                {text: "Failure is a detour, not a dead-end street.", author: "Zig Ziglar"},
+                {text: "Winners are not afraid of losing. But losers are.", author: "Robert Kiyosaki"},
+                {text: "If you're not prepared to be wrong, you'll never come up with anything original.", author: "Ken Robinson"},
+                {text: "Every adversity, every failure, every heartache carries with it the seed of an equal or greater benefit.", author: "Napoleon Hill"},
+                {text: "There is only one thing that makes a dream impossible to achieve: the fear of failure.", author: "Paulo Coelho"},
+                {text: "Failure means that you have learned another valuable lesson that pushes you closer to success.", author: "Unknown"},
+                {text: "Failure is unimportant. It takes courage to make a fool of yourself.", author: "Charlie Chaplin"},
+                {text: "Never confuse a single defeat with a final defeat.", author: "F. Scott Fitzgerald"},
+                {text: "What would life be if we had no courage to attempt anything?", author: "Vincent Van Gogh"},
+                {text: "The phoenix must burn to emerge.", author: "Janet Fitch"},
+                {text: "Failure builds character.", author: "Unknown"},
+                {text: "Failures are made only by those who fail to dare, not by those who dare to fail.", author: "Lester B. Pearson"},
+                {text: "A stumble is not a fall.", author: "Haitian Proverb"},
+                {text: "Fall seven times, stand up eight.", author: "Japanese Proverb"}
+            ]
+        };
+        
+        function generateQuote() {
+            const category = document.getElementById('quoteCategory').value;
+            const categoryQuotes = quotes[category];
+            const quote = categoryQuotes[Math.floor(Math.random() * categoryQuotes.length)];
+            document.getElementById('quoteText').textContent = `"${quote.text}"`;
+            document.getElementById('quoteAuthor').textContent = `— ${quote.author}`;
+        }
+        
+        function copyQuote() {
+            const text = document.getElementById('quoteText').textContent;
+            const author = document.getElementById('quoteAuthor').textContent;
+            navigator.clipboard.writeText(`${text} ${author}`);
+        }
+        
+        function tweetQuote() {
+            const text = encodeURIComponent(document.getElementById('quoteText').textContent);
+            const author = encodeURIComponent(document.getElementById('quoteAuthor').textContent);
+            window.open(`https://twitter.com/intent/tweet?text=${text} ${author}`, '_blank');
+        }
+        
+        // Copy Result Helper
+        function copyResult(id) {
+            const text = document.getElementById(id).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target.closest('.copy-btn');
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => btn.innerHTML = original, 1500);
+            });
+        }
+
+        // ==========================================
+        // Initialize
+        // ==========================================
+        renderToolsGrid();
+        console.log('QuickSpark Tools loaded with 20 utilities!');
+    </script>
+</body>
+</html>
