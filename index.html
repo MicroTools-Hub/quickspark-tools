@@ -1147,23 +1147,36 @@
                 case 'asciiArt':
                     html += `
                         <div class="input-row">
-                            <div class="input-group">
-                                <label>Text (max 10 chars)</label>
-                                <input type="text" id="asciiInput" maxlength="10" placeholder="HELLO">
+                            <div class="input-group" style="flex: 2;">
+                                <label>Text (up to 20 chars)</label>
+                                <input type="text" id="asciiInput" maxlength="20" placeholder="HELLO WORLD" onkeyup="generateAscii()" oninput="generateAscii()">
                             </div>
                             <div class="input-group">
-                                <label>Style</label>
-                                <select id="asciiStyle">
+                                <label>Font Style</label>
+                                <select id="asciiStyle" onchange="generateAscii()">
                                     <option value="standard">Standard</option>
                                     <option value="block">Block</option>
                                     <option value="bubble">Bubble</option>
+                                    <option value="bold">Bold</option>
+                                    <option value="3d">3D Shadow</option>
+                                    <option value="graffiti">Graffiti</option>
+                                    <option value="slant">Slant</option>
+                                    <option value="mini">Mini</option>
+                                    <option value="dotmatrix">Dot Matrix</option>
                                 </select>
                             </div>
                         </div>
+                        <div style="margin-top: 15px;">
                         <button class="btn btn-primary" onclick="generateAscii()"><i class="fas fa-magic"></i> Generate</button>
-                        <div class="result-box">
-                            <div class="result-label">Result <button class="copy-btn" onclick="copyResult('asciiResult')"><i class="fas fa-copy"></i> Copy</button></div>
-                            <pre class="result-content" id="asciiResult"></pre>
+                            <button class="btn btn-secondary" onclick="downloadAscii()" style="margin-left: 10px;"><i class="fas fa-download"></i> Download</button>
+                            <button class="btn btn-secondary" onclick="copyAsciiHTML()" style="margin-left: 10px;"><i class="fas fa-code"></i> Copy HTML</button>
+                        </div>
+                        <div class="result-box" style="margin-top: 20px;">
+                            <div class="result-label">
+                                Preview
+                                <button class="copy-btn" onclick="copyAsciiText()"><i class="fas fa-copy"></i> Copy Text</button>
+                            </div>
+                            <pre class="result-content" id="asciiResult" style="font-family: 'Courier New', monospace; line-height: 1.2; white-space: pre; overflow-x: auto;"></pre>
                         </div>
                     `;
                     break;
@@ -1195,6 +1208,10 @@
                 case 'passwordGen':
                     html += `
                         <div class="input-group">
+                            <label>Base Word/Phrase (Optional - leave empty for random password)</label>
+                            <input type="text" id="pwBaseWord" placeholder="e.g., MySecurePassword or leave empty for random" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text);">
+                        </div>
+                        <div class="input-group" style="margin-top: 15px;">
                             <label>Length: <span id="pwLenVal">16</span></label>
                             <input type="range" id="pwLen" min="6" max="64" value="16" oninput="document.getElementById('pwLenVal').textContent=this.value">
                         </div>
@@ -1204,10 +1221,23 @@
                             <label><input type="checkbox" id="pwNumbers" checked> Numbers (0-9)</label>
                             <label><input type="checkbox" id="pwSymbols" checked> Symbols (!@#$%)</label>
                         </div>
-                        <button class="btn btn-primary" onclick="generatePassword()"><i class="fas fa-key"></i> Generate</button>
-                        <div class="result-box">
-                            <div class="result-label">Password <button class="copy-btn" onclick="copyResult('pwResult')"><i class="fas fa-copy"></i> Copy</button></div>
-                            <div class="result-content" id="pwResult" style="font-family: monospace; letter-spacing: 1px;"></div>
+                        <button class="btn btn-primary" onclick="generatePassword()"><i class="fas fa-key"></i> Generate Password</button>
+                        <div class="result-box" style="margin-top: 20px;">
+                            <div class="result-label">
+                                Generated Password
+                                <button class="copy-btn" onclick="copyResult('pwResult')"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="result-content" id="pwResult" style="font-family: monospace; letter-spacing: 1px; font-size: 18px; padding: 15px; word-break: break-all;"></div>
+                        </div>
+                        <div id="pwStrengthBox" style="margin-top: 15px; padding: 15px; border-radius: 8px; background: var(--bg-secondary); border: 1px solid var(--border); display: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <strong>Password Strength:</strong>
+                                <span id="pwStrengthLabel" style="font-weight: bold; font-size: 16px;"></span>
+                            </div>
+                            <div style="height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+                                <div id="pwStrengthBar" style="height: 100%; width: 0%; transition: all 0.3s ease;"></div>
+                            </div>
+                            <div id="pwStrengthDetails" style="font-size: 14px; color: var(--text-muted); line-height: 1.6;"></div>
                         </div>
                     `;
                     break;
@@ -1515,7 +1545,7 @@
             document.getElementById('morseResult').textContent = morse.split(' ').map(m => reverseMorse[m] || '').join('');
         }
         
-        // ASCII Art
+        // ASCII Art - Enhanced with multiple styles and full character support
         const asciiChars = {
             standard: {
                 'A': "  A  \n A A \nAAAAA\nA   A\nA   A", 'B': "BBBB \nB   B\nBBBB \nB   B\nBBBB ", 'C': " CCC \nC    \nC    \nC    \n CCC ",
@@ -1526,7 +1556,15 @@
                 'P': "PPPP \nP   P\nPPPP \nP    \nP    ", 'Q': " QQQ \nQ   Q\nQ Q Q\nQ  Q \n QQ Q", 'R': "RRRR \nR   R\nRRRR \nR  R \nR   R",
                 'S': " SSS \nS    \n SSS \n    S\n SSS ", 'T': "TTTTT\n  T  \n  T  \n  T  \n  T  ", 'U': "U   U\nU   U\nU   U\nU   U\n UUU ",
                 'V': "V   V\nV   V\nV   V\n V V \n  V  ", 'W': "W   W\nW   W\nW W W\nWW WW\nW   W", 'X': "X   X\n X X \n  X  \n X X \nX   X",
-                'Y': "Y   Y\n Y Y \n  Y  \n  Y  \n  Y  ", 'Z': "ZZZZZ\n   Z \n  Z  \n Z   \nZZZZZ", ' ': "     \n     \n     \n     \n     "
+                'Y': "Y   Y\n Y Y \n  Y  \n  Y  \n  Y  ", 'Z': "ZZZZZ\n   Z \n  Z  \n Z   \nZZZZZ",
+                '0': " 000 \n0   0\n0   0\n0   0\n 000 ", '1': "  1  \n 11  \n  1  \n  1  \n 111 ", '2': " 222 \n2   2\n   2 \n  2  \n22222",
+                '3': " 333 \n3   3\n  33 \n3   3\n 333 ", '4': "4  4 \n4  4 \n44444\n   4 \n   4 ", '5': "55555\n5    \n5555 \n    5\n5555 ",
+                '6': " 666 \n6    \n6666 \n6   6\n 666 ", '7': "77777\n   7 \n  7  \n 7   \n7    ", '8': " 888 \n8   8\n 888 \n8   8\n 888 ",
+                '9': " 999 \n9   9\n 9999\n    9\n 999 ",
+                '!': "  !  \n  !  \n  !  \n     \n  !  ", '?': " ??? \n?   ?\n   ? \n     \n  ?  ", '.': "     \n     \n     \n     \n  .  ",
+                ',': "     \n     \n     \n  ,  \n ,   ", '@': " @@@ \n@   @\n@ @@ \n@    \n @@@ ", '#': " # # \n#####\n # # \n#####\n # # ",
+                '$': "  $  \n$$$$$\n $ $ \n$$$$$\n  $  ", '%': "%   %\n   % \n  %  \n %   \n%   %", '&': " &&& \n&    \n&&&& \n&  & \n &&& ",
+                ' ': "     \n     \n     \n     \n     "
             },
             block: {
                 'A': "  █  \n █ █ \n█████\n█   █\n█   █", 'B': "████ \n█   █\n████ \n█   █\n████ ", 'C': " ███ \n█    \n█    \n█    \n ███ ",
@@ -1537,7 +1575,15 @@
                 'P': "████ \n█   █\n████ \n█    \n█    ", 'Q': " ███ \n█   █\n█ █ █\n█  █ \n ██ █", 'R': "████ \n█   █\n████ \n█  █ \n█   █",
                 'S': " ███ \n█    \n ███ \n    █\n ███ ", 'T': "█████\n  █  \n  █  \n  █  \n  █  ", 'U': "█   █\n█   █\n█   █\n█   █\n ███ ",
                 'V': "█   █\n█   █\n█   █\n █ █ \n  █  ", 'W': "█   █\n█   █\n█ █ █\n██ ██\n█   █", 'X': "█   █\n █ █ \n  █  \n █ █ \n█   █",
-                'Y': "█   █\n █ █ \n  █  \n  █  \n  █  ", 'Z': "█████\n   █ \n  █  \n █   \n█████", ' ': "     \n     \n     \n     \n     "
+                'Y': "█   █\n █ █ \n  █  \n  █  \n  █  ", 'Z': "█████\n   █ \n  █  \n █   \n█████",
+                '0': " ███ \n█   █\n█   █\n█   █\n ███ ", '1': "  █  \n ██  \n  █  \n  █  \n ███ ", '2': " ███ \n█   █\n   █ \n  █  \n█████",
+                '3': " ███ \n█   █\n  ██ \n█   █\n ███ ", '4': "█   █\n█   █\n█████\n    █\n    █", '5': "█████\n█    \n████ \n    █\n████ ",
+                '6': " ███ \n█    \n████ \n█   █\n ███ ", '7': "█████\n    █\n   █ \n  █  \n █   ", '8': " ███ \n█   █\n ███ \n█   █\n ███ ",
+                '9': " ███ \n█   █\n ████\n    █\n ███ ",
+                '!': "  █  \n  █  \n  █  \n     \n  █  ", '?': " ███ \n█   █\n   █ \n     \n  █  ", '.': "     \n     \n     \n     \n  █  ",
+                ',': "     \n     \n     \n  █  \n █   ", '@': " ███ \n█   █\n█ ██ \n█    \n ███ ", '#': " █ █ \n█████\n █ █ \n█████\n █ █ ",
+                '$': "  █  \n█████\n █ █ \n█████\n  █  ", '%': "█   █\n   █ \n  █  \n █   \n█   █", '&': " ███ \n█    \n████ \n█  █ \n ███ ",
+                ' ': "     \n     \n     \n     \n     "
             },
             bubble: {
                 'A': "  ○  \n ○ ○ \n○○○○○\n○   ○\n○   ○", 'B': "○○○○ \n○   ○\n○○○○ \n○   ○\n○○○○ ", 'C': " ○○○ \n○    \n○    \n○    \n ○○○ ",
@@ -1548,24 +1594,169 @@
                 'P': "○○○○ \n○   ○\n○○○○ \n○    \n○    ", 'Q': " ○○○ \n○   ○\n○ ○ ○\n○  ○ \n ○○ ○", 'R': "○○○○ \n○   ○\n○○○○ \n○  ○ \n○   ○",
                 'S': " ○○○ \n○    \n ○○○ \n    ○\n ○○○ ", 'T': "○○○○○\n  ○  \n  ○  \n  ○  \n  ○  ", 'U': "○   ○\n○   ○\n○   ○\n○   ○\n ○○○ ",
                 'V': "○   ○\n○   ○\n○   ○\n ○ ○ \n  ○  ", 'W': "○   ○\n○   ○\n○ ○ ○\n○○ ○○\n○   ○", 'X': "○   ○\n ○ ○ \n  ○  \n ○ ○ \n○   ○",
-                'Y': "○   ○\n ○ ○ \n  ○  \n  ○  \n  ○  ", 'Z': "○○○○○\n   ○ \n  ○  \n ○   \n○○○○○", ' ': "     \n     \n     \n     \n     "
+                'Y': "○   ○\n ○ ○ \n  ○  \n  ○  \n  ○  ", 'Z': "○○○○○\n   ○ \n  ○  \n ○   \n○○○○○",
+                '0': " ○○○ \n○   ○\n○   ○\n○   ○\n ○○○ ", '1': "  ○  \n ○○  \n  ○  \n  ○  \n ○○○ ", '2': " ○○○ \n○   ○\n   ○ \n  ○  \n○○○○○",
+                '3': " ○○○ \n○   ○\n  ○○ \n○   ○\n ○○○ ", '4': "○   ○\n○   ○\n○○○○○\n    ○\n    ○", '5': "○○○○○\n○    \n○○○○ \n    ○\n○○○○ ",
+                '6': " ○○○ \n○    \n○○○○ \n○   ○\n ○○○ ", '7': "○○○○○\n    ○\n   ○ \n  ○  \n ○   ", '8': " ○○○ \n○   ○\n ○○○ \n○   ○\n ○○○ ",
+                '9': " ○○○ \n○   ○\n ○○○○\n    ○\n ○○○ ",
+                '!': "  ○  \n  ○  \n  ○  \n     \n  ○  ", '?': " ○○○ \n○   ○\n   ○ \n     \n  ○  ", '.': "     \n     \n     \n     \n  ○  ",
+                ',': "     \n     \n     \n  ○  \n ○   ", '@': " ○○○ \n○   ○\n○ ○○ \n○    \n ○○○ ", '#': " ○ ○ \n○○○○○\n ○ ○ \n○○○○○\n ○ ○ ",
+                '$': "  ○  \n○○○○○\n ○ ○ \n○○○○○\n  ○  ", '%': "○   ○\n   ○ \n  ○  \n ○   \n○   ○", '&': " ○○○ \n○    \n○○○○ \n○  ○ \n ○○○ ",
+                ' ': "     \n     \n     \n     \n     "
+            },
+            bold: {
+                'A': " ███ \n█   █\n█████\n█   █\n█   █", 'B': "████ \n█   █\n████ \n█   █\n████ ", 'C': " ████\n█    \n█    \n█    \n ████",
+                'D': "████ \n█   █\n█   █\n█   █\n████ ", 'E': "█████\n█    \n████ \n█    \n█████", 'F': "█████\n█    \n████ \n█    \n█    ",
+                'G': " ████\n█    \n█  ██\n█   █\n ████", 'H': "█   █\n█   █\n█████\n█   █\n█   █", 'I': "█████\n  █  \n  █  \n  █  \n█████",
+                'J': "█████\n   █ \n   █ \n█  █ \n ███ ", 'K': "█   █\n█  █ \n███  \n█  █ \n█   █", 'L': "█    \n█    \n█    \n█    \n█████",
+                'M': "█   █\n██ ██\n█ █ █\n█   █\n█   █", 'N': "█   █\n██  █\n█ █ █\n█  ██\n█   █", 'O': " ███ \n█   █\n█   █\n█   █\n ███ ",
+                'P': "████ \n█   █\n████ \n█    \n█    ", 'Q': " ███ \n█   █\n█ █ █\n█  █ \n ██ █", 'R': "████ \n█   █\n████ \n█  █ \n█   █",
+                'S': " ████\n█    \n ███ \n    █\n████ ", 'T': "█████\n  █  \n  █  \n  █  \n  █  ", 'U': "█   █\n█   █\n█   █\n█   █\n ███ ",
+                'V': "█   █\n█   █\n█   █\n █ █ \n  █  ", 'W': "█   █\n█   █\n█ █ █\n██ ██\n█   █", 'X': "█   █\n █ █ \n  █  \n █ █ \n█   █",
+                'Y': "█   █\n █ █ \n  █  \n  █  \n  █  ", 'Z': "█████\n   █ \n  █  \n █   \n█████",
+                '0': " ███ \n█   █\n█   █\n█   █\n ███ ", '1': "  █  \n ██  \n  █  \n  █  \n ███ ", '2': " ███ \n█   █\n   █ \n  █  \n█████",
+                '3': " ███ \n█   █\n  ██ \n█   █\n ███ ", '4': "█   █\n█   █\n█████\n    █\n    █", '5': "█████\n█    \n████ \n    █\n████ ",
+                '6': " ███ \n█    \n████ \n█   █\n ███ ", '7': "█████\n    █\n   █ \n  █  \n █   ", '8': " ███ \n█   █\n ███ \n█   █\n ███ ",
+                '9': " ███ \n█   █\n ████\n    █\n ███ ",
+                '!': "  █  \n  █  \n  █  \n     \n  █  ", '?': " ███ \n█   █\n   █ \n     \n  █  ", '.': "     \n     \n     \n     \n  █  ",
+                ',': "     \n     \n     \n  █  \n █   ", '@': " ███ \n█   █\n█ ██ \n█    \n ███ ", '#': " █ █ \n█████\n █ █ \n█████\n █ █ ",
+                '$': "  █  \n█████\n █ █ \n█████\n  █  ", '%': "█   █\n   █ \n  █  \n █   \n█   █", '&': " ███ \n█    \n████ \n█  █ \n ███ ",
+                ' ': "     \n     \n     \n     \n     "
+            },
+            '3d': {
+                'A': "  ╔╗  \n ╔╝╚╗ \n╔╝  ╚╗\n╚╗  ╔╝\n ╚══╝ ", 'B': "╔═══╗ \n║╔══╝ \n║╚══╗ \n║╔══╝ \n╚═══╝ ", 'C': " ╔═══╗\n╔╝   \n║    \n║    \n ╚═══╝",
+                'D': "╔══╗  \n║  ║  \n║  ║  \n║  ║  \n╚══╝  ", 'E': "╔═══╗ \n║    \n╠═══╗ \n║    \n╚═══╝ ", 'F': "╔═══╗ \n║    \n╠═══╗ \n║    \n║    ",
+                'G': " ╔═══╗\n╔╝    \n║  ╔═╗\n╚╗ ║ ║\n ╚═╝ ║", 'H': "╔   ╗ \n║   ║ \n╠═══╣ \n║   ║ \n╚   ╝ ", 'I': "╔═══╗ \n  ║  \n  ║  \n  ║  \n╚═══╝ ",
+                'J': "╔═══╗ \n   ║  \n   ║  \n╔╗ ║  \n╚╝ ║  ", 'K': "╔   ╗ \n║ ╔═╝ \n╠═╝  \n║ ╔═╗ \n╚═╝ ╚╝", 'L': "╔    \n║    \n║    \n║    \n╚═══╝ ",
+                'M': "╔   ╗ \n║╔═╗║ \n║║ ║║ \n║║ ║║ \n╚╝ ╚╝ ", 'N': "╔   ╗ \n║╔  ║ \n║║  ║ \n║╚  ║ \n╚   ╝ ", 'O': " ╔═══╗\n╔╝   ╚╗\n║     ║\n╚╗   ╔╝\n ╚═══╝ ",
+                'P': "╔═══╗ \n║   ║ \n╚═══╝ \n║    \n║    ", 'Q': " ╔═══╗\n╔╝   ╚╗\n║  ╔  ║\n╚╗ ║ ╔╝\n ╚═╝╚═╝", 'R': "╔═══╗ \n║   ║ \n╚═══╝ \n║ ╔═╗ \n╚═╝ ╚╝",
+                'S': " ╔═══╗\n╔╝    \n╚═══╗ \n    ╚╗\n╚═══╝ ", 'T': "╔═══╗ \n  ║  \n  ║  \n  ║  \n  ║  ", 'U': "╔   ╗ \n║   ║ \n║   ║ \n╚╗ ╔╝ \n ╚═╝  ",
+                'V': "╔   ╗ \n║   ║ \n╚╗ ╔╝ \n ║ ║  \n  ╚╝  ", 'W': "╔   ╗ \n║   ║ \n║ ║ ║ \n║╔╗╗║ \n╚╝╚╝╚╝", 'X': "╔   ╗ \n╚╗ ╔╝ \n  ║  \n╔╝ ╚╗ \n╚   ╝ ",
+                'Y': "╔   ╗ \n╚╗ ╔╝ \n  ║  \n  ║  \n  ║  ", 'Z': "╔═══╗ \n   ╔╝ \n  ╔╝  \n ╔╝   \n╚═══╝ ",
+                '0': " ╔═══╗\n╔╝   ╚╗\n║     ║\n╚╗   ╔╝\n ╚═══╝ ", '1': "  ╔╗  \n ╔╝║  \n  ║║  \n  ║║  \n╔═╝╚═╗", '2': " ╔═══╗\n╔╝   ╚╗\n   ╔═╝ \n ╔╝    \n╚═══╝ ",
+                '3': " ╔═══╗\n╔╝   ╚╗\n  ╔══╝\n╔╝   ╚╗\n ╚═══╝ ", '4': "╔   ╗ \n║   ║ \n╚═══╝ \n    ║ \n    ║ ", '5': "╔═══╗ \n║    \n╚═══╗ \n    ║ \n╚═══╝ ",
+                '6': " ╔═══╗\n╔╝    \n╠═══╗ \n║   ║ \n ╚═══╝", '7': "╔═══╗ \n    ║ \n   ╔╝ \n  ╔╝  \n ╔╝   ", '8': " ╔═══╗\n╔╝   ╚╗\n╠═══╣ \n╚╗   ╔╝\n ╚═══╝ ",
+                '9': " ╔═══╗\n╔╝   ╚╗\n ╚═══╝ \n     ╚╗\n╚═══╝ ",
+                '!': "  ╔╗  \n  ║║  \n  ║║  \n     \n  ║║  ", '?': " ╔═══╗\n╔╝   ╚╗\n    ╔╝ \n     \n  ╔╗  ", '.': "     \n     \n     \n     \n  ╔╗  ",
+                ',': "     \n     \n     \n  ╔╗  \n ╔╝║  ", '@': " ╔═══╗\n╔╝   ╚╗\n║  ╔══╝\n║     \n ╚═══╝ ", '#': " ╔ ╦ ╗\n╠═╬═╣\n║ ║ ║\n╠═╬═╣\n╚ ╩ ╝",
+                '$': "  ╔══╗\n ═╣  ║\n  ╠══╝\n ╔╝   \n ╚══╗ ", '%': "╔   ╗\n   ╔╝\n  ╔╝ \n ╔╝  \n╚   ╝", '&': " ╔═══╗\n╔╝    \n╠═══╗ \n╚╗ ╔╝ \n ╚═╝╚═╝",
+                ' ': "     \n     \n     \n     \n     "
+            },
+            graffiti: {
+                'A': " ▄▄▄  \n▄▀ ▀▄ \n▀▄▄▄▀ \n▄▀ ▀▄ \n▄▀  ▀▄", 'B': "▄▄▄▄▄ \n▄▀  ▀▄\n▄▄▄▄▄ \n▄▀  ▀▄\n▀▄▄▄▀ ", 'C': " ▄▄▄▄▄\n▄▀     \n▄▀     \n▄▀     \n ▀▄▄▄▄",
+                'D': "▄▄▄▄▄ \n▄▀  ▀▄\n▄▀  ▀▄\n▄▀  ▀▄\n▀▄▄▄▀ ", 'E': "▄▄▄▄▄▄\n▄▀     \n▄▄▄▄▄ \n▄▀     \n▀▄▄▄▄▄", 'F': "▄▄▄▄▄▄\n▄▀     \n▄▄▄▄▄ \n▄▀     \n▄▀     ",
+                'G': " ▄▄▄▄▄\n▄▀     \n▄▀  ▄▄▄\n▄▀  ▀▄ \n ▀▄▄▄▀ ", 'H': "▄▀  ▀▄ \n▄▀  ▀▄ \n▄▄▄▄▄▄\n▄▀  ▀▄ \n▄▀  ▀▄ ", 'I': "▄▄▄▄▄▄\n   ▄▀  \n   ▄▀  \n   ▄▀  \n▄▄▄▄▄▄",
+                'J': "▄▄▄▄▄▄\n    ▄▀ \n    ▄▀ \n▄▄  ▄▀ \n ▀▄▄▀  ", 'K': "▄▀  ▀▄ \n▄▀ ▄▀  \n▄▄▄▀   \n▄▀ ▄▀  \n▄▀  ▀▄ ", 'L': "▄▀     \n▄▀     \n▄▀     \n▄▀     \n▀▄▄▄▄▄",
+                'M': "▄▀  ▀▄ \n▄▄▄▄▄▄\n▄▀▄▀▄▄\n▄▀  ▀▄ \n▄▀  ▀▄ ", 'N': "▄▀  ▀▄ \n▄▄▄ ▀▄ \n▄▀▄ ▀▄ \n▄▀ ▄▄▄ \n▄▀  ▀▄ ", 'O': " ▄▄▄▄▄ \n▄▀  ▀▄ \n▄▀  ▀▄ \n▄▀  ▀▄ \n ▀▄▄▄▀ ",
+                'P': "▄▄▄▄▄ \n▄▀  ▀▄\n▄▄▄▄▄ \n▄▀     \n▄▀     ", 'Q': " ▄▄▄▄▄ \n▄▀  ▀▄ \n▄▀ ▄▀▄ \n▄▀  ▄▀ \n ▀▄▄▄▀▄", 'R': "▄▄▄▄▄ \n▄▀  ▀▄\n▄▄▄▄▄ \n▄▀ ▄▀ \n▄▀  ▀▄",
+                'S': " ▄▄▄▄▄ \n▄▀     \n ▀▄▄▄▄\n     ▀▄\n ▄▄▄▄▀ ", 'T': "▄▄▄▄▄▄\n   ▄▀  \n   ▄▀  \n   ▄▀  \n   ▄▀  ", 'U': "▄▀  ▀▄ \n▄▀  ▀▄ \n▄▀  ▀▄ \n▄▀  ▀▄ \n ▀▄▄▄▀ ",
+                'V': "▄▀  ▀▄ \n▄▀  ▀▄ \n▄▀  ▀▄ \n ▄▀ ▄▀  \n  ▀▄▀  ", 'W': "▄▀  ▀▄ \n▄▀  ▀▄ \n▄▀▄▀▄▄\n▄▄▄▄▄▄\n▄▀  ▀▄ ", 'X': "▄▀  ▀▄ \n ▄▀▄▀  \n   ▀   \n ▄▀▄▀  \n▄▀  ▀▄ ",
+                'Y': "▄▀  ▀▄ \n ▄▀▄▀  \n   ▀   \n   ▄▀  \n   ▄▀  ", 'Z': "▄▄▄▄▄▄\n    ▄▀ \n   ▄▀  \n  ▄▀   \n▄▄▄▄▄▄",
+                '0': " ▄▄▄▄▄ \n▄▀  ▀▄ \n▄▀  ▀▄ \n▄▀  ▀▄ \n ▀▄▄▄▀ ", '1': "  ▄▄▄  \n ▄▀▄▀  \n   ▄▀  \n   ▄▀  \n ▄▄▄▄▄ ", '2': " ▄▄▄▄▄ \n▄▀  ▀▄ \n    ▄▀ \n   ▄▀  \n▄▄▄▄▄▄",
+                '3': " ▄▄▄▄▄ \n▄▀  ▀▄ \n  ▄▄▄▀ \n▄▀  ▀▄ \n ▀▄▄▄▀ ", '4': "▄▀  ▀▄ \n▄▀  ▀▄ \n▄▄▄▄▄▄\n    ▀▄ \n    ▀▄ ", '5': "▄▄▄▄▄▄\n▄▀     \n▄▄▄▄▄ \n    ▀▄ \n▄▄▄▄▀ ",
+                '6': " ▄▄▄▄▄ \n▄▀     \n▄▄▄▄▄ \n▄▀  ▀▄ \n ▀▄▄▄▀ ", '7': "▄▄▄▄▄▄\n    ▀▄ \n   ▄▀  \n  ▄▀   \n ▄▀    ", '8': " ▄▄▄▄▄ \n▄▀  ▀▄ \n ▄▄▄▄▄ \n▄▀  ▀▄ \n ▀▄▄▄▀ ",
+                '9': " ▄▄▄▄▄ \n▄▀  ▀▄ \n ▀▄▄▄▄▄\n     ▀▄\n ▄▄▄▄▀ ",
+                '!': "  ▄▄▄  \n  ▄▀  \n  ▄▀  \n     \n  ▄▀  ", '?': " ▄▄▄▄▄ \n▄▀  ▀▄ \n    ▄▀ \n     \n  ▄▀  ", '.': "     \n     \n     \n     \n  ▄▀  ",
+                ',': "     \n     \n     \n  ▄▀  \n ▄▀▄  ", '@': " ▄▄▄▄▄ \n▄▀  ▀▄ \n▄▀ ▄▀▄ \n▄▀     \n ▀▄▄▄▄", '#': " ▄▀ ▄▀ \n▄▄▄▄▄▄\n ▄▀ ▄▀ \n▄▄▄▄▄▄\n ▄▀ ▄▀ ",
+                '$': "  ▄▄▄  \n▄▄▄▄▄▄\n ▄▀ ▄▀ \n▄▄▄▄▄▄\n  ▄▄▄  ", '%': "▄▀  ▀▄\n   ▄▀ \n  ▄▀  \n ▄▀   \n▄▀  ▀▄", '&': " ▄▄▄▄▄ \n▄▀     \n▄▄▄▄▄ \n▄▀  ▀▄ \n ▀▄▄▄▀ ",
+                ' ': "      \n      \n      \n      \n      "
+            },
+            slant: {
+                'A': "  /\\  \n /  \\ \n/____\\\n\\    /\n \\__/ ", 'B': "____  \n|  _) \n| |_) \n|  _) \n|____) ", 'C': "  ____ \n / __ \\\n| |__| |\n| |  | |\n \\____/ ",
+                'D': "____   \n|  _ \\ \n| | | |\n| |_| |\n|____/ ", 'E': "_____ \n| ____|\n| |__  \n|___ \\ \n|____/ ", 'F': "_____ \n| ____|\n| |__  \n|___ \\ \n|     |",
+                'G': "  ____ \n / ___|\n| |  _ \n| |_| |\n \\____|", 'H': "|    |\n|    |\n|____|\n|    |\n|    |", 'I': " ___ \n|_ _|\n | | \n | | \n|___|",
+                'J': "     _\n     | |\n     | |\n| |  | |\n |_| |_|", 'K': "|    / \n|   /  \n|__/   \n|  \\  \n|   \\ ", 'L': "|      \n|      \n|      \n|      \n|_____ ",
+                'M': "|\\  /|\n| \\/ |\n|    |\n|    |\n|    |", 'N': "|\\    |\n| \\   |\n|  \\  |\n|   \\ |\n|    \\|", 'O': "  ___  \n / _ \\ \n| | | |\n| |_| |\n \\___/ ",
+                'P': "____  \n|  _ \\ \n| |_) |\n|  __/ \n|_|    ", 'Q': "  ___  \n / _ \\ \n| | | |\n| |\\ \\ \n \\_\\_\\ ", 'R': "____   \n|  _ \\  \n| |_) | \n|  _ <  \n|_| \\_\\ ",
+                'S': "  ____ \n / ___|\n \\___ \\ \n  ___) |\n |____/ ", 'T': "_____ \n|_   _|\n  | |  \n  | |  \n  |_|  ", 'U': "|    |\n|    |\n|    |\n|    |\n \\__/ ",
+                'V': "\\    /\n \\  / \n  \\/  \n      \n      ", 'W': "|    |\n|    |\n| /\\ |\n|/  \\|\n      ", 'X': "\\    /\n \\  / \n  \\/  \n /  \\ \n/    \\",
+                'Y': "\\   / \n \\ /  \n  |   \n  |   \n  |   ", 'Z': "____ \n   / \n  /  \n /   \n/____",
+                '0': "  ___  \n / _ \\ \n| | | |\n| |_| |\n \\___/ ", '1': "  _  \n / | \n | | \n | | \n |_| ", '2': " ____  \n|___ \\ \n  __) |\n / __/ \n|_____|",
+                '3': " ____  \n|___ \\ \n  __) |\n / __/ \n|____/ ", '4': "|   |  \n|___|_ \n    | |\n    | |\n    |_|", '5': " _____ \n| ____|\n|___ \\ \n ___) |\n|____/ ",
+                '6': "  ____ \n / ___|\n| (___ \n| \\___ \\\n \\____/ ", '7': " _____ \n|___  |\n    | |\n    | |\n    |_|", '8': "  ___  \n ( _ ) \n / _ \\ \n| (_) |\n \\___/ ",
+                '9': "  ___  \n / _ \\ \n|  _  |\n |___/ \n      ", '!': "  |  \n  |  \n  |  \n  .  \n     ", '?': "  __  \n |  | \n   /  \n  |   \n  .   ",
+                '.': "     \n     \n     \n  .  \n     ", ',': "     \n     \n     \n  ,  \n ,   ", '@': "  ___  \n / _ \\ \n| (_) |\n|  _  |\n \\___/ ",
+                '#': "  | |  \n__| |__\n  | |  \n__| |__\n  | |  ", '$': "  |  \n /_\\ \n( | )\n  \\/  \n      ", '%': "|    /\n   / \n  /  \n /   \n/    |",
+                '&': "  ___  \n / _ \\ \n| (_) |\n|  _  |\n \\___/ ", ' ': "     \n     \n     \n     \n     "
+            },
+            mini: {
+                'A': "╔═╗\n║╦╝\n╠╩╗", 'B': "╔═╗\n╠═╣\n╚═╝", 'C': "╔═╗\n║  \n╚═╝", 'D': "╔═╗\n║║║\n╚═╝", 'E': "╔═╗\n╠═╣\n╚═╝",
+                'F': "╔═╗\n╠═╣\n║  ", 'G': "╔═╗\n║═╬\n╚═╝", 'H': "║ ║\n╠═╣\n║ ║", 'I': "╔╗\n║║\n╚╝", 'J': " ╔╗\n ║║\n╚╝║",
+                'K': "║ ╦\n╠═╣\n║ ╩", 'L': "║  \n║  \n╚═╝", 'M': "╔╦╗\n║║║\n║║║", 'N': "╔╗╔\n║║║\n╝╚╝", 'O': "╔═╗\n║ ║\n╚═╝",
+                'P': "╔═╗\n╠═╝\n║  ", 'Q': "╔═╗\n║ ║\n╚═╝", 'R': "╔═╗\n╠═╣\n║ ║", 'S': "╔═╗\n╚═╗\n╚═╝", 'T': "╔╗╗\n║║║\n╚╩╝",
+                'U': "║ ║\n║ ║\n╚═╝", 'V': "║ ║\n╚╦╝\n ╩ ", 'W': "║ ║\n║║║\n╚╩╝", 'X': "╔╗╗\n╚╬╝\n╚╩╝", 'Y': "║ ║\n╚╦╝\n ║ ", 'Z': "╔═╗\n╔═╝\n╚═╝",
+                '0': "╔═╗\n║ ║\n╚═╝", '1': "╔╗\n║║\n╚╝", '2': "╔═╗\n╔═╝\n╚═╝", '3': "╔═╗\n╔═╗\n╚═╝", '4': "║ ║\n╚═╣\n  ║",
+                '5': "╔═╗\n╚═╗\n╚═╝", '6': "╔═╗\n╠═╗\n╚═╝", '7': "╔═╗\n  ║\n  ║", '8': "╔═╗\n╠═╣\n╚═╝", '9': "╔═╗\n╚═╣\n╚═╝",
+                '!': "║\n║\n╝", '?': "╔═╗\n ═╝\n║ ", '.': "  \n  \n╝", ',': "  \n  \n╝", '@': "╔═╗\n║═╬\n╚═╝",
+                '#': " ═ \n╔═╗\n ═ ", '$': "╔═╗\n╚═╗\n╚═╝", '%': "╔ ╗\n╔╝\n╝ ", '&': "╔═╗\n╠═╣\n╚═╝", ' ': "   \n   \n   "
+            },
+            dotmatrix: {
+                'A': "█▀▀█\n█▄▄█\n█  █", 'B': "█▀▀█\n█▄▄█\n█▄▄█", 'C': "█▀▀▀\n█   \n█▄▄▄", 'D': "█▀▀█\n█  █\n█▄▄█", 'E': "█▀▀▀\n█▀▀▀\n█▄▄▄",
+                'F': "█▀▀▀\n█▀▀▀\n█   ", 'G': "█▀▀▀\n█ ▄▄\n█▄▄█", 'H': "█  █\n█▀▀█\n█  █", 'I': "▀▀▀\n █ \n▄▄▄", 'J': "   █\n   █\n█▄▄█",
+                'K': "█  █\n█▀▀ \n█ ▀█", 'L': "█   \n█   \n█▄▄▄", 'M': "█▄▄█\n█ █ █\n█   █", 'N': "█▄  █\n█ █ █\n█  ▄█", 'O': "█▀▀█\n█  █\n█▄▄█",
+                'P': "█▀▀█\n█▀▀█\n█   ", 'Q': "█▀▀█\n█ ▄█\n█▄▄▄", 'R': "█▀▀█\n█▄▀█\n█  █", 'S': "█▀▀▀\n█▄▄▄\n▄▄▄█", 'T': "▀▀▀\n █ \n █ ",
+                'U': "█  █\n█  █\n█▄▄█", 'V': "█  █\n█  █\n ██ ", 'W': "█  █\n█ ██\n█▄▄█", 'X': "█  █\n ██ \n█  █", 'Y': "█  █\n ██ \n █ ", 'Z': "▀▀▀\n ▄▀ \n▄▄▄",
+                '0': "█▀▀█\n█  █\n█▄▄█", '1': "▀█ \n █ \n▄█▄", '2': "▀▀█\n▄▀ \n█▄▄", '3': "▀▀█\n ▀▀█\n▄▄█", '4': "█  █\n█▄▄█\n   █",
+                '5': "█▀▀▀\n█▄▄▀\n▄▄▄█", '6': "█▀▀ \n█▄▄█\n█▄▄█", '7': "▀▀▀\n  █\n  █", '8': "█▀▀█\n█▄▄█\n█▄▄█", '9': "█▀▀█\n█▄▄█\n ▄▄█",
+                '!': "█\n█\n▄", '?': "▀▀ \n ▀ \n ▄ ", '.': "  \n  \n▄", ',': "  \n  \n▄", '@': "█▀▀█\n█ ▄█\n█▄▄█",
+                '#': " ██ \n▄██▄\n ██ ", '$': "▄█▄\n▄█▄\n▄█▄", '%': "█  █\n ▄▀ \n▀ ▄\n█  █", '&': "█▀▀ \n█▄▄▀\n█▄▄█", ' ': "   \n   \n   "
             }
         };
         
         function generateAscii() {
             const text = document.getElementById('asciiInput').value.toUpperCase();
             const style = document.getElementById('asciiStyle').value;
-            const chars = asciiChars[style];
-            let result = ['', '', '', '', ''];
+            const chars = asciiChars[style] || asciiChars.standard;
+            if (!chars) return;
+            
+            const height = getAsciiHeight(style);
+            let result = Array(height).fill('');
             
             for (const char of text) {
-                const art = chars[char] || chars[' '];
+                const art = chars[char] || chars[' '] || Array(height).fill('     ').join('\n');
                 const lines = art.split('\n');
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < height; i++) {
                     result[i] += (lines[i] || '     ') + '  ';
                 }
             }
             document.getElementById('asciiResult').textContent = result.join('\n');
+        }
+        
+        function getAsciiHeight(style) {
+            const heights = {
+                standard: 5, block: 5, bubble: 5, bold: 5, '3d': 5,
+                graffiti: 5, slant: 5, mini: 3, dotmatrix: 3
+            };
+            return heights[style] || 5;
+        }
+        
+        function copyAsciiText() {
+            const text = document.getElementById('asciiResult').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('ASCII art copied to clipboard!');
+            });
+        }
+        
+        function copyAsciiHTML() {
+            const text = document.getElementById('asciiResult').textContent;
+            const html = '<pre style="font-family: monospace; white-space: pre;">' + 
+                        text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + 
+                        '</pre>';
+            navigator.clipboard.writeText(html).then(() => {
+                showNotification('HTML code copied to clipboard!');
+            });
+        }
+        
+        function downloadAscii() {
+            const text = document.getElementById('asciiResult').textContent;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ascii-art.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification('ASCII art downloaded!');
         }
         
         // Name Picker
@@ -1591,20 +1782,237 @@
             }, 4000);
         }
         
-        // Password Generator
+        // Password Generator - Enhanced with word-based generation and strength analysis
         function generatePassword() {
+            const baseWord = document.getElementById('pwBaseWord').value.trim();
             const len = parseInt(document.getElementById('pwLen').value);
+            let password = '';
+            
+            // If user provided a base word, transform it into a password
+            if (baseWord) {
+                password = convertWordToPassword(baseWord, len);
+            } else {
+                // Generate random password (original behavior)
+                let chars = '';
+                if (document.getElementById('pwUpper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                if (document.getElementById('pwLower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
+                if (document.getElementById('pwNumbers').checked) chars += '0123456789';
+                if (document.getElementById('pwSymbols').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+                if (!chars) return;
+                
+                for (let i = 0; i < len; i++) {
+                    password += chars[Math.floor(Math.random() * chars.length)];
+                }
+            }
+            
+            document.getElementById('pwResult').textContent = password;
+            analyzePasswordStrength(password);
+        }
+        
+        // Convert user word/phrase into a secure password
+        function convertWordToPassword(word, targetLength) {
+            // Leet speak substitutions
+            const leetMap = {
+                'a': '4', 'A': '4', 'e': '3', 'E': '3', 'i': '1', 'I': '1',
+                'o': '0', 'O': '0', 's': '5', 'S': '5', 't': '7', 'T': '7',
+                'l': '1', 'L': '1', 'g': '9', 'G': '9', 'b': '8', 'B': '8',
+                'z': '2', 'Z': '2'
+            };
+            
+            // Symbol substitutions for certain letters
+            const symbolMap = {
+                'a': '@', 'A': '@', 'i': '!', 'I': '!', 's': '$', 'S': '$',
+                'o': '0', 'O': '0', 'h': '#', 'H': '#', 'e': '3', 'E': '3'
+            };
+            
+            let transformed = word;
+            
+            // Apply transformations with some randomness
+            transformed = transformed.split('').map((char, index) => {
+                const rand = Math.random();
+                
+                // 30% chance: leet substitution
+                if (rand < 0.3 && leetMap[char]) {
+                    return leetMap[char];
+                }
+                // 20% chance: symbol substitution
+                else if (rand < 0.5 && symbolMap[char]) {
+                    return symbolMap[char];
+                }
+                // 40% chance: case flip for letters
+                else if (/[a-zA-Z]/.test(char)) {
+                    return (rand < 0.7) ? char.toUpperCase() : char.toLowerCase();
+                }
+                return char;
+            }).join('');
+            
+            // Add random characters if needed to meet length requirement
             let chars = '';
             if (document.getElementById('pwUpper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             if (document.getElementById('pwLower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
             if (document.getElementById('pwNumbers').checked) chars += '0123456789';
             if (document.getElementById('pwSymbols').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-            if (!chars) return;
-            let password = '';
-            for (let i = 0; i < len; i++) {
-                password += chars[Math.floor(Math.random() * chars.length)];
+            
+            // If transformed word is shorter than target, pad with random chars
+            while (transformed.length < targetLength && chars) {
+                const insertPos = Math.floor(Math.random() * (transformed.length + 1));
+                const randomChar = chars[Math.floor(Math.random() * chars.length)];
+                transformed = transformed.slice(0, insertPos) + randomChar + transformed.slice(insertPos);
             }
-            document.getElementById('pwResult').textContent = password;
+            
+            // If still longer than target, truncate
+            if (transformed.length > targetLength) {
+                transformed = transformed.slice(0, targetLength);
+            }
+            
+            // Add some final randomization: shuffle some characters
+            const shuffled = transformed.split('').sort(() => Math.random() - 0.3).join('');
+            
+            return shuffled.slice(0, targetLength);
+        }
+        
+        // Analyze and display password strength
+        function analyzePasswordStrength(password) {
+            const strengthBox = document.getElementById('pwStrengthBox');
+            const strengthBar = document.getElementById('pwStrengthBar');
+            const strengthLabel = document.getElementById('pwStrengthLabel');
+            const strengthDetails = document.getElementById('pwStrengthDetails');
+            
+            if (!password) {
+                strengthBox.style.display = 'none';
+                return;
+            }
+            
+            strengthBox.style.display = 'block';
+            
+            let score = 0;
+            let feedback = [];
+            const checks = {
+                length: false,
+                uppercase: false,
+                lowercase: false,
+                numbers: false,
+                symbols: false,
+                variety: false,
+                commonWords: false
+            };
+            
+            // Length check
+            if (password.length >= 8) {
+                score += password.length >= 12 ? 20 : 10;
+                checks.length = true;
+            } else {
+                feedback.push('❌ Too short (minimum 8 characters recommended)');
+            }
+            
+            // Character variety checks
+            if (/[A-Z]/.test(password)) {
+                score += 15;
+                checks.uppercase = true;
+            } else {
+                feedback.push('⚠️ Add uppercase letters');
+            }
+            
+            if (/[a-z]/.test(password)) {
+                score += 15;
+                checks.lowercase = true;
+            } else {
+                feedback.push('⚠️ Add lowercase letters');
+            }
+            
+            if (/[0-9]/.test(password)) {
+                score += 15;
+                checks.numbers = true;
+            } else {
+                feedback.push('⚠️ Add numbers');
+            }
+            
+            if (/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password)) {
+                score += 20;
+                checks.symbols = true;
+            } else {
+                feedback.push('⚠️ Add symbols for better security');
+            }
+            
+            // Character variety (entropy)
+            const uniqueChars = new Set(password).size;
+            const varietyRatio = uniqueChars / password.length;
+            if (varietyRatio > 0.6) {
+                score += 15;
+                checks.variety = true;
+            } else if (varietyRatio < 0.4) {
+                score -= 10;
+                feedback.push('⚠️ Low character variety');
+            }
+            
+            // Check for common patterns/words (basic check)
+            const commonWords = ['password', '123456', 'qwerty', 'abc123', 'admin', 'letmein', 'welcome', 'monkey'];
+            const lowerPw = password.toLowerCase();
+            let hasCommonWord = false;
+            for (const word of commonWords) {
+                if (lowerPw.includes(word)) {
+                    score -= 30;
+                    hasCommonWord = true;
+                    feedback.push('❌ Contains common word pattern');
+                    break;
+                }
+            }
+            checks.commonWords = !hasCommonWord;
+            
+            // Bonus for very long passwords
+            if (password.length >= 16) score += 10;
+            if (password.length >= 20) score += 5;
+            
+            // Calculate strength level
+            let strength = '';
+            let strengthColor = '';
+            let barWidth = 0;
+            
+            if (score >= 80) {
+                strength = 'Very Strong';
+                strengthColor = '#10b981'; // green
+                barWidth = 100;
+            } else if (score >= 60) {
+                strength = 'Strong';
+                strengthColor = '#3b82f6'; // blue
+                barWidth = 75;
+            } else if (score >= 40) {
+                strength = 'Medium';
+                strengthColor = '#f59e0b'; // orange
+                barWidth = 50;
+            } else if (score >= 20) {
+                strength = 'Weak';
+                strengthColor = '#ef4444'; // red
+                barWidth = 25;
+            } else {
+                strength = 'Very Weak';
+                strengthColor = '#dc2626'; // dark red
+                barWidth = 10;
+            }
+            
+            // Update UI
+            strengthBar.style.width = barWidth + '%';
+            strengthBar.style.background = strengthColor;
+            strengthLabel.textContent = strength;
+            strengthLabel.style.color = strengthColor;
+            
+            // Build details text
+            let detailsHtml = `<div style="margin-bottom: 8px;"><strong>Score: ${Math.max(0, Math.min(100, score))}/100</strong></div>`;
+            
+            if (feedback.length === 0) {
+                detailsHtml += '<div style="color: var(--success);">✅ Excellent password! Strong and unique.</div>';
+            } else {
+                detailsHtml += feedback.map(f => `<div>${f}</div>`).join('');
+            }
+            
+            // Additional metrics
+            detailsHtml += `<div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">`;
+            detailsHtml += `<div>Length: ${password.length} characters</div>`;
+            detailsHtml += `<div>Unique characters: ${uniqueChars}/${password.length}</div>`;
+            detailsHtml += `<div>Estimated entropy: ${Math.round(Math.log2(Math.pow(94, password.length)))} bits</div>`;
+            detailsHtml += `</div>`;
+            
+            strengthDetails.innerHTML = detailsHtml;
         }
         
         // Quote Generator - 35 quotes per category
@@ -2199,6 +2607,24 @@
                 btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
                 setTimeout(() => btn.innerHTML = original, 1500);
             });
+        }
+        
+        // Notification Helper
+        function showNotification(message) {
+            let notification = document.getElementById('notification');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.id = 'notification';
+                notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: var(--primary); color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 10000; opacity: 0; transform: translateY(-20px); transition: all 0.3s ease;';
+                document.body.appendChild(notification);
+            }
+            notification.textContent = message;
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-20px)';
+            }, 3000);
         }
 
         // ==========================================
