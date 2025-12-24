@@ -1,4 +1,4 @@
-# QuickSpark Tools ⚡
+# MicroTools ⚡
 
 21+ frontend utilities that run 100% in the browser.
 
@@ -9,7 +9,7 @@
 - No external dependencies
 
 ## Live Demo
-[https://quickspark-tools.vercel.app](https://quickspark-tools.vercel.app)
+[https://microtools.vercel.app](https://microtools.vercel.app)
 
 ## Tools Included
 1. Word Counter
