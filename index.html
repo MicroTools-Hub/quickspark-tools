@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MicroTools | 20+ Frontend Utilities</title>
+    <meta name="description" content="Free online text, number, color, and code utilities. Word counter, gradient generator, password creator, and 18 more tools - no signup required.">
+    <link rel="canonical" href="https://yoursite.com/">
+    <meta property="og:title" content="MicroTools | 20+ Frontend Utilities">
+    <meta property="og:description" content="Free online text, number, color, and code utilities. Word counter, gradient generator, password creator, and 18 more tools - no signup required.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yoursite.com/">
+    <meta property="og:site_name" content="MicroTools">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MicroTools | 20+ Frontend Utilities">
+    <meta name="twitter:description" content="Free online text, number, color, and code utilities. Word counter, gradient generator, password creator, and 18 more tools - no signup required.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -95,6 +105,126 @@
             background-clip: text;
         }
 
+        /* SEO Content Sections */
+        .seo-content {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .seo-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .seo-content h3 {
+            font-size: 1.4rem;
+            margin: 30px 0 15px 0;
+            color: var(--text-primary);
+        }
+
+        .seo-content p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .seo-faq {
+            margin-top: 40px;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .faq-question {
+            padding: 18px 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+            color: var(--accent-primary);
+        }
+
+        .faq-item.open .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 20px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+            padding: 0 20px 18px 20px;
+        }
+
+        .related-tools {
+            margin-top: 40px;
+            padding: 30px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .related-tools h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .related-tool-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .related-tool-link:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .related-tool-link i {
+            color: var(--accent-primary);
+        }
+
         .header-actions {
             display: flex;
             align-items: center;
@@ -144,6 +274,147 @@
             background: var(--accent-primary);
             border-color: var(--accent-primary);
             color: white;
+        }
+
+        /* Hamburger Button */
+        .hamburger-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            font-size: 1.2rem;
+            transition: all 0.2s;
+            margin-left: 0.5rem;
+        }
+
+        .hamburger-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 250px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            padding-top: 1rem;
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 99;
+            transition: transform 0.3s ease;
+            transform: translateX(0);
+            margin-top: 80px;
+        }
+
+        .sidebar.mobile-closed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-tools {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-tools li {
+            margin: 0;
+        }
+
+        .sidebar-tools button {
+            width: 100%;
+            padding: 12px 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            position: relative;
+            font-weight: 500;
+            font-family: inherit;
+        }
+
+        .sidebar-tools button:hover {
+            background: rgba(185, 255, 73, 0.1);
+            color: var(--accent-primary);
+            padding-left: 2rem;
+        }
+
+        .sidebar-tools button.active {
+            background: rgba(185, 255, 73, 0.15);
+            color: var(--accent-primary);
+            border-left: 3px solid var(--accent-primary);
+            padding-left: calc(1.5rem - 3px);
+        }
+
+        .sidebar-tools button:focus {
+            outline: none;
+            background: rgba(185, 255, 73, 0.2);
+            color: var(--accent-primary);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 98;
+        }
+
+        .sidebar-overlay.visible {
+            display: block;
+        }
+
+        /* Adjust main content for sidebar on desktop */
+        @media (min-width: 769px) {
+            body.sidebar-open main {
+                margin-left: 250px;
+            }
+        }
+
+        /* Mobile Responsiveness for Sidebar */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .hamburger-btn {
+                display: flex;
+            }
+
+            body.sidebar-open main {
+                margin-left: 0;
+            }
+
+            .sidebar.mobile-closed {
+                transform: translateX(-100%);
+            }
         }
 
         /* Main Container */
@@ -591,6 +862,35 @@
             color: var(--text-primary);
         }
 
+        /* Gradient Generator Styles */
+        #gradientPreview {
+            position: relative;
+            background-attachment: fixed;
+        }
+
+        #colorStops input[type="color"] {
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+            transition: transform 0.2s;
+        }
+
+        #colorStops input[type="color"]:hover {
+            transform: scale(1.1);
+        }
+
+        #colorStops input[type="number"] {
+            font-size: 13px;
+        }
+
+        .btn-xs {
+            padding: 6px 8px;
+            font-size: 11px;
+        }
+
+        input[type="range"] {
+            accent-color: var(--accent-primary);
+        }
+
         /* Footer */
         footer {
             text-align: center;
@@ -682,12 +982,26 @@
                     <i class="fas fa-arrow-left"></i>
                     <span>All Tools</span>
                 </button>
+                <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">
                     <i class="fas fa-sun"></i>
                 </button>
             </div>
         </div>
     </header>
+
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">Tools</div>
+        <ul class="sidebar-tools" id="sidebarTools">
+            <!-- Dynamically populated by JavaScript -->
+        </ul>
+    </nav>
 
     <main>
         <!-- Home View -->
@@ -743,6 +1057,7 @@
             { id: 'randomNumber', name: 'Random Number', desc: 'Generate random numbers in a range', icon: 'fa-dice', category: 'number' },
             { id: 'numberConverter', name: 'Number Converter', desc: 'Convert between binary, decimal, and hex', icon: 'fa-calculator', category: 'number' },
             { id: 'colorConverter', name: 'Color Converter', desc: 'Convert between HEX and RGB colors', icon: 'fa-palette', category: 'color' },
+            { id: 'gradientGenerator', name: 'Gradient Generator', desc: 'Create beautiful CSS gradients with live preview', icon: 'fa-fill-drip', category: 'color' },
             { id: 'urlEncoder', name: 'URL Encoder', desc: 'Encode and decode URLs', icon: 'fa-link', category: 'code' },
             { id: 'morseCode', name: 'Morse Code', desc: 'Translate text to and from Morse code', icon: 'fa-wifi', category: 'code' },
             { id: 'asciiArt', name: 'ASCII Art', desc: 'Convert text to ASCII art', icon: 'fa-paint-brush', category: 'code' },
@@ -750,6 +1065,81 @@
             { id: 'passwordGen', name: 'Password Generator', desc: 'Generate secure random passwords', icon: 'fa-key', category: 'random' },
             { id: 'quoteGen', name: 'Quote Generator', desc: 'Get inspirational quotes by category', icon: 'fa-quote-right', category: 'quote' }
         ];
+
+        // ==========================================
+        // Sidebar Navigation
+        // ==========================================
+        let currentToolId = 'wordCounter';
+        let sidebarOpen = true;
+
+        function initSidebar() {
+            const sidebarTools = document.getElementById('sidebarTools');
+            sidebarTools.innerHTML = '';
+
+            tools.forEach((tool, index) => {
+                const li = document.createElement('li');
+                const btn = document.createElement('button');
+                btn.textContent = tool.name;
+                btn.dataset.toolId = tool.id;
+                btn.className = tool.id === currentToolId ? 'active' : '';
+                btn.onclick = (e) => {
+                    e.preventDefault();
+                    selectToolFromSidebar(tool.id);
+                };
+                btn.onkeydown = (e) => handleSidebarKeydown(e, index);
+                li.appendChild(btn);
+                sidebarTools.appendChild(li);
+            });
+        }
+
+        function selectToolFromSidebar(toolId) {
+            currentToolId = toolId;
+            document.querySelectorAll('.sidebar-tools button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.toolId === toolId) btn.classList.add('active');
+            });
+            showTool(toolId);
+            if (window.innerWidth <= 768) closeSidebar();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (window.innerWidth > 768) {
+                sidebarOpen = !sidebarOpen;
+                document.body.classList.toggle('sidebar-open', sidebarOpen);
+            } else {
+                sidebar.classList.toggle('mobile-closed');
+                overlay.classList.toggle('visible');
+                sidebarOpen = !sidebar.classList.contains('mobile-closed');
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('mobile-closed');
+                overlay.classList.remove('visible');
+                sidebarOpen = false;
+            }
+        }
+
+        function handleSidebarKeydown(e, index) {
+            const buttons = document.querySelectorAll('.sidebar-tools button');
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                const nextIndex = (index + 1) % buttons.length;
+                buttons[nextIndex].focus();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                const prevIndex = (index - 1 + buttons.length) % buttons.length;
+                buttons[prevIndex].focus();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                selectToolFromSidebar(e.target.dataset.toolId);
+            }
+        }
 
         // ==========================================
         // Theme Toggle
@@ -768,13 +1158,22 @@
             document.getElementById('homeView').classList.remove('hidden');
             document.getElementById('toolView').classList.remove('active');
             document.getElementById('backBtn').classList.remove('visible');
+            document.querySelectorAll('.sidebar-tools button').forEach(btn => {
+                btn.classList.remove('active');
+            });
         }
 
         function showTool(toolId) {
+            currentToolId = toolId;
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('toolView').classList.add('active');
             document.getElementById('backBtn').classList.add('visible');
+            document.querySelectorAll('.sidebar-tools button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.toolId === toolId) btn.classList.add('active');
+            });
             renderTool(toolId);
+            updateSEO(toolId);
         }
 
         // ==========================================
@@ -832,10 +1231,35 @@
                             <label>Enter your text</label>
                             <textarea id="wcInput" placeholder="Type or paste your text here..."></textarea>
                         </div>
-                        <button class="btn btn-primary" onclick="countWords()"><i class="fas fa-calculator"></i> Count</button>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Reading Speed (WPM)</label>
+                                <input type="number" id="wcWPM" value="200" min="50" max="400">
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" onclick="countWords()"><i class="fas fa-calculator"></i> Update Stats</button>
+                            <button class="btn btn-secondary btn-sm" onclick="removeExtraSpaces()"><i class="fas fa-compress"></i> Clean Spaces</button>
+                            <button class="btn btn-secondary btn-sm" onclick="fixCapitalization()"><i class="fas fa-font"></i> Fix Caps</button>
+                            <button class="btn btn-secondary btn-sm" onclick="removeHTMLTags()"><i class="fas fa-code"></i> Remove HTML</button>
+                            <button class="btn btn-secondary btn-sm" onclick="clearWCText()"><i class="fas fa-trash"></i> Clear</button>
+                        </div>
                         <div class="result-box">
-                            <div class="result-label">Results</div>
-                            <div class="result-content" id="wcResult">Words: 0 | Characters: 0 | Lines: 0</div>
+                            <div class="result-label">Basic Stats <button class="copy-btn" onclick="copyWCStats()"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="wcResult">Words: 0 | Characters: 0 | Sentences: 0</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Advanced Stats</div>
+                            <div class="result-content" id="wcAdvanced">
+                                <div>Reading time: <strong id="wcReadingTime">0 min</strong></div>
+                                <div>Speaking time: <strong id="wcSpeakingTime">0 min</strong></div>
+                                <div>Avg. word length: <strong id="wcAvgWordLen">0</strong> chars</div>
+                                <div>Readability (Flesch-Kincaid): <strong id="wcReadability">N/A</strong></div>
+                            </div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Top 5 Keywords</div>
+                            <div class="result-content" id="wcKeywords">No keywords yet</div>
                         </div>
                     `;
                     break;
@@ -848,8 +1272,16 @@
                         </div>
                         <button class="btn btn-primary" onclick="countChars()"><i class="fas fa-calculator"></i> Count</button>
                         <div class="result-box">
-                            <div class="result-label">Results</div>
-                            <div class="result-content" id="ccResult">Characters: 0 | Without spaces: 0</div>
+                            <div class="result-label">Basic Stats</div>
+                            <div class="result-content" id="ccResult">Characters: 0 | Without spaces: 0 | UTF-8 bytes: 0</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Social Media Limits</div>
+                            <div class="result-content" id="ccSocial">
+                                <div>Twitter (280): <strong id="ccTwitter">0</strong> <span id="ccTwitterStatus" style="color: var(--accent-success);">✓</span></div>
+                                <div>Instagram Bio (150): <strong id="ccInstaBio">0</strong> <span id="ccInstaBioStatus" style="color: var(--accent-success);">✓</span></div>
+                                <div>SMS (160): <strong id="ccSMS">0</strong> <span id="ccSMSStatus" style="color: var(--accent-success);">✓</span></div>
+                            </div>
                         </div>
                     `;
                     break;
@@ -865,6 +1297,12 @@
                             <button class="btn btn-primary btn-sm" onclick="convertCase('lower')">lowercase</button>
                             <button class="btn btn-primary btn-sm" onclick="convertCase('title')">Title Case</button>
                             <button class="btn btn-primary btn-sm" onclick="convertCase('sentence')">Sentence case</button>
+                            <button class="btn btn-primary btn-sm" onclick="convertCase('camel')">camelCase</button>
+                            <button class="btn btn-primary btn-sm" onclick="convertCase('snake')">snake_case</button>
+                            <button class="btn btn-primary btn-sm" onclick="convertCase('kebab')">kebab-case</button>
+                            <button class="btn btn-primary btn-sm" onclick="convertCase('pascal')">PascalCase</button>
+                            <button class="btn btn-primary btn-sm" onclick="convertCase('constant')">CONSTANT_CASE</button>
+                            <button class="btn btn-primary btn-sm" onclick="convertCase('slug')">slug-url-format</button>
                         </div>
                         <div class="result-box">
                             <div class="result-label">Result <button class="copy-btn" onclick="copyResult('caseResult')"><i class="fas fa-copy"></i> Copy</button></div>
@@ -1275,45 +1713,483 @@
                         </div>
                     `;
                     break;
+                    
+                case 'gradientGenerator':
+                    html += `
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                            <!-- Left Panel: Controls -->
+                            <div>
+                                <!-- Gradient Type Selector -->
+                                <div class="input-group">
+                                    <label>Gradient Type</label>
+                                    <div class="btn-group">
+                                        <button class="btn btn-primary btn-sm" data-type="linear" onclick="changeGradientType('linear')">Linear</button>
+                                        <button class="btn btn-secondary btn-sm" data-type="radial" onclick="changeGradientType('radial')">Radial</button>
+                                        <button class="btn btn-secondary btn-sm" data-type="conic" onclick="changeGradientType('conic')">Conic</button>
+                                    </div>
+                                </div>
+
+                                <!-- Linear Direction Controls (Hidden by default) -->
+                                <div id="linearControls" style="margin-top: 20px;">
+                                    <label>Angle</label>
+                                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                                        <input type="range" id="gradAngle" min="0" max="360" value="90" style="flex: 1; height: 6px; cursor: pointer;">
+                                        <span id="angleDisplay" style="width: 45px; text-align: right; font-weight: bold;">90°</span>
+                                    </div>
+                                    <div class="btn-group" style="grid-template-columns: repeat(2, 1fr);">
+                                        <button class="btn btn-secondary btn-xs" onclick="setAngle(0)">Top</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="setAngle(90)">Right</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="setAngle(180)">Bottom</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="setAngle(270)">Left</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="setAngle(45)">↗</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="setAngle(135)">↘</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="setAngle(225)">↙</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="setAngle(315)">↖</button>
+                                    </div>
+                                </div>
+
+                                <!-- Radial Controls (Hidden by default) -->
+                                <div id="radialControls" style="display: none; margin-top: 20px;">
+                                    <div class="input-group">
+                                        <label>Shape</label>
+                                        <div class="btn-group">
+                                            <button class="btn btn-secondary btn-sm" onclick="setRadialShape('circle')">Circle</button>
+                                            <button class="btn btn-secondary btn-sm" onclick="setRadialShape('ellipse')">Ellipse</button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group" style="margin-top: 15px;">
+                                        <label>Position</label>
+                                        <div class="btn-group" style="grid-template-columns: repeat(3, 1fr);">
+                                            <button class="btn btn-secondary btn-xs" onclick="setRadialPos('center')">Center</button>
+                                            <button class="btn btn-secondary btn-xs" onclick="setRadialPos('top left')">↖</button>
+                                            <button class="btn btn-secondary btn-xs" onclick="setRadialPos('top center')">↑</button>
+                                            <button class="btn btn-secondary btn-xs" onclick="setRadialPos('top right')">↗</button>
+                                            <button class="btn btn-secondary btn-xs" onclick="setRadialPos('center left')">←</button>
+                                            <button class="btn btn-secondary btn-xs" onclick="setRadialPos('center')">◉</button>
+                                            <button class="btn btn-secondary btn-xs" onclick="setRadialPos('center right')">→</button>
+                                            <button class="btn btn-secondary btn-xs" onclick="setRadialPos('bottom left')">↙</button>
+                                            <button class="btn btn-secondary btn-xs" onclick="setRadialPos('bottom center')">↓</button>
+                                            <button class="btn btn-secondary btn-xs" onclick="setRadialPos('bottom right')">↘</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Conic Controls (Hidden by default) -->
+                                <div id="conicControls" style="display: none; margin-top: 20px;">
+                                    <label>Starting Angle</label>
+                                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                                        <input type="range" id="conicAngle" min="0" max="360" value="0" style="flex: 1; height: 6px; cursor: pointer;">
+                                        <span id="conicAngleDisplay" style="width: 45px; text-align: right; font-weight: bold;">0°</span>
+                                    </div>
+                                </div>
+
+                                <!-- Color Stops -->
+                                <div style="margin-top: 25px;">
+                                    <label style="display: flex; justify-content: space-between;">
+                                        Color Stops
+                                        <button class="btn btn-secondary btn-xs" id="addColorBtn" onclick="addColorStop()"><i class="fas fa-plus"></i> Add</button>
+                                    </label>
+                                    <div id="colorStops" style="margin-top: 15px; display: flex; flex-direction: column; gap: 12px;"></div>
+                                </div>
+
+                                <!-- Preset Gradients -->
+                                <div style="margin-top: 25px;">
+                                    <label>Presets</label>
+                                    <div class="btn-group" style="grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('instagram')">Instagram</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('neon')">Neon</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('pastel')">Pastel</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('sunset')">Sunset</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('ocean')">Ocean</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('cyberpunk')">Cyberpunk</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('forest')">Forest</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('cherry')">Cherry</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('lavender')">Lavender</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('midnight')">Midnight</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('fire')">Fire</button>
+                                        <button class="btn btn-secondary btn-xs" onclick="applyPreset('aurora')">Aurora</button>
+                                    </div>
+                                </div>
+
+                                <!-- Advanced Controls -->
+                                <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+                                    <label>Advanced Options</label>
+                                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                                        <button class="btn btn-secondary btn-sm" onclick="randomizeGradient()"><i class="fas fa-dice"></i> Randomize</button>
+                                        <button class="btn btn-secondary btn-sm" onclick="reverseGradient()"><i class="fas fa-exchange-alt"></i> Reverse</button>
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px 0;">
+                                            <input type="checkbox" id="noiseToggle" onchange="updatePreview()">
+                                            <span>Add Subtle Noise</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px 0;">
+                                            <input type="checkbox" id="bgToggle" onchange="updatePreview()">
+                                            <span>Checkerboard Background</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Panel: Preview & Code -->
+                            <div>
+                                <!-- Live Preview -->
+                                <div style="margin-bottom: 20px;">
+                                    <label>Live Preview</label>
+                                    <div id="gradientPreview" style="width: 100%; height: 300px; border-radius: 12px; border: 2px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.2s ease;"></div>
+                                </div>
+
+                                <!-- CSS Code Output -->
+                                <div>
+                                    <label style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                        CSS Code
+                                        <button class="copy-btn" onclick="copyGradientCSS()"><i class="fas fa-copy"></i> Copy</button>
+                                    </label>
+                                    <div id="cssCode" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; font-family: monospace; font-size: 12px; color: var(--text-primary); max-height: 200px; overflow-y: auto; word-break: break-all; line-height: 1.5;"></div>
+                                </div>
+
+                                <!-- Export Options -->
+                                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+                                    <label>Export</label>
+                                    <div class="input-row" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+                                        <div class="input-group">
+                                            <label style="font-size: 12px;">Width (px)</label>
+                                            <input type="number" id="exportWidth" value="1080" min="100" max="4000">
+                                        </div>
+                                        <div class="input-group">
+                                            <label style="font-size: 12px;">Height (px)</label>
+                                            <input type="number" id="exportHeight" value="1080" min="100" max="4000">
+                                        </div>
+                                    </div>
+                                    <div class="btn-group" style="margin-top: 12px;">
+                                        <button class="btn btn-success btn-sm" onclick="exportGradient('png')"><i class="fas fa-image"></i> Export PNG</button>
+                                        <button class="btn btn-success btn-sm" onclick="exportGradient('jpg')"><i class="fas fa-image"></i> Export JPG</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
             }
             
             html += '</div>';
+            
+            // Add SEO content
+            html += renderSEOContent(toolId);
+            
             container.innerHTML = html;
             
             // Initialize tool-specific features
             if (toolId === 'textToSpeech') initTTS();
+            // Live update for Word Counter without changing UI
+            if (toolId === 'wordCounter') {
+                const input = document.getElementById('wcInput');
+                const wpm = document.getElementById('wcWPM');
+                if (input) {
+                    input.addEventListener('input', countWords);
+                }
+                if (wpm) {
+                    wpm.addEventListener('input', countWords);
+                    wpm.addEventListener('change', countWords);
+                }
+            }
+            // Live updates for Character Counter
+            if (toolId === 'charCounter') {
+                const input = document.getElementById('ccInput');
+                if (input) input.addEventListener('input', countChars);
+            }
+            // Live updates for Case Converter (uses last button clicked)
+            if (toolId === 'caseConverter') {
+                const input = document.getElementById('caseInput');
+                if (input) input.addEventListener('input', () => { if (lastCaseType) convertCase(lastCaseType); });
+            }
+            // Live updates for Remove Line Breaks
+            if (toolId === 'lineBreaks') {
+                const input = document.getElementById('lbInput');
+                if (input) input.addEventListener('input', removeLineBreaks);
+            }
+            // Live updates for Reverse Text
+            if (toolId === 'reverseText') {
+                const input = document.getElementById('revInput');
+                if (input) input.addEventListener('input', reverseText);
+            }
+            // Live updates for Lorem Ipsum
+            if (toolId === 'loremIpsum') {
+                const count = document.getElementById('loremCount');
+                const type = document.getElementById('loremType');
+                if (count) count.addEventListener('input', generateLorem);
+                if (count) count.addEventListener('change', generateLorem);
+                if (type) type.addEventListener('change', generateLorem);
+            }
+            // Live updates for Find & Replace
+            if (toolId === 'findReplace') {
+                const t = document.getElementById('frInput');
+                const f = document.getElementById('frFind');
+                const r = document.getElementById('frReplace');
+                [t, f, r].forEach(el => { if (el) el.addEventListener('input', findReplace); });
+            }
+            // Live updates for Sort Lines (re-applies last sort)
+            if (toolId === 'sortLines') {
+                const input = document.getElementById('sortInput');
+                if (input) input.addEventListener('input', () => { if (lastSortType) sortLines(lastSortType); });
+            }
+            // Live updates for Count Specific Word
+            if (toolId === 'countWord') {
+                const t = document.getElementById('cwInput');
+                const w = document.getElementById('cwWord');
+                const c = document.getElementById('cwCase');
+                if (t) t.addEventListener('input', countSpecificWord);
+                if (w) w.addEventListener('input', countSpecificWord);
+                if (c) c.addEventListener('change', countSpecificWord);
+            }
+            // Live updates for Text Diff
+            if (toolId === 'textDiff') {
+                const o = document.getElementById('diffOriginal');
+                const ch = document.getElementById('diffChanged');
+                if (o) o.addEventListener('input', compareDiff);
+                if (ch) ch.addEventListener('input', compareDiff);
+            }
+            // Live updates for Random Number
+            if (toolId === 'randomNumber') {
+                const min = document.getElementById('rnMin');
+                const max = document.getElementById('rnMax');
+                const count = document.getElementById('rnCount');
+                [min, max, count].forEach(el => { if (el) el.addEventListener('input', generateRandomNumber); });
+            }
+            // Live updates for Number Converter
+            if (toolId === 'numberConverter') {
+                const bin = document.getElementById('ncBin');
+                const dec = document.getElementById('ncDec');
+                const hex = document.getElementById('ncHex');
+                if (bin) bin.addEventListener('input', () => { lastNumberSource = 'bin'; convertNumber(); });
+                if (dec) dec.addEventListener('input', () => { lastNumberSource = 'dec'; convertNumber(); });
+                if (hex) hex.addEventListener('input', () => { lastNumberSource = 'hex'; convertNumber(); });
+            }
+            // Live updates for Color Converter
+            if (toolId === 'colorConverter') {
+                const hx = document.getElementById('colorHex');
+                const rgb = document.getElementById('colorRgb');
+                if (hx) hx.addEventListener('input', hexToRgb);
+                if (rgb) rgb.addEventListener('input', rgbToHex);
+            }
+            // Live updates for URL Encoder (uses last action clicked)
+            if (toolId === 'urlEncoder') {
+                const input = document.getElementById('urlInput');
+                if (input) input.addEventListener('input', () => {
+                    if (lastUrlAction === 'encode') encodeUrl();
+                    else if (lastUrlAction === 'decode') decodeUrl();
+                });
+            }
+            // Live updates for Morse Code (uses last action clicked)
+            if (toolId === 'morseCode') {
+                const input = document.getElementById('morseInput');
+                if (input) input.addEventListener('input', () => {
+                    if (lastMorseAction === 'text') textToMorse();
+                    else if (lastMorseAction === 'morse') morseToText();
+                });
+            }
+            // Live updates for Password Generator
+            if (toolId === 'passwordGen') {
+                const base = document.getElementById('pwBaseWord');
+                const len = document.getElementById('pwLen');
+                const upper = document.getElementById('pwUpper');
+                const lower = document.getElementById('pwLower');
+                const nums = document.getElementById('pwNumbers');
+                const syms = document.getElementById('pwSymbols');
+                [base, upper, lower, nums, syms].forEach(el => { if (el) el.addEventListener('input', generatePassword); });
+                [upper, lower, nums, syms].forEach(el => { if (el) el.addEventListener('change', generatePassword); });
+                if (len) { len.addEventListener('input', generatePassword); len.addEventListener('change', generatePassword); }
+            }
+            // Live updates for Quote Generator (on category change)
+            if (toolId === 'quoteGen') {
+                const cat = document.getElementById('quoteCategory');
+                if (cat) cat.addEventListener('change', generateQuote);
+            }
+            // Initialize Gradient Generator
+            if (toolId === 'gradientGenerator') {
+                initGradientGenerator();
+            }
         }
 
         // ==========================================
         // Tool Functions
         // ==========================================
+        // Live-update state flags (no UI changes)
+        let lastCaseType = null;
+        let lastSortType = null;
+        let lastUrlAction = null; // 'encode' | 'decode'
+        let lastMorseAction = null; // 'text' | 'morse'
+        let lastNumberSource = null; // 'bin' | 'dec' | 'hex'
         
-        // Word Counter
+        // Word Counter - Enhanced
         function countWords() {
             const text = document.getElementById('wcInput').value;
+            const wpm = parseInt(document.getElementById('wcWPM').value) || 200;
+            
+            // Basic stats
             const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
             const chars = text.length;
-            const lines = text.split('\n').length;
-            document.getElementById('wcResult').textContent = `Words: ${words} | Characters: ${chars} | Lines: ${lines}`;
+            const normalized = text.replace(/[.!?]+/g, '.');
+            const sentences = (normalized.match(/\./g) || []).length;
+            
+            // Advanced stats
+            const paragraphs = text.split(/\n\n+/).filter(p => p.trim()).length;
+            const charsNoSpaces = text.replace(/\s/g, '').length;
+            const avgWordLen = words > 0 ? (charsNoSpaces / words).toFixed(1) : 0;
+            const readingTime = Math.ceil(words / wpm);
+            const speakingTime = Math.ceil(words / 150); // Average speaking speed ~150 WPM
+            
+            // Calculate Flesch-Kincaid readability grade
+            const syllables = countSyllables(text);
+            const readabilityGrade = (0.39 * (words / sentences) + 11.8 * (syllables / words) - 15.59).toFixed(1);
+            
+            // Extract keywords (top 5)
+            const keywords = extractKeywords(text, 5);
+            
+            // Update UI
+            document.getElementById('wcResult').textContent = `Words: ${words} | Characters: ${chars} | Sentences: ${sentences}`;
+            document.getElementById('wcReadingTime').textContent = readingTime + ' min';
+            document.getElementById('wcSpeakingTime').textContent = speakingTime + ' min';
+            document.getElementById('wcAvgWordLen').textContent = avgWordLen;
+            document.getElementById('wcReadability').textContent = readabilityGrade + ' (grade)';
+            
+            if (keywords.length > 0) {
+                let keywordHtml = keywords.map(k => 
+                    `<div style="margin: 0.5rem 0;"><strong>${k.word}</strong> (${k.count}) - ${k.percent.toFixed(1)}%</div>`
+                ).join('');
+                document.getElementById('wcKeywords').innerHTML = keywordHtml;
+            } else {
+                document.getElementById('wcKeywords').textContent = 'No keywords yet';
+            }
+        }
+
+        function countSyllables(text) {
+            const words = text.toLowerCase().match(/\b[a-z]+\b/g) || [];
+            let syllableCount = 0;
+            words.forEach(word => {
+                let count = 0;
+                word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+                word = word.replace(/^y/, '');
+                const vowels = word.match(/[aeiouy]{1,2}/g);
+                if (vowels) syllableCount += vowels.length;
+            });
+            return Math.max(1, syllableCount);
+        }
+
+        function extractKeywords(text, limit) {
+            const stopWords = new Set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'is', 'are', 'was', 'were', 'be', 'been', 'this', 'that', 'these', 'those', 'i', 'you', 'he', 'she', 'it', 'we', 'they', 'what', 'which', 'who', 'when', 'where', 'why', 'how']);
+            const words = text.toLowerCase().match(/\b[a-z]{3,}\b/g) || [];
+            const wordCount = {};
+            words.forEach(word => {
+                if (!stopWords.has(word)) {
+                    wordCount[word] = (wordCount[word] || 0) + 1;
+                }
+            });
+            const totalWords = Object.values(wordCount).reduce((a, b) => a + b, 0);
+            return Object.entries(wordCount)
+                .map(([word, count]) => ({ word, count, percent: (count / totalWords) * 100 }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, limit);
+        }
+
+        function removeExtraSpaces() {
+            const textarea = document.getElementById('wcInput');
+            textarea.value = textarea.value.replace(/\s+/g, ' ').trim();
+            countWords();
+        }
+
+        function fixCapitalization() {
+            const textarea = document.getElementById('wcInput');
+            let text = textarea.value;
+            // Capitalize first letter of sentences
+            text = text.replace(/(^|\.\s+|!\s+|\?\s+)([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
+            textarea.value = text;
+            countWords();
+        }
+
+        function removeHTMLTags() {
+            const textarea = document.getElementById('wcInput');
+            textarea.value = textarea.value.replace(/<[^>]*>/g, '');
+            countWords();
+        }
+
+        function clearWCText() {
+            document.getElementById('wcInput').value = '';
+            countWords();
+        }
+
+        function copyWCStats() {
+            const basic = document.getElementById('wcResult').textContent;
+            const advanced = document.getElementById('wcAdvanced').innerText;
+            const stats = basic + '\n' + advanced;
+            navigator.clipboard.writeText(stats).then(() => {
+                showNotification('Stats copied to clipboard!');
+            });
         }
         
-        // Character Counter
+        // Character Counter - Enhanced
         function countChars() {
             const text = document.getElementById('ccInput').value;
             const chars = text.length;
             const noSpaces = text.replace(/\s/g, '').length;
-            document.getElementById('ccResult').textContent = `Characters: ${chars} | Without spaces: ${noSpaces}`;
+            const utf8Bytes = new TextEncoder().encode(text).length;
+            
+            document.getElementById('ccResult').textContent = `Characters: ${chars} | Without spaces: ${noSpaces} | UTF-8 bytes: ${utf8Bytes}`;
+            
+            // Social media limits
+            updateSocialLimit('Twitter', 280, chars);
+            updateSocialLimit('InstaBio', 150, chars);
+            updateSocialLimit('SMS', 160, chars);
+        }
+
+        function updateSocialLimit(platform, limit, charCount) {
+            const remaining = limit - charCount;
+            const status = remaining >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)';
+            const statusText = remaining >= 0 ? '✓' : '✗';
+            document.getElementById('cc' + platform).textContent = `${charCount}/${limit}`;
+            const statusEl = document.getElementById('cc' + platform + 'Status');
+            if (statusEl) {
+                statusEl.textContent = statusText;
+                statusEl.style.color = remaining >= 0 ? 'var(--accent-success)' : 'var(--accent-danger)';
+            }
         }
         
         // Case Converter
         function convertCase(type) {
+            lastCaseType = type;
             const text = document.getElementById('caseInput').value;
             let result = '';
+            const words = text.split(/[\s\-_]+/);
+            
             switch(type) {
-                case 'upper': result = text.toUpperCase(); break;
-                case 'lower': result = text.toLowerCase(); break;
-                case 'title': result = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()); break;
-                case 'sentence': result = text.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g, c => c.toUpperCase()); break;
+                case 'upper':
+                    result = text.toUpperCase();
+                    break;
+                case 'lower':
+                    result = text.toLowerCase();
+                    break;
+                case 'title':
+                    result = text.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+                    break;
+                case 'sentence':
+                    result = text.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g, c => c.toUpperCase());
+                    break;
+                case 'camel':
+                    result = words.map((w, i) => i === 0 ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+                    break;
+                case 'snake':
+                    result = words.map(w => w.toLowerCase()).join('_');
+                    break;
+                case 'kebab':
+                    result = words.map(w => w.toLowerCase()).join('-');
+                    break;
+                case 'pascal':
+                    result = words.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+                    break;
+                case 'constant':
+                    result = words.map(w => w.toUpperCase()).join('_');
+                    break;
+                case 'slug':
+                    result = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+                    break;
             }
             document.getElementById('caseResult').textContent = result;
         }
@@ -1378,6 +2254,7 @@
         
         // Sort Lines
         function sortLines(type) {
+            lastSortType = type;
             const lines = document.getElementById('sortInput').value.split('\n').filter(l => l.trim());
             let sorted;
             switch(type) {
@@ -1483,12 +2360,21 @@
             const dec = document.getElementById('ncDec').value.trim();
             const hex = document.getElementById('ncHex').value.trim();
             let decimal;
-            
-            if (bin) decimal = parseInt(bin, 2);
-            else if (dec) decimal = parseInt(dec);
-            else if (hex) decimal = parseInt(hex, 16);
-            else return;
-            
+
+            // Prefer last edited field to avoid ambiguity during live updates
+            if (lastNumberSource === 'bin' && bin) {
+                decimal = parseInt(bin, 2);
+            } else if (lastNumberSource === 'dec' && dec) {
+                decimal = parseInt(dec, 10);
+            } else if (lastNumberSource === 'hex' && hex) {
+                decimal = parseInt(hex, 16);
+            } else {
+                if (bin) decimal = parseInt(bin, 2);
+                else if (dec) decimal = parseInt(dec, 10);
+                else if (hex) decimal = parseInt(hex, 16);
+                else return;
+            }
+
             document.getElementById('ncBin').value = decimal.toString(2);
             document.getElementById('ncDec').value = decimal;
             document.getElementById('ncHex').value = decimal.toString(16).toUpperCase();
@@ -1520,10 +2406,12 @@
         
         // URL Encoder
         function encodeUrl() {
+            lastUrlAction = 'encode';
             document.getElementById('urlResult').textContent = encodeURIComponent(document.getElementById('urlInput').value);
         }
         
         function decodeUrl() {
+            lastUrlAction = 'decode';
             try {
                 document.getElementById('urlResult').textContent = decodeURIComponent(document.getElementById('urlInput').value);
             } catch(e) {
@@ -1536,11 +2424,13 @@
         const reverseMorse = Object.fromEntries(Object.entries(morseMap).map(([k, v]) => [v, k]));
         
         function textToMorse() {
+            lastMorseAction = 'text';
             const text = document.getElementById('morseInput').value.toUpperCase();
             document.getElementById('morseResult').textContent = text.split('').map(c => morseMap[c] || '').join(' ');
         }
         
         function morseToText() {
+            lastMorseAction = 'morse';
             const morse = document.getElementById('morseInput').value;
             document.getElementById('morseResult').textContent = morse.split(' ').map(m => reverseMorse[m] || '').join('');
         }
@@ -2598,6 +3488,441 @@
             window.open(`https://twitter.com/intent/tweet?text=${text} ${author}`, '_blank');
         }
         
+        // ==========================================
+        // Gradient Generator
+        // ==========================================
+        let gradientState = {
+            type: 'linear',
+            angle: 90,
+            colors: [
+                { color: '#FF6B6B', position: 0 },
+                { color: '#4ECDC4', position: 100 }
+            ],
+            radialShape: 'circle',
+            radialPos: 'center',
+            conicAngle: 0,
+            noise: false,
+            checkerboard: false
+        };
+
+        const gradientPresets = {
+            instagram: {
+                type: 'linear',
+                angle: 45,
+                colors: [
+                    { color: '#F09433', position: 0 },
+                    { color: '#E6683C', position: 25 },
+                    { color: '#DC2743', position: 50 },
+                    { color: '#CC2366', position: 75 },
+                    { color: '#BC1888', position: 100 }
+                ]
+            },
+            neon: {
+                type: 'linear',
+                angle: 90,
+                colors: [
+                    { color: '#00FF00', position: 0 },
+                    { color: '#FF00FF', position: 50 },
+                    { color: '#00FFFF', position: 100 }
+                ]
+            },
+            pastel: {
+                type: 'linear',
+                angle: 135,
+                colors: [
+                    { color: '#FFB6C1', position: 0 },
+                    { color: '#DDA0DD', position: 50 },
+                    { color: '#B0E0E6', position: 100 }
+                ]
+            },
+            sunset: {
+                type: 'linear',
+                angle: 90,
+                colors: [
+                    { color: '#FF6B35', position: 0 },
+                    { color: '#FFA500', position: 25 },
+                    { color: '#FFD700', position: 50 },
+                    { color: '#FF69B4', position: 100 }
+                ]
+            },
+            ocean: {
+                type: 'radial',
+                radialShape: 'circle',
+                radialPos: 'center',
+                colors: [
+                    { color: '#87CEEB', position: 0 },
+                    { color: '#4169E1', position: 50 },
+                    { color: '#000080', position: 100 }
+                ]
+            },
+            cyberpunk: {
+                type: 'linear',
+                angle: 45,
+                colors: [
+                    { color: '#0D47A1', position: 0 },
+                    { color: '#7B1FA2', position: 33 },
+                    { color: '#F50057', position: 66 },
+                    { color: '#00BCD4', position: 100 }
+                ]
+            },
+            forest: {
+                type: 'linear',
+                angle: 180,
+                colors: [
+                    { color: '#2D5016', position: 0 },
+                    { color: '#4CAF50', position: 50 },
+                    { color: '#8BC34A', position: 100 }
+                ]
+            },
+            cherry: {
+                type: 'conic',
+                conicAngle: 0,
+                colors: [
+                    { color: '#C41E3A', position: 0 },
+                    { color: '#E75C78', position: 50 },
+                    { color: '#FFC0CB', position: 100 }
+                ]
+            },
+            lavender: {
+                type: 'linear',
+                angle: 135,
+                colors: [
+                    { color: '#967BB6', position: 0 },
+                    { color: '#B19CD9', position: 50 },
+                    { color: '#E6D5E8', position: 100 }
+                ]
+            },
+            midnight: {
+                type: 'radial',
+                radialShape: 'circle',
+                radialPos: 'center',
+                colors: [
+                    { color: '#0F0C29', position: 0 },
+                    { color: '#302B63', position: 50 },
+                    { color: '#24243E', position: 100 }
+                ]
+            },
+            fire: {
+                type: 'linear',
+                angle: 90,
+                colors: [
+                    { color: '#FFA500', position: 0 },
+                    { color: '#FF4500', position: 33 },
+                    { color: '#DC143C', position: 66 },
+                    { color: '#8B0000', position: 100 }
+                ]
+            },
+            aurora: {
+                type: 'linear',
+                angle: 45,
+                colors: [
+                    { color: '#00FF7F', position: 0 },
+                    { color: '#00CED1', position: 50 },
+                    { color: '#FF1493', position: 100 }
+                ]
+            }
+        };
+
+        function initGradientGenerator() {
+            renderColorStops();
+            updateTypeControls('linear');
+            updatePreview();
+            
+            // Setup angle slider
+            const angleInput = document.getElementById('gradAngle');
+            if (angleInput) {
+                angleInput.addEventListener('input', () => {
+                    gradientState.angle = parseInt(angleInput.value);
+                    document.getElementById('angleDisplay').textContent = angleInput.value + '°';
+                    updatePreview();
+                });
+            }
+            
+            // Setup conic angle slider
+            const conicAngleInput = document.getElementById('conicAngle');
+            if (conicAngleInput) {
+                conicAngleInput.addEventListener('input', () => {
+                    gradientState.conicAngle = parseInt(conicAngleInput.value);
+                    document.getElementById('conicAngleDisplay').textContent = conicAngleInput.value + '°';
+                    updatePreview();
+                });
+            }
+
+            // Export dimensions
+            const exportWidth = document.getElementById('exportWidth');
+            const exportHeight = document.getElementById('exportHeight');
+            if (exportWidth) exportWidth.addEventListener('change', validateExportDimensions);
+            if (exportHeight) exportHeight.addEventListener('change', validateExportDimensions);
+        }
+
+        function updateTypeControls(type) {
+            document.querySelectorAll('[data-type]').forEach(btn => btn.classList.remove('btn-primary'));
+            document.querySelectorAll('[data-type]').forEach(btn => btn.classList.add('btn-secondary'));
+            document.querySelector(`[data-type="${type}"]`).classList.add('btn-primary');
+            document.querySelector(`[data-type="${type}"]`).classList.remove('btn-secondary');
+            
+            document.getElementById('linearControls').style.display = type === 'linear' ? 'block' : 'none';
+            document.getElementById('radialControls').style.display = type === 'radial' ? 'block' : 'none';
+            document.getElementById('conicControls').style.display = type === 'conic' ? 'block' : 'none';
+        }
+
+        function changeGradientType(type) {
+            gradientState.type = type;
+            updateTypeControls(type);
+            updatePreview();
+        }
+
+        function setAngle(angle) {
+            gradientState.angle = angle;
+            document.getElementById('gradAngle').value = angle;
+            document.getElementById('angleDisplay').textContent = angle + '°';
+            updatePreview();
+        }
+
+        function setRadialShape(shape) {
+            gradientState.radialShape = shape;
+            updatePreview();
+        }
+
+        function setRadialPos(pos) {
+            gradientState.radialPos = pos;
+            updatePreview();
+        }
+
+        function renderColorStops() {
+            const container = document.getElementById('colorStops');
+            container.innerHTML = '';
+            
+            gradientState.colors.forEach((stop, idx) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'display: grid; grid-template-columns: 40px 1fr 60px 30px; gap: 8px; align-items: center; padding: 10px; background: var(--bg-input); border-radius: 8px;';
+                
+                div.innerHTML = `
+                    <input type="color" value="${stop.color}" onchange="updateColor(${idx}, this.value)" style="width: 40px; height: 40px; border: none; border-radius: 6px; cursor: pointer;">
+                    <input type="range" min="0" max="100" value="${stop.position}" onchange="updatePosition(${idx}, this.value)" style="width: 100%; cursor: pointer; height: 6px;">
+                    <input type="number" min="0" max="100" value="${stop.position}" onchange="updatePosition(${idx}, this.value)" style="width: 60px; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-secondary); color: var(--text-primary);">
+                    <button class="btn btn-secondary" onclick="removeColor(${idx})" style="padding: 6px 8px; font-size: 12px;" ${gradientState.colors.length === 2 ? 'disabled' : ''}>
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+            
+            const addBtn = document.getElementById('addColorBtn');
+            if (addBtn) addBtn.disabled = gradientState.colors.length >= 6;
+        }
+
+        function updateColor(idx, color) {
+            gradientState.colors[idx].color = color;
+            updatePreview();
+        }
+
+        function updatePosition(idx, position) {
+            gradientState.colors[idx].position = parseInt(position);
+            renderColorStops();
+            updatePreview();
+        }
+
+        function addColorStop() {
+            if (gradientState.colors.length < 6) {
+                const lastPos = gradientState.colors[gradientState.colors.length - 1].position;
+                gradientState.colors.push({
+                    color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
+                    position: Math.min(lastPos + 20, 100)
+                });
+                renderColorStops();
+                updatePreview();
+            }
+        }
+
+        function removeColor(idx) {
+            if (gradientState.colors.length > 2) {
+                gradientState.colors.splice(idx, 1);
+                renderColorStops();
+                updatePreview();
+            }
+        }
+
+        function updatePreview() {
+            const preview = document.getElementById('gradientPreview');
+            const css = generateGradientCSS();
+            
+            let bgStyle = css;
+            if (gradientState.checkerboard) {
+                bgStyle = `
+                    background-image: 
+                        linear-gradient(45deg, #ccc 25%, transparent 25%),
+                        linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, #ccc 75%),
+                        linear-gradient(-45deg, transparent 75%, #ccc 75%),
+                        ${css};
+                    background-size: 20px 20px, 20px 20px, 20px 20px, 20px 20px, 100% 100%;
+                    background-position: 0 0, 10px 0, 10px -10px, 0px -10px, 0 0;
+                `;
+            }
+            
+            if (gradientState.noise) {
+                preview.style.backgroundImage = bgStyle + `, url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='1'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E")`;
+            } else {
+                preview.style.background = bgStyle;
+            }
+            
+            const codeBox = document.getElementById('cssCode');
+            codeBox.textContent = `background: ${css};`;
+        }
+
+        function generateGradientCSS() {
+            const colorStr = gradientState.colors
+                .sort((a, b) => a.position - b.position)
+                .map(s => `${s.color} ${s.position}%`)
+                .join(', ');
+            
+            let css = '';
+            switch(gradientState.type) {
+                case 'linear':
+                    css = `linear-gradient(${gradientState.angle}deg, ${colorStr})`;
+                    break;
+                case 'radial':
+                    css = `radial-gradient(${gradientState.radialShape} at ${gradientState.radialPos}, ${colorStr})`;
+                    break;
+                case 'conic':
+                    css = `conic-gradient(from ${gradientState.conicAngle}deg, ${colorStr})`;
+                    break;
+            }
+            return css;
+        }
+
+        function copyGradientCSS() {
+            const css = document.getElementById('cssCode').textContent;
+            navigator.clipboard.writeText(css).then(() => {
+                const btn = event.target;
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => btn.innerHTML = original, 1500);
+            });
+        }
+
+        function applyPreset(presetName) {
+            const preset = gradientPresets[presetName];
+            gradientState.type = preset.type;
+            gradientState.angle = preset.angle || 90;
+            gradientState.radialShape = preset.radialShape || 'circle';
+            gradientState.radialPos = preset.radialPos || 'center';
+            gradientState.conicAngle = preset.conicAngle || 0;
+            gradientState.colors = JSON.parse(JSON.stringify(preset.colors));
+            
+            updateTypeControls(preset.type);
+            renderColorStops();
+            if (document.getElementById('gradAngle')) {
+                document.getElementById('gradAngle').value = gradientState.angle;
+                document.getElementById('angleDisplay').textContent = gradientState.angle + '°';
+            }
+            updatePreview();
+        }
+
+        function randomizeGradient() {
+            const randomColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+            const numColors = Math.floor(Math.random() * 5) + 2;
+            gradientState.colors = [];
+            
+            for (let i = 0; i < numColors; i++) {
+                gradientState.colors.push({
+                    color: randomColor(),
+                    position: Math.round((100 / (numColors - 1)) * i)
+                });
+            }
+            
+            const types = ['linear', 'radial', 'conic'];
+            gradientState.type = types[Math.floor(Math.random() * types.length)];
+            gradientState.angle = Math.floor(Math.random() * 360);
+            
+            updateTypeControls(gradientState.type);
+            renderColorStops();
+            if (document.getElementById('gradAngle')) {
+                document.getElementById('gradAngle').value = gradientState.angle;
+                document.getElementById('angleDisplay').textContent = gradientState.angle + '°';
+            }
+            updatePreview();
+        }
+
+        function reverseGradient() {
+            gradientState.colors.reverse();
+            gradientState.colors = gradientState.colors.map((c, idx, arr) => ({
+                color: c.color,
+                position: 100 - c.position
+            }));
+            renderColorStops();
+            updatePreview();
+        }
+
+        function validateExportDimensions() {
+            const width = parseInt(document.getElementById('exportWidth').value);
+            const height = parseInt(document.getElementById('exportHeight').value);
+            
+            if (width < 100 || width > 4000 || height < 100 || height > 4000) {
+                showNotification('Dimensions must be between 100-4000 pixels');
+                document.getElementById('exportWidth').value = 1080;
+                document.getElementById('exportHeight').value = 1080;
+            }
+        }
+
+        function exportGradient(format) {
+            const width = parseInt(document.getElementById('exportWidth').value);
+            const height = parseInt(document.getElementById('exportHeight').value);
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            
+            const ctx = canvas.getContext('2d');
+            const css = generateGradientCSS();
+            
+            // Apply gradient to canvas
+            if (gradientState.type === 'linear') {
+                const gradient = ctx.createLinearGradient(
+                    width * Math.cos((gradientState.angle - 90) * Math.PI / 180) / 2 + width / 2,
+                    height * Math.sin((gradientState.angle - 90) * Math.PI / 180) / 2 + height / 2,
+                    width * Math.cos((gradientState.angle + 90) * Math.PI / 180) / 2 + width / 2,
+                    height * Math.sin((gradientState.angle + 90) * Math.PI / 180) / 2 + height / 2
+                );
+                gradientState.colors.forEach(c => gradient.addColorStop(c.position / 100, c.color));
+                ctx.fillStyle = gradient;
+            } else if (gradientState.type === 'radial') {
+                const posMap = {
+                    'center': [width / 2, height / 2],
+                    'top left': [0, 0],
+                    'top center': [width / 2, 0],
+                    'top right': [width, 0],
+                    'center left': [0, height / 2],
+                    'center right': [width, height / 2],
+                    'bottom left': [0, height],
+                    'bottom center': [width / 2, height],
+                    'bottom right': [width, height]
+                };
+                const pos = posMap[gradientState.radialPos] || [width / 2, height / 2];
+                const gradient = ctx.createRadialGradient(pos[0], pos[1], 0, pos[0], pos[1], Math.max(width, height) / 2);
+                gradientState.colors.forEach(c => gradient.addColorStop(c.position / 100, c.color));
+                ctx.fillStyle = gradient;
+            } else if (gradientState.type === 'conic') {
+                const gradient = ctx.createConicGradient((gradientState.conicAngle * Math.PI / 180), width / 2, height / 2);
+                gradientState.colors.forEach(c => gradient.addColorStop(c.position / 100, c.color));
+                ctx.fillStyle = gradient;
+            }
+            
+            ctx.fillRect(0, 0, width, height);
+            
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `gradient.${format}`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showNotification(`Gradient exported as ${format.toUpperCase()}`);
+            }, `image/${format}`);
+        }
+        
         // Copy Result Helper
         function copyResult(id) {
             const text = document.getElementById(id).textContent;
@@ -2628,10 +3953,456 @@
         }
 
         // ==========================================
+        // SEO Data
+        // ==========================================
+        const seoData = {
+            wordCounter: {
+                title: 'Word Counter - Count Words & Characters Online | MicroTools',
+                description: 'Free online word counter that accurately counts words, characters, sentences, and paragraphs. Perfect for essays, blog posts, and social media. No signup required.',
+                h1: 'Free Online Word Counter Tool',
+                content: `<p>Our word counter tool helps writers, students, and content creators accurately count words, characters, sentences, and paragraphs in real-time. Whether you're writing essays, blog posts, social media updates, or professional documents, this tool ensures you stay within your target word count.</p><p>The tool provides detailed statistics including reading time based on average reading speed, making it invaluable for content planning and SEO optimization. Get instant results as you type with no delays or page refreshes.</p>`,
+                faq: [
+                    {q: 'How accurate is this word counter?', a: 'Our word counter uses advanced text parsing algorithms to accurately count words, handling contractions, hyphenated words, and special characters correctly.'},
+                    {q: 'Does it count characters with or without spaces?', a: 'The tool displays both counts - total characters including spaces and characters without spaces, giving you flexibility for different requirements.'},
+                    {q: 'Can I see estimated reading time?', a: 'Yes! The tool calculates reading time based on average reading speed (words per minute), which you can customize to match your target audience.'}
+                ],
+                related: ['charCounter', 'textDiff', 'findReplace', 'sortLines']
+            },
+            charCounter: {
+                title: 'Character Counter - Count Characters with Spaces | MicroTools',
+                description: 'Accurate character counter showing characters with and without spaces. Ideal for Twitter, SMS, meta descriptions, and character-limited content. Free online tool.',
+                h1: 'Character Counter Tool - Online & Free',
+                content: `<p>Count characters instantly with our free online character counter. Perfect for social media posts, SMS messages, meta descriptions, and any content with character limits. Get real-time counts as you type.</p><p>This tool is essential for Twitter posts (280 characters), meta descriptions (155-160 characters), SMS messages (160 characters), and more. It shows both total characters and characters without spaces for complete flexibility.</p>`,
+                faq: [
+                    {q: 'Why do I need both character counts?', a: 'Some platforms count spaces (like Twitter), while others do not. Having both counts ensures you meet specific platform requirements.'},
+                    {q: 'Does it work for special characters?', a: 'Yes, all Unicode characters including emojis, special symbols, and international characters are counted accurately.'},
+                    {q: 'Can I use this for SEO meta descriptions?', a: 'Absolutely! Meta descriptions should be 155-160 characters. Our tool helps you stay within this optimal range for search engines.'}
+                ],
+                related: ['wordCounter', 'textDiff', 'findReplace']
+            },
+            gradientGenerator: {
+                title: 'CSS Gradient Generator - Create Beautiful Gradients | MicroTools',
+                description: 'Create stunning CSS gradients with live preview. Linear and radial gradients, multiple color stops, angle control, and instant CSS code. Export as PNG or JPG.',
+                h1: 'Advanced CSS Gradient Generator',
+                content: `<p>Create beautiful, professional CSS gradients with our advanced gradient generator. Design linear or radial gradients with unlimited color stops, precise angle control, and real-time preview. Perfect for web designers, developers, and digital artists.</p><p>Export your gradients as CSS code for immediate use in your projects, or download them as high-resolution PNG or JPG images for use in designs, presentations, or social media. The tool supports multiple color formats including HEX, RGB, and HSL.</p><p>Generate gradients for website backgrounds, buttons, cards, hero sections, and more. The intuitive interface makes it easy to create professional-looking gradients in seconds.</p>`,
+                faq: [
+                    {q: 'Can I add more than 2 colors?', a: 'Yes! Add unlimited color stops to create complex, multi-color gradients. Each color stop can be positioned precisely along the gradient.'},
+                    {q: 'How do I export the gradient?', a: 'Copy the generated CSS code directly, or export as PNG/JPG image in custom dimensions up to 4000x4000 pixels.'},
+                    {q: 'What is the difference between linear and radial?', a: 'Linear gradients transition colors in a straight line at any angle. Radial gradients radiate from a center point outward in a circular pattern.'},
+                    {q: 'Can I use these gradients commercially?', a: 'Yes! All gradients you create are 100% yours to use in personal or commercial projects without attribution.'}
+                ],
+                related: ['colorConverter', 'asciiArt', 'passwordGen']
+            },
+            caseConverter: {
+                title: 'Case Converter - Uppercase, Lowercase, Title Case | MicroTools',
+                description: 'Convert text to uppercase, lowercase, title case, sentence case, or alternating case. Free online text case converter with instant results.',
+                h1: 'Text Case Converter - Multiple Formats',
+                content: `<p>Transform your text between different case formats instantly. Convert to UPPERCASE, lowercase, Title Case, Sentence case, or aLtErNaTiNg CaSe with one click. Essential for content editing, formatting, and text processing.</p>`,
+                faq: [
+                    {q: 'What is Title Case?', a: 'Title Case capitalizes the first letter of each major word, following standard title capitalization rules used in headlines and titles.'},
+                    {q: 'When should I use Sentence case?', a: 'Sentence case capitalizes only the first letter of sentences, making it ideal for converting ALL CAPS text into readable format.'}
+                ],
+                related: ['wordCounter', 'reverseText', 'findReplace']
+            },
+            passwordGen: {
+                title: 'Secure Password Generator - Strong Random Passwords | MicroTools',
+                description: 'Generate strong, secure random passwords with customizable length and character types. Includes uppercase, lowercase, numbers, and special characters.',
+                h1: 'Strong Password Generator Tool',
+                content: `<p>Create highly secure, random passwords to protect your online accounts. Customize password length (8-128 characters) and include uppercase letters, lowercase letters, numbers, and special characters for maximum security.</p><p>Strong passwords are essential for protecting against brute-force attacks, dictionary attacks, and unauthorized access. Our generator uses cryptographically secure random number generation to ensure unpredictability.</p>`,
+                faq: [
+                    {q: 'How long should my password be?', a: 'Security experts recommend passwords of at least 12-16 characters. Longer passwords with mixed character types are exponentially more secure.'},
+                    {q: 'Are these passwords truly random?', a: 'Yes, the generator uses cryptographically secure random functions to ensure each password is completely unpredictable.'},
+                    {q: 'Should I include special characters?', a: 'Yes! Including special characters significantly increases password strength and makes it harder to crack through brute-force methods.'}
+                ],
+                related: ['randomNumber', 'namePicker', 'quoteGen']
+            },
+            colorConverter: {
+                title: 'Color Converter - HEX to RGB, RGB to HEX | MicroTools',
+                description: 'Convert colors between HEX and RGB formats instantly. Perfect for web development, design, and CSS. Free online color conversion tool.',
+                h1: 'Color Format Converter - HEX & RGB',
+                content: `<p>Quickly convert colors between HEX and RGB formats for web development and design projects. Essential for CSS styling, design systems, and color palette management.</p>`,
+                faq: [
+                    {q: 'What is HEX color format?', a: 'HEX colors are 6-digit codes (like #FF5733) representing Red, Green, and Blue values in hexadecimal notation, commonly used in CSS.'},
+                    {q: 'When should I use RGB vs HEX?', a: 'HEX is more common in CSS, while RGB is useful when you need to adjust individual color channels or use transparency (RGBA).'}
+                ],
+                related: ['gradientGenerator', 'asciiArt']
+            },
+            urlEncoder: {
+                title: 'URL Encoder & Decoder - Encode URLs Online | MicroTools',
+                description: 'Encode and decode URLs online. Convert special characters for safe URL transmission. Essential for web developers and API integration.',
+                h1: 'URL Encoder & Decoder Tool',
+                content: `<p>Encode URLs to convert special characters into web-safe format, or decode encoded URLs back to readable text. Essential for API development, query parameters, and safe URL transmission.</p>`,
+                faq: [
+                    {q: 'Why do URLs need encoding?', a: 'URLs can only contain certain characters. Encoding converts spaces, special characters, and non-ASCII characters into percent-encoded format (%20, %21, etc.).'},
+                    {q: 'When should I encode URLs?', a: 'Encode URLs when passing data in query parameters, constructing API requests, or including special characters in web addresses.'}
+                ],
+                related: ['morseCode', 'findReplace']
+            },
+            textToSpeech: {
+                title: 'Text to Speech - Free TTS Converter Online | MicroTools',
+                description: 'Convert text to speech with natural-sounding voices. Free online TTS tool with multiple voices, speed control, and pitch adjustment.',
+                h1: 'Text to Speech Converter (TTS)',
+                content: `<p>Convert any text into natural-sounding speech with our free Text-to-Speech tool. Choose from multiple voices, adjust speaking speed and pitch for optimal results. Perfect for accessibility, learning, and content consumption.</p>`,
+                faq: [
+                    {q: 'How do I change the voice?', a: 'Select from available voices in the dropdown menu. Options vary based on your browser and operating system.'},
+                    {q: 'Can I adjust the speaking speed?', a: 'Yes! Use the speed slider to make speech faster or slower (0.5x to 2x speed).'},
+                    {q: 'Does this work offline?', a: 'The tool uses your browser built-in speech synthesis, so an internet connection may be required for certain voices.'}
+                ],
+                related: ['morseCode', 'reverseText']
+            },
+            loremIpsum: {
+                title: 'Lorem Ipsum Generator - Placeholder Text | MicroTools',
+                description: 'Generate Lorem Ipsum placeholder text for your designs. Create paragraphs, sentences, or words instantly. Free Lorem Ipsum generator.',
+                h1: 'Lorem Ipsum Placeholder Text Generator',
+                content: `<p>Generate Lorem Ipsum dummy text for mockups, designs, and development. Choose between paragraphs, sentences, or words to fill your layouts with realistic-looking placeholder content.</p>`,
+                faq: [
+                    {q: 'What is Lorem Ipsum?', a: 'Lorem Ipsum is scrambled Latin text used as placeholder content in design and publishing since the 1500s.'},
+                    {q: 'Why use Lorem Ipsum instead of real text?', a: 'It prevents viewers from being distracted by readable content, allowing focus on visual design and layout.'}
+                ],
+                related: ['wordCounter', 'reverseText']
+            },
+            findReplace: {
+                title: 'Find and Replace Text Online - Bulk Text Editor | MicroTools',
+                description: 'Find and replace text in bulk online. Replace all occurrences instantly with case-sensitive option. Free text find and replace tool.',
+                h1: 'Find and Replace Text Tool',
+                content: `<p>Quickly find and replace text across large documents. Replace single or all occurrences with case-sensitive matching option. Perfect for batch editing, content updates, and text processing.</p>`,
+                faq: [
+                    {q: 'Can I replace multiple occurrences at once?', a: 'Yes! Use "Replace All" to change every occurrence of the search term in your text instantly.'},
+                    {q: 'Is the search case-sensitive?', a: 'You can toggle case sensitivity on or off using the checkbox. When enabled, "Text" and "text" are treated as different.'}
+                ],
+                related: ['wordCounter', 'sortLines', 'countWord']
+            },
+            sortLines: {
+                title: 'Sort Lines Alphabetically - Text Line Sorter | MicroTools',
+                description: 'Sort text lines alphabetically (A-Z or Z-A) or by line length. Free online text sorting tool with instant results.',
+                h1: 'Sort Text Lines - Alphabetically or by Length',
+                content: `<p>Sort text lines alphabetically in ascending (A-Z) or descending (Z-A) order, or sort by line length. Great for organizing lists, names, data, and text content.</p>`,
+                faq: [
+                    {q: 'How does alphabetical sorting work?', a: 'Lines are sorted character by character, with numbers coming before letters, and uppercase before lowercase in standard ASCII order.'},
+                    {q: 'Can I sort by line length?', a: 'Yes! Sort lines from shortest to longest or longest to shortest based on character count.'}
+                ],
+                related: ['findReplace', 'lineBreaks', 'wordCounter']
+            },
+            countWord: {
+                title: 'Count Specific Word - Word Occurrence Counter | MicroTools',
+                description: 'Count how many times a specific word appears in text. Case-sensitive word frequency counter. Free online tool.',
+                h1: 'Count Specific Word Occurrences',
+                content: `<p>Count how many times a specific word or phrase appears in your text. Toggle case sensitivity for flexible matching. Ideal for content analysis, keyword density checking, and text research.</p>`,
+                faq: [
+                    {q: 'Can I count phrases instead of single words?', a: 'Yes! Enter any text string, including multi-word phrases, to count its occurrences.'},
+                    {q: 'Does it count partial matches?', a: 'No, the tool counts exact word matches only. "cat" will not match "catch" or "category".'}
+                ],
+                related: ['wordCounter', 'findReplace', 'textDiff']
+            },
+            textDiff: {
+                title: 'Text Difference Checker - Compare Two Texts | MicroTools',
+                description: 'Compare two texts and highlight differences. See additions, deletions, and changes side-by-side. Free online text comparison tool.',
+                h1: 'Text Difference Comparison Tool',
+                content: `<p>Compare two versions of text and see exactly what changed. Additions are highlighted in green, deletions in red, making it easy to review document edits, code changes, or content revisions.</p>`,
+                faq: [
+                    {q: 'What do the colors mean?', a: 'Green highlights show additions in the new text, red shows deletions, and yellow shows modifications.'},
+                    {q: 'Can I compare code or formatted text?', a: 'Yes! The tool works with any text including code, preserving line breaks and whitespace for accurate comparison.'}
+                ],
+                related: ['wordCounter', 'findReplace', 'sortLines']
+            },
+            randomNumber: {
+                title: 'Random Number Generator - Generate Random Numbers | MicroTools',
+                description: 'Generate random numbers within any range. Set minimum and maximum values. Perfect for games, raffles, and statistical sampling.',
+                h1: 'Random Number Generator Tool',
+                content: `<p>Generate truly random numbers within any specified range. Set your minimum and maximum values to get instant random results. Perfect for games, decision-making, statistical sampling, and random selection.</p>`,
+                faq: [
+                    {q: 'Are the numbers truly random?', a: 'The generator uses JavaScript Math.random() which produces pseudorandom numbers suitable for most non-cryptographic purposes.'},
+                    {q: 'Can I generate multiple numbers at once?', a: 'Currently, each click generates one random number. Click again for additional random numbers.'}
+                ],
+                related: ['passwordGen', 'namePicker', 'numberConverter']
+            },
+            numberConverter: {
+                title: 'Number Base Converter - Binary, Decimal, Hex | MicroTools',
+                description: 'Convert numbers between binary, decimal, octal, and hexadecimal. Free online number base converter for programmers and students.',
+                h1: 'Number Base Converter Tool',
+                content: `<p>Convert numbers between different numeral systems: binary (base-2), octal (base-8), decimal (base-10), and hexadecimal (base-16). Essential for programmers, computer science students, and digital electronics.</p>`,
+                faq: [
+                    {q: 'What are the different number bases?', a: 'Binary uses 0-1, octal uses 0-7, decimal uses 0-9, and hexadecimal uses 0-9 and A-F. Each base represents numbers differently.'},
+                    {q: 'When would I use hexadecimal?', a: 'Hexadecimal is commonly used in programming for colors (#FF5733), memory addresses, and representing byte values compactly.'}
+                ],
+                related: ['colorConverter', 'randomNumber']
+            },
+            reverseText: {
+                title: 'Reverse Text - Flip Text Backwards | MicroTools',
+                description: 'Reverse text and flip characters backwards. Create mirror text and backwards writing online. Free text reversal tool.',
+                h1: 'Reverse Text Generator',
+                content: `<p>Reverse the order of characters in your text to create backwards or mirror text. Fun for creative writing, puzzles, or encoding messages.</p>`,
+                faq: [
+                    {q: 'Does it reverse words or characters?', a: 'It reverses the entire character sequence, including spaces and punctuation, creating a complete backwards version.'},
+                    {q: 'Can I reverse individual words?', a: 'The current tool reverses all text. For word-by-word reversal, you would need to process each word separately.'}
+                ],
+                related: ['caseConverter', 'morseCode', 'loremIpsum']
+            },
+            lineBreaks: {
+                title: 'Remove Line Breaks - Clean Text Tool | MicroTools',
+                description: 'Remove line breaks and extra spaces from text. Clean up copied text and format paragraphs. Free online text cleaner.',
+                h1: 'Remove Line Breaks from Text',
+                content: `<p>Remove unwanted line breaks and extra spaces from text. Perfect for cleaning up copied content from PDFs, emails, or documents that have awkward formatting.</p>`,
+                faq: [
+                    {q: 'Does it remove all spacing?', a: 'No, it replaces line breaks with single spaces, maintaining readability while creating continuous text.'},
+                    {q: 'Will it affect intentional paragraph breaks?', a: 'Yes, it removes all line breaks. If you need to preserve paragraphs, process each paragraph separately.'}
+                ],
+                related: ['findReplace', 'sortLines']
+            },
+            morseCode: {
+                title: 'Morse Code Translator - Text to Morse Code | MicroTools',
+                description: 'Translate text to Morse code and Morse code to text. Learn Morse code with audio playback. Free online Morse code converter.',
+                h1: 'Morse Code Translator Tool',
+                content: `<p>Convert text to Morse code and vice versa. Learn and practice Morse code with this interactive translator. Supports standard international Morse code with dots (.) and dashes (-).</p>`,
+                faq: [
+                    {q: 'What is Morse code?', a: 'Morse code is a method of encoding text using sequences of dots and dashes, invented by Samuel Morse in the 1830s.'},
+                    {q: 'Can it play the Morse code audio?', a: 'The tool shows visual Morse code. Audio playback may be added in future versions.'}
+                ],
+                related: ['textToSpeech', 'reverseText', 'urlEncoder']
+            },
+            asciiArt: {
+                title: 'ASCII Art Generator - Text to ASCII Art | MicroTools',
+                description: 'Convert text to ASCII art with multiple font styles. Create banner text and ASCII decorative text. Free online ASCII art generator.',
+                h1: 'ASCII Art Text Generator',
+                content: `<p>Transform your text into decorative ASCII art with various font styles. Perfect for creating eye-catching banners, signatures, and text decorations for forums, social media, and plain text documents.</p>`,
+                faq: [
+                    {q: 'What is ASCII art?', a: 'ASCII art uses characters from the ASCII standard to create visual designs and decorative text, popular in plain text environments.'},
+                    {q: 'Can I use these commercially?', a: 'Yes! ASCII art you create is free to use in any project, personal or commercial.'}
+                ],
+                related: ['reverseText', 'gradientGenerator', 'morseCode']
+            },
+            namePicker: {
+                title: 'Random Name Picker - Spin the Wheel | MicroTools',
+                description: 'Pick a random name from your list with animated spinning wheel. Fair random selection for giveaways, teams, and decision-making.',
+                h1: 'Random Name Picker with Wheel',
+                content: `<p>Enter a list of names and spin the wheel to pick a random winner! Perfect for giveaways, team selection, classroom activities, and making fair random decisions. Watch the exciting spinning animation before the winner is revealed.</p>`,
+                faq: [
+                    {q: 'Is the selection truly random?', a: 'Yes! The wheel uses random number generation to ensure every name has an equal chance of being selected.'},
+                    {q: 'Can I pick multiple winners?', a: 'Spin multiple times to select multiple winners. Consider removing previous winners from the list for unique selections.'}
+                ],
+                related: ['randomNumber', 'passwordGen', 'quoteGen']
+            },
+            quoteGen: {
+                title: 'Inspirational Quote Generator | MicroTools',
+                description: 'Get random inspirational, motivational, success, and life quotes. Generate wisdom quotes by category. Free quote generator.',
+                h1: 'Random Quote Generator',
+                content: `<p>Get inspired with random quotes from various categories including inspirational, motivational, success, life, and wisdom. Perfect for daily inspiration, social media posts, and presentations.</p>`,
+                faq: [
+                    {q: 'Can I choose quote categories?', a: 'Yes! Select from categories like inspirational, motivational, success, life, and wisdom quotes to match your needs.'},
+                    {q: 'Can I share the quotes?', a: 'Absolutely! Use the quotes for social media, presentations, or personal motivation. Attribution to original authors is appreciated where applicable.'}
+                ],
+                related: ['namePicker', 'passwordGen']
+            }
+        };
+
+        // ==========================================
+        // SEO Functions
+        // ==========================================
+        const seoTitles = {
+            wordCounter: 'Word Counter - Count Words & Characters Online | MicroTools',
+            charCounter: 'Character Counter - Count Characters with Spaces | MicroTools',
+            caseConverter: 'Case Converter - Uppercase, Lowercase, Title Case | MicroTools',
+            lineBreaks: 'Remove Line Breaks - Clean Text Tool | MicroTools',
+            reverseText: 'Reverse Text - Flip Text Backwards | MicroTools',
+            loremIpsum: 'Lorem Ipsum Generator - Placeholder Text | MicroTools',
+            findReplace: 'Find and Replace Text Online | MicroTools',
+            sortLines: 'Sort Lines Alphabetically - Text Sorter | MicroTools',
+            countWord: 'Count Specific Word Occurrences | MicroTools',
+            textDiff: 'Text Difference Checker - Compare Texts | MicroTools',
+            textToSpeech: 'Text to Speech - Free TTS Converter | MicroTools',
+            randomNumber: 'Random Number Generator | MicroTools',
+            numberConverter: 'Number Base Converter - Binary, Decimal, Hex | MicroTools',
+            colorConverter: 'Color Converter - HEX to RGB | MicroTools',
+            gradientGenerator: 'CSS Gradient Generator - Create Beautiful Gradients | MicroTools',
+            urlEncoder: 'URL Encoder & Decoder Online | MicroTools',
+            morseCode: 'Morse Code Translator - Text to Morse | MicroTools',
+            asciiArt: 'ASCII Art Generator - Text to ASCII | MicroTools',
+            namePicker: 'Random Name Picker - Spin the Wheel | MicroTools',
+            passwordGen: 'Secure Password Generator | MicroTools',
+            quoteGen: 'Inspirational Quote Generator | MicroTools'
+        };
+        
+        function updateSEO(toolId) {
+            const seo = seoData[toolId];
+            if (!seo) return;
+            
+            document.title = seo.title;
+            
+            // Meta description
+            let metaDesc = document.querySelector('meta[name="description"]');
+            if (!metaDesc) {
+                metaDesc = document.createElement('meta');
+                metaDesc.name = 'description';
+                document.head.appendChild(metaDesc);
+            }
+            metaDesc.content = seo.description;
+            
+            // Canonical URL
+            let canonical = document.querySelector('link[rel="canonical"]');
+            if (!canonical) {
+                canonical = document.createElement('link');
+                canonical.rel = 'canonical';
+                document.head.appendChild(canonical);
+            }
+            const url = toolId === 'home' ? '' : toolId;
+            canonical.href = 'https://yoursite.com/' + url;
+            
+            // Open Graph
+            let ogTitle = document.querySelector('meta[property="og:title"]');
+            if (!ogTitle) {
+                ogTitle = document.createElement('meta');
+                ogTitle.setAttribute('property', 'og:title');
+                document.head.appendChild(ogTitle);
+            }
+            ogTitle.content = seo.title;
+            
+            let ogDesc = document.querySelector('meta[property="og:description"]');
+            if (!ogDesc) {
+                ogDesc = document.createElement('meta');
+                ogDesc.setAttribute('property', 'og:description');
+                document.head.appendChild(ogDesc);
+            }
+            ogDesc.content = seo.description;
+            
+            let ogUrl = document.querySelector('meta[property="og:url"]');
+            if (!ogUrl) {
+                ogUrl = document.createElement('meta');
+                ogUrl.setAttribute('property', 'og:url');
+                document.head.appendChild(ogUrl);
+            }
+            ogUrl.content = canonical.href;
+            
+            // Twitter Cards
+            let twitterTitle = document.querySelector('meta[name="twitter:title"]');
+            if (!twitterTitle) {
+                twitterTitle = document.createElement('meta');
+                twitterTitle.name = 'twitter:title';
+                document.head.appendChild(twitterTitle);
+            }
+            twitterTitle.content = seo.title;
+            
+            let twitterDesc = document.querySelector('meta[name="twitter:description"]');
+            if (!twitterDesc) {
+                twitterDesc = document.createElement('meta');
+                twitterDesc.name = 'twitter:description';
+                document.head.appendChild(twitterDesc);
+            }
+            twitterDesc.content = seo.description;
+            
+            // Add structured data
+            updateStructuredData(toolId, seo);
+        }
+        
+        function updateStructuredData(toolId, seo) {
+            // Remove existing structured data
+            const existingScript = document.querySelector('script[type="application/ld+json"]');
+            if (existingScript) existingScript.remove();
+            
+            const structuredData = {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": seo.h1,
+                "description": seo.description,
+                "url": "https://yoursite.com/" + (toolId === 'home' ? '' : toolId),
+                "applicationCategory": "UtilityApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                }
+            };
+            
+            // Add FAQ schema if FAQs exist
+            if (seo.faq && seo.faq.length > 0) {
+                const faqSchema = {
+                    "@context": "https://schema.org",
+                    "@type": "FAQPage",
+                    "mainEntity": seo.faq.map(item => ({
+                        "@type": "Question",
+                        "name": item.q,
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": item.a
+                        }
+                    }))
+                };
+                
+                const script = document.createElement('script');
+                script.type = 'application/ld+json';
+                script.text = JSON.stringify([structuredData, faqSchema]);
+                document.head.appendChild(script);
+            } else {
+                const script = document.createElement('script');
+                script.type = 'application/ld+json';
+                script.text = JSON.stringify(structuredData);
+                document.head.appendChild(script);
+            }
+        }
+        
+        function renderSEOContent(toolId) {
+            const seo = seoData[toolId];
+            if (!seo) return '';
+            
+            let html = '<div class="seo-content">';
+            
+            // About section
+            if (seo.content) {
+                html += `<h2>About This Tool</h2>${seo.content}`;
+            }
+            
+            // FAQ section
+            if (seo.faq && seo.faq.length > 0) {
+                html += '<div class="seo-faq"><h3>Frequently Asked Questions</h3>';
+                seo.faq.forEach((item, index) => {
+                    html += `
+                        <div class="faq-item" id="faq-${index}">
+                            <div class="faq-question" onclick="toggleFAQ(this.parentElement)">
+                                <span>${item.q}</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">${item.a}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            // Related tools
+            if (seo.related && seo.related.length > 0) {
+                html += '<div class="related-tools"><h3>Related Tools</h3><div class="related-grid">';
+                seo.related.forEach(relatedId => {
+                    const relatedTool = tools.find(t => t.id === relatedId);
+                    if (relatedTool) {
+                        html += `
+                            <a class="related-tool-link" onclick="showTool('${relatedId}'); return false;" href="#${relatedId}">
+                                <i class="fas ${relatedTool.icon}"></i>
+                                <span>${relatedTool.name}</span>
+                            </a>
+                        `;
+                    }
+                });
+                html += '</div></div>';
+            }
+            
+            html += '</div>';
+            return html;
+        }
+        
+        function toggleFAQ(faqItem) {
+            faqItem.classList.toggle('open');
+        }
+
+        // ==========================================
         // Initialize
         // ==========================================
+        initSidebar();
+        document.body.classList.add('sidebar-open');
         renderToolsGrid();
-        console.log('MicroTools loaded with 20 utilities!');
+        // Load Word Counter as default tool
+        showTool('wordCounter');
+        updateSEO('wordCounter');
+        console.log('MicroTools loaded with 21 utilities including Advanced Gradient Generator!');
     </script>
 </body>
 </html>
