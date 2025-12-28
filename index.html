@@ -344,6 +344,35 @@
             color: white;
         }
 
+        /* Mobile sidebar toggle */
+        .mobile-sidebar-toggle {
+            position: fixed;
+            left: 16px;
+            bottom: 16px;
+            z-index: 120;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 14px;
+            border-radius: 999px;
+            background: var(--accent-primary);
+            color: #0a0a0f;
+            border: none;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .mobile-sidebar-toggle i {
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-sidebar-toggle {
+                display: flex;
+            }
+        }
+
         /* Sidebar Navigation */
         .sidebar {
             position: fixed;
@@ -1057,6 +1086,11 @@
     <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
+    <!-- Mobile Sidebar Toggle -->
+    <button class="mobile-sidebar-toggle" id="mobileSidebarToggle" onclick="toggleSidebar()" aria-label="Open tools menu">
+        <i class="fas fa-bars"></i><span>Tools</span>
+    </button>
+
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">Tools</div>
@@ -1281,6 +1315,7 @@
                 overlay.classList.toggle('visible');
                 sidebarOpen = !sidebar.classList.contains('mobile-closed');
             }
+            updateSidebarToggleUI();
         }
 
         function closeSidebar() {
@@ -1291,7 +1326,23 @@
                 overlay.classList.remove('visible');
                 sidebarOpen = false;
             }
+            updateSidebarToggleUI();
         }
+
+        function updateSidebarToggleUI() {
+            const toggle = document.getElementById('mobileSidebarToggle');
+            if (!toggle) return;
+            const isMobile = window.innerWidth <= 768;
+            toggle.style.display = isMobile ? 'flex' : 'none';
+            toggle.setAttribute('aria-label', sidebarOpen ? 'Close tools menu' : 'Open tools menu');
+            toggle.innerHTML = sidebarOpen ? '<i class="fas fa-times"></i><span>Close</span>' : '<i class="fas fa-bars"></i><span>Tools</span>';
+        }
+
+        // Expose core UI handlers for inline attributes
+        window.showHome = showHome;
+        window.toggleSidebar = toggleSidebar;
+        window.closeSidebar = closeSidebar;
+        window.toggleTheme = toggleTheme;
 
         function handleSidebarKeydown(e, index) {
             const buttons = document.querySelectorAll('.sidebar-tools button');
@@ -4595,6 +4646,8 @@
         showTool('wordCounter');
         updateSEO('wordCounter');
         console.log('MicroTools loaded with 21 utilities including Advanced Gradient Generator!');
+        updateSidebarToggleUI();
+        window.addEventListener('resize', updateSidebarToggleUI);
         
         })(); // End main application scope
         
