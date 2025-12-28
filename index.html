@@ -344,35 +344,6 @@
             color: white;
         }
 
-        /* Mobile sidebar toggle */
-        .mobile-sidebar-toggle {
-            position: fixed;
-            left: 16px;
-            bottom: 16px;
-            z-index: 120;
-            display: none;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 14px;
-            border-radius: 999px;
-            background: var(--accent-primary);
-            color: #0a0a0f;
-            border: none;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .mobile-sidebar-toggle i {
-            font-size: 16px;
-        }
-
-        @media (max-width: 768px) {
-            .mobile-sidebar-toggle {
-                display: flex;
-            }
-        }
-
         /* Sidebar Navigation */
         .sidebar {
             position: fixed;
@@ -421,6 +392,13 @@
             font-weight: 600;
             border-bottom: 1px solid var(--border-color);
             margin-bottom: 1rem;
+        }
+
+        .sidebar-note {
+            padding: 0 1.5rem 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
         }
 
         .sidebar-tools {
@@ -1086,14 +1064,10 @@
     <!-- Sidebar Overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-    <!-- Mobile Sidebar Toggle -->
-    <button class="mobile-sidebar-toggle" id="mobileSidebarToggle" onclick="toggleSidebar()" aria-label="Open tools menu">
-        <i class="fas fa-bars"></i><span>Tools</span>
-    </button>
-
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">Tools</div>
+        <div class="sidebar-note">Mobile: tap the three-line button in the header to open/close this menu.</div>
         <ul class="sidebar-tools" id="sidebarTools">
             <!-- Dynamically populated by JavaScript -->
         </ul>
