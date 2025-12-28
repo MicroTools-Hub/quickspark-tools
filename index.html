@@ -57,6 +57,48 @@
             box-sizing: border-box;
         }
 
+        /* Anti-copy CSS protection */
+        body, header, nav, main, footer, .sidebar, .tool-container {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Allow selection in input areas */
+        input, textarea, [contenteditable="true"], .result-content, 
+        #wcInput, #ccInput, #caseInput, #lbInput, #revInput, 
+        #loremOutput, #frInput, #sortInput, #cwInput, 
+        #diffText1, #diffText2, #ttsInput {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+        
+        /* Prevent image dragging */
+        img {
+            -webkit-user-drag: none;
+            -moz-user-drag: none;
+            pointer-events: none;
+        }
+        
+        /* Print protection */
+        @media print {
+            body::before {
+                content: "This page is protected and cannot be printed. Visit https://yoursite.com";
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 24px;
+                font-weight: bold;
+            }
+            body > * {
+                display: none !important;
+            }
+        }
+
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-primary);
@@ -306,18 +348,35 @@
         .sidebar {
             position: fixed;
             left: 0;
-            top: 0;
-            height: 100vh;
+            top: 80px;
+            height: calc(100vh - 80px);
             width: 250px;
             background: var(--bg-card);
             border-right: 1px solid var(--border-color);
             padding-top: 1rem;
+            padding-bottom: 2rem;
             overflow-y: auto;
             overflow-x: hidden;
             z-index: 99;
             transition: transform 0.3s ease;
             transform: translateX(0);
-            margin-top: 80px;
+        }
+        
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary);
         }
 
         .sidebar.mobile-closed {
@@ -1042,11 +1101,116 @@
     </footer>
 
     <script>
+        // Anti-copy protection
+        (function() {
+            'use strict';
+            
+            // Console noise
+            const _0x1a2b = ['MicroTools', 'loaded', 'security', 'protected'];
+            console.log('%c🔒 Protected Application', 'color: #b9ff49; font-size: 14px; font-weight: bold;');
+            console.log('%cThis application is protected against unauthorized copying.', 'color: #888;');
+            
+            // DevTools detection
+            let _dtOpen = false;
+            const _dtCheck = () => {
+                const threshold = 160;
+                const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+                const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+                const orientation = widthThreshold ? 'vertical' : 'horizontal';
+                
+                if (!(heightThreshold && widthThreshold) && ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || widthThreshold || heightThreshold)) {
+                    if (!_dtOpen) {
+                        _dtOpen = true;
+                        _dtDetected();
+                    }
+                } else {
+                    if (_dtOpen) {
+                        _dtOpen = false;
+                        _dtClosed();
+                    }
+                }
+            };
+            
+            const _dtDetected = () => {
+                if (!document.getElementById('_dtOverlay')) {
+                    const overlay = document.createElement('div');
+                    overlay.id = '_dtOverlay';
+                    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);z-index:99999;pointer-events:none;transition:opacity 0.3s;';
+                    overlay.innerHTML = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--bg-card);padding:30px;border-radius:16px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.4);pointer-events:auto;"><h3 style="margin:0 0 10px 0;color:var(--accent-primary);">⚠️ Developer Tools Detected</h3><p style="margin:0;color:var(--text-secondary);">For the best experience, please close DevTools.</p><button onclick="this.parentElement.parentElement.remove()" style="margin-top:15px;padding:8px 20px;background:var(--accent-primary);border:none;border-radius:8px;cursor:pointer;font-weight:600;">Dismiss</button></div>';
+                    document.body.appendChild(overlay);
+                }
+            };
+            
+            const _dtClosed = () => {
+                const overlay = document.getElementById('_dtOverlay');
+                if (overlay) overlay.remove();
+            };
+            
+            // Check every 1 second
+            setInterval(_dtCheck, 1000);
+            _dtCheck();
+            
+            // Right-click protection
+            document.addEventListener('contextmenu', (e) => {
+                if (!e.target.matches('input, textarea, [contenteditable="true"]')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+            
+            // Selection protection on UI chrome
+            document.addEventListener('selectstart', (e) => {
+                if (!e.target.matches('input, textarea, [contenteditable="true"], .result-content, #wcInput, #ccInput, #caseInput, #lbInput, #revInput, #loremOutput, #frInput, #sortInput, #cwInput, #diffText1, #diffText2, #ttsInput')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+            
+            // Copy protection with delay
+            document.addEventListener('copy', (e) => {
+                if (!e.target.matches('input, textarea, [contenteditable="true"], .result-content')) {
+                    const selected = window.getSelection().toString();
+                    if (selected && selected.length > 100) {
+                        e.clipboardData.setData('text/plain', selected + '\n\n--- Copied from MicroTools (https://yoursite.com) ---');
+                        e.preventDefault();
+                    }
+                }
+            });
+            
+        })();
+        
+        // Main application scope
+        (function() {
+            'use strict';
+        
+        // Obfuscated function aliases
+        const _0x2e4f = {
+            _cp: (t) => navigator.clipboard.writeText(t),
+            _gE: (i) => document.getElementById(i),
+            _qS: (s) => document.querySelector(s),
+            _qSA: (s) => document.querySelectorAll(s),
+            _cE: (t) => document.createElement(t),
+            _aC: (p, c) => p.appendChild(c),
+            _rnd: () => Math.random(),
+            _flr: (n) => Math.floor(n),
+            _now: () => Date.now(),
+            _prf: () => performance.now()
+        };
+        
+        // Runtime bindings
+        const _exec = {
+            copy: null,
+            notify: null,
+            render: null
+        };
+        
         // ==========================================
         // Tool Definitions
         // ==========================================
         const tools = [
             { id: 'wordCounter', name: 'Word Counter', desc: 'Count words, characters, and lines in your text', icon: 'fa-file-word', category: 'text' },
+            { id: 'quoteGen', name: 'Quote Generator', desc: 'Get inspirational quotes by category', icon: 'fa-quote-right', category: 'quote' },
+            { id: 'passwordGen', name: 'Password Generator', desc: 'Generate secure random passwords', icon: 'fa-key', category: 'random' },
             { id: 'charCounter', name: 'Character Counter', desc: 'Count characters with and without spaces', icon: 'fa-text-height', category: 'text' },
             { id: 'caseConverter', name: 'Case Converter', desc: 'Convert text to uppercase, lowercase, title case', icon: 'fa-font', category: 'text' },
             { id: 'lineBreaks', name: 'Remove Line Breaks', desc: 'Remove line breaks and extra spaces from text', icon: 'fa-align-left', category: 'text' },
@@ -1064,9 +1228,7 @@
             { id: 'urlEncoder', name: 'URL Encoder', desc: 'Encode and decode URLs', icon: 'fa-link', category: 'code' },
             { id: 'morseCode', name: 'Morse Code', desc: 'Translate text to and from Morse code', icon: 'fa-wifi', category: 'code' },
             { id: 'asciiArt', name: 'ASCII Art', desc: 'Convert text to ASCII art', icon: 'fa-paint-brush', category: 'code' },
-            { id: 'namePicker', name: 'Name Picker', desc: 'Pick a random name with spinning wheel', icon: 'fa-random', category: 'random' },
-            { id: 'passwordGen', name: 'Password Generator', desc: 'Generate secure random passwords', icon: 'fa-key', category: 'random' },
-            { id: 'quoteGen', name: 'Quote Generator', desc: 'Get inspirational quotes by category', icon: 'fa-quote-right', category: 'quote' }
+            { id: 'namePicker', name: 'Name Picker', desc: 'Pick a random name with spinning wheel', icon: 'fa-random', category: 'random' }
         ];
 
         // ==========================================
@@ -1093,6 +1255,9 @@
                 li.appendChild(btn);
                 sidebarTools.appendChild(li);
             });
+            
+            console.log('Sidebar initialized with', tools.length, 'tools');
+            console.log('Last tool:', tools[tools.length - 1].name);
         }
 
         function selectToolFromSidebar(toolId) {
@@ -1649,8 +1814,9 @@
                 case 'passwordGen':
                     html += `
                         <div class="input-group">
-                            <label>Base Word/Phrase (Optional - leave empty for random password)</label>
-                            <input type="text" id="pwBaseWord" placeholder="e.g., MySecurePassword or leave empty for random" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text);">
+                            <label>Base Word (Optional - for memorable passwords)</label>
+                            <input type="text" id="pwBaseWord" placeholder="e.g., banana, coffee, dragon (or leave empty for random)" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text);">
+                            <small style="color: var(--text-muted); display: block; margin-top: 5px;">💡 Enter a word you'll remember. We'll make it secure! (e.g., "banana" → "B@n@na2025!")</small>
                         </div>
                         <div class="input-group" style="margin-top: 15px;">
                             <label>Length: <span id="pwLenVal">16</span></label>
@@ -2702,66 +2868,84 @@
             analyzePasswordStrength(password);
         }
         
-        // Convert user word/phrase into a secure password
+        // Convert user word/phrase into a secure but memorable password
         function convertWordToPassword(word, targetLength) {
-            // Leet speak substitutions
-            const leetMap = {
-                'a': '4', 'A': '4', 'e': '3', 'E': '3', 'i': '1', 'I': '1',
-                'o': '0', 'O': '0', 's': '5', 'S': '5', 't': '7', 'T': '7',
-                'l': '1', 'L': '1', 'g': '9', 'G': '9', 'b': '8', 'B': '8',
-                'z': '2', 'Z': '2'
-            };
+            // Strategy: Keep the word recognizable but secure
+            // Example: "banana" -> "B@n@n@2025!" or "Banana#2025$"
             
-            // Symbol substitutions for certain letters
-            const symbolMap = {
-                'a': '@', 'A': '@', 'i': '!', 'I': '!', 's': '$', 'S': '$',
-                'o': '0', 'O': '0', 'h': '#', 'H': '#', 'e': '3', 'E': '3'
+            // Leet speak substitutions (consistent, not random)
+            const leetMap = {
+                'a': '@', 'e': '3', 'i': '!', 'o': '0', 's': '$', 't': '7', 'l': '1'
             };
             
             let transformed = word;
             
-            // Apply transformations with some randomness
+            // Capitalize first letter for memorability
+            transformed = transformed.charAt(0).toUpperCase() + transformed.slice(1).toLowerCase();
+            
+            // Apply strategic leet speak to vowels only (keeps it readable)
             transformed = transformed.split('').map((char, index) => {
-                const rand = Math.random();
-                
-                // 30% chance: leet substitution
-                if (rand < 0.3 && leetMap[char]) {
-                    return leetMap[char];
-                }
-                // 20% chance: symbol substitution
-                else if (rand < 0.5 && symbolMap[char]) {
-                    return symbolMap[char];
-                }
-                // 40% chance: case flip for letters
-                else if (/[a-zA-Z]/.test(char)) {
-                    return (rand < 0.7) ? char.toUpperCase() : char.toLowerCase();
+                const lowerChar = char.toLowerCase();
+                // Apply leet speak to alternate vowels to keep some readability
+                if (leetMap[lowerChar] && index % 2 === 1) {
+                    return leetMap[lowerChar];
                 }
                 return char;
             }).join('');
             
-            // Add random characters if needed to meet length requirement
-            let chars = '';
-            if (document.getElementById('pwUpper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            if (document.getElementById('pwLower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
-            if (document.getElementById('pwNumbers').checked) chars += '0123456789';
-            if (document.getElementById('pwSymbols').checked) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            // Add year suffix for context
+            const year = new Date().getFullYear();
             
-            // If transformed word is shorter than target, pad with random chars
-            while (transformed.length < targetLength && chars) {
-                const insertPos = Math.floor(Math.random() * (transformed.length + 1));
-                const randomChar = chars[Math.floor(Math.random() * chars.length)];
-                transformed = transformed.slice(0, insertPos) + randomChar + transformed.slice(insertPos);
+            // Add symbols based on user preferences
+            const symbols = [];
+            if (document.getElementById('pwSymbols').checked) {
+                symbols.push('!', '@', '#', '$', '%', '^', '&', '*');
             }
             
-            // If still longer than target, truncate
-            if (transformed.length > targetLength) {
-                transformed = transformed.slice(0, targetLength);
+            // Build memorable password pattern
+            let password = transformed;
+            
+            // If we need more length, add year and symbols
+            if (password.length < targetLength) {
+                // Add symbol prefix if enabled
+                if (symbols.length > 0) {
+                    password = symbols[Math.floor(Math.random() * symbols.length)] + password;
+                }
+                
+                // Add year if numbers are enabled
+                if (document.getElementById('pwNumbers').checked) {
+                    password += year;
+                }
+                
+                // Add symbol suffix if still need length
+                if (symbols.length > 0 && password.length < targetLength) {
+                    password += symbols[Math.floor(Math.random() * symbols.length)];
+                }
+                
+                // If still short, add random numbers
+                while (password.length < targetLength && document.getElementById('pwNumbers').checked) {
+                    password += Math.floor(Math.random() * 10);
+                }
+                
+                // Last resort: add random chars (if options allow)
+                let chars = '';
+                if (document.getElementById('pwUpper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                if (document.getElementById('pwLower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
+                if (document.getElementById('pwNumbers').checked) chars += '0123456789';
+                if (document.getElementById('pwSymbols').checked) chars += '!@#$%^&*';
+                
+                while (password.length < targetLength && chars) {
+                    password += chars[Math.floor(Math.random() * chars.length)];
+                }
             }
             
-            // Add some final randomization: shuffle some characters
-            const shuffled = transformed.split('').sort(() => Math.random() - 0.3).join('');
+            // If too long, intelligently truncate (keep recognizable parts)
+            if (password.length > targetLength) {
+                // Try to keep the base word + some suffix
+                password = password.slice(0, targetLength);
+            }
             
-            return shuffled.slice(0, targetLength);
+            return password;
         }
         
         // Analyze and display password strength
@@ -3490,6 +3674,11 @@
             const author = encodeURIComponent(document.getElementById('quoteAuthor').textContent);
             window.open(`https://twitter.com/intent/tweet?text=${text} ${author}`, '_blank');
         }
+
+        // Expose quote functions for inline handlers
+        window.generateQuote = generateQuote;
+        window.copyQuote = copyQuote;
+        window.tweetQuote = tweetQuote;
         
         // ==========================================
         // Gradient Generator
@@ -4406,6 +4595,73 @@
         showTool('wordCounter');
         updateSEO('wordCounter');
         console.log('MicroTools loaded with 21 utilities including Advanced Gradient Generator!');
+        
+        })(); // End main application scope
+        
+        // Additional protection layer
+        (function() {
+            // Code integrity check
+            const _sig = 'MT_' + btoa(window.location.hostname).slice(0, 8);
+            sessionStorage.setItem('_app_sig', _sig);
+            
+            // Obfuscate console
+            const _log = console.log;
+            const _msgs = ['Inspecting?', 'Looking for something?', 'Protected code', 'Access denied'];
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    _log('%c' + _msgs[Math.floor(Math.random() * _msgs.length)], 'color: #444; font-size: 10px;');
+                }
+            }, 5000);
+            
+            // Prevent easy iframe embedding
+            if (window.top !== window.self) {
+                window.top.location = window.self.location;
+            }
+            
+            // Prevent script injection monitoring
+            const _scriptCount = document.scripts.length;
+            setInterval(() => {
+                if (document.scripts.length > _scriptCount) {
+                    console.warn('⚠️ External script detected');
+                }
+            }, 2000);
+            
+            // Keyboard shortcuts protection
+            document.addEventListener('keydown', (e) => {
+                // Block Ctrl+U (view source) and Ctrl+Shift+I (devtools) on some browsers
+                if ((e.ctrlKey && e.key === 'u') || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                    if (Math.random() > 0.5) { // Don't block completely, just occasionally
+                        e.preventDefault();
+                        console.log('%c🔒 Source viewing discouraged', 'color: #ff6b6b;');
+                    }
+                }
+            });
+            
+            // Debugger trap (subtle, not blocking)
+            let _dbgCount = 0;
+            const _dbgCheck = () => {
+                const start = performance.now();
+                debugger; // This line will pause if DevTools is open with breakpoints enabled
+                const end = performance.now();
+                if (end - start > 100) {
+                    _dbgCount++;
+                    if (_dbgCount > 3) {
+                        console.clear();
+                        console.log('%c⚠️ Debugging detected', 'color: #ff6b6b; font-weight: bold;');
+                    }
+                }
+            };
+            
+            // Run check occasionally (non-blocking)
+            setTimeout(_dbgCheck, 3000);
+            
+            // Anti-bot: Add honeypot in DOM
+            const _hp = document.createElement('div');
+            _hp.style.cssText = 'position:absolute;left:-9999px;';
+            _hp.innerHTML = '<input type="text" name="website" id="website" tabindex="-1" autocomplete="off">';
+            document.body.appendChild(_hp);
+            
+        })();
     </script>
 </body>
 </html>
