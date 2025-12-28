@@ -1312,8 +1312,8 @@
                 document.body.classList.toggle('sidebar-open', sidebarOpen);
             } else {
                 sidebar.classList.toggle('mobile-closed');
-                overlay.classList.toggle('visible');
                 sidebarOpen = !sidebar.classList.contains('mobile-closed');
+                overlay.classList.toggle('visible', sidebarOpen);
             }
             updateSidebarToggleUI();
         }
