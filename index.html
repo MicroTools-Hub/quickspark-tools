@@ -4799,6 +4799,8 @@
         // Close sidebar on mobile by default
         if (window.innerWidth <= 768) {
             document.body.classList.remove('sidebar-open');
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.add('mobile-closed');
         } else {
             document.body.classList.add('sidebar-open');
         }
