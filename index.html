@@ -1328,6 +1328,55 @@
         ];
 
         // ==========================================
+        // URL Slug Mapping (SEO-friendly kebab-case URLs)
+        // ==========================================
+        const slugToId = {
+            'word-counter': 'wordCounter',
+            'quote-generator': 'quoteGen',
+            'password-generator': 'passwordGen',
+            'character-counter': 'charCounter',
+            'case-converter': 'caseConverter',
+            'remove-line-breaks': 'lineBreaks',
+            'reverse-text': 'reverseText',
+            'lorem-ipsum': 'loremIpsum',
+            'find-replace': 'findReplace',
+            'sort-lines': 'sortLines',
+            'count-specific-words': 'countWord',
+            'text-diff': 'textDiff',
+            'text-to-speech': 'textToSpeech',
+            'random-number': 'randomNumber',
+            'number-converter': 'numberConverter',
+            'color-converter': 'colorConverter',
+            'gradient-generator': 'gradientGenerator',
+            'url-encoder': 'urlEncoder',
+            'morse-code': 'morseCode',
+            'ascii-art': 'asciiArt',
+            'name-picker': 'namePicker',
+            'privacy-policy': 'privacy',
+            'terms-of-service': 'terms',
+            'contact': 'contact'
+        };
+
+        // Create reverse mapping for ID to slug
+        const idToSlug = {};
+        Object.keys(slugToId).forEach(slug => {
+            idToSlug[slugToId[slug]] = slug;
+        });
+        // Add static pages
+        idToSlug['privacy'] = 'privacy-policy';
+        idToSlug['terms'] = 'terms-of-service';
+        idToSlug['contact'] = 'contact';
+
+        // Helper functions
+        function getToolIdFromSlug(slug) {
+            return slugToId[slug] || slug;
+        }
+
+        function getSlugFromToolId(toolId) {
+            return idToSlug[toolId] || toolId;
+        }
+
+        // ==========================================
         // Sidebar Navigation
         // ==========================================
         let currentToolId = 'wordCounter';
@@ -1437,9 +1486,16 @@
             document.querySelectorAll('.sidebar-tools button').forEach(btn => {
                 btn.classList.remove('active');
             });
+            
+            // Update URL without page reload
+            window.history.pushState({ home: true }, '', '/');
         }
 
-        function showTool(toolId) {
+        function showTool(toolIdOrSlug) {
+            // Convert slug to ID if needed
+            const toolId = getToolIdFromSlug(toolIdOrSlug);
+            const slug = getSlugFromToolId(toolId);
+            
             currentToolId = toolId;
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('toolView').classList.add('active');
@@ -1450,10 +1506,15 @@
                 if (btn.dataset.toolId === toolId) btn.classList.add('active');
             });
             renderTool(toolId);
-            updateSEO(toolId);
+            updateSEO(toolId, slug);
+            
+            // Update URL without page reload
+            window.history.pushState({ toolId: toolId }, '', '/' + slug);
         }
 
         function showStaticPage(pageId) {
+            const slug = getSlugFromToolId(pageId);
+            
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('toolView').classList.remove('active');
             document.getElementById('staticPageView').classList.remove('hidden');
@@ -1463,6 +1524,9 @@
             });
             renderStaticPage(pageId);
             closeSidebar();
+            
+            // Update URL without page reload
+            window.history.pushState({ pageId: pageId }, '', '/' + slug);
         }
 
         function renderStaticPage(pageId) {
@@ -4620,7 +4684,7 @@
             quoteGen: 'Inspirational Quote Generator | MicroTools'
         };
         
-        function updateSEO(toolId) {
+        function updateSEO(toolId, slug) {
             const seo = seoData[toolId];
             if (!seo) return;
             
@@ -4642,8 +4706,9 @@
                 canonical.rel = 'canonical';
                 document.head.appendChild(canonical);
             }
-            const url = toolId === 'home' ? '' : toolId;
-            canonical.href = 'https://yoursite.com/' + url;
+            // Use slug for URL if provided, otherwise use toolId
+            const url = toolId === 'home' ? '' : (slug || getSlugFromToolId(toolId));
+            canonical.href = 'https://microtools-hub.online/' + url;
             
             // Open Graph
             let ogTitle = document.querySelector('meta[property="og:title"]');
@@ -4696,12 +4761,13 @@
             const existingScript = document.querySelector('script[type="application/ld+json"]');
             if (existingScript) existingScript.remove();
             
+            const slug = getSlugFromToolId(toolId);
             const structuredData = {
                 "@context": "https://schema.org",
                 "@type": "SoftwareApplication",
                 "name": seo.h1,
                 "description": seo.description,
-                "url": "https://yoursite.com/" + (toolId === 'home' ? '' : toolId),
+                "url": "https://microtools-hub.online/" + (toolId === 'home' ? '' : slug),
                 "applicationCategory": "UtilityApplication",
                 "operatingSystem": "Any",
                 "offers": {
@@ -4792,6 +4858,41 @@
         }
 
         // ==========================================
+        // ==========================================
+        // URL Routing Handler
+        // ==========================================
+        function handleRouting() {
+            const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
+            
+            if (!path || path === '') {
+                // Homepage
+                showHome();
+                updateSEO('home');
+            } else {
+                // Check if it's a tool slug
+                const toolId = getToolIdFromSlug(path);
+                const tool = tools.find(t => t.id === toolId);
+                
+                if (tool) {
+                    // It's a valid tool
+                    showTool(path);
+                } else if (['privacy', 'terms', 'contact'].includes(toolId)) {
+                    // It's a static page
+                    showStaticPage(toolId);
+                } else {
+                    // Invalid route, go to home
+                    showHome();
+                    updateSEO('home');
+                }
+            }
+        }
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            handleRouting();
+        });
+
+        // ==========================================
         // Initialize
         // ==========================================
         
@@ -4804,10 +4905,10 @@
         } else {
             document.body.classList.add('sidebar-open');
         }
-        // Render tools grid first, then show home
+        // Render tools grid first
         renderToolsGrid();
-        showHome();
-        updateSEO('home');
+        // Handle initial route
+        handleRouting();
         console.log('MicroTools loaded with 21 utilities including Advanced Gradient Generator!');
         updateSidebarToggleUI();
         window.addEventListener('resize', updateSidebarToggleUI);
