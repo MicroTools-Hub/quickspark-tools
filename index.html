@@ -1187,30 +1187,9 @@
             
         })();
         
-        // Main application scope
-        (function() {
-            'use strict';
-        
-        // Obfuscated function aliases
-        const _0x2e4f = {
-            _cp: (t) => navigator.clipboard.writeText(t),
-            _gE: (i) => document.getElementById(i),
-            _qS: (s) => document.querySelector(s),
-            _qSA: (s) => document.querySelectorAll(s),
-            _cE: (t) => document.createElement(t),
-            _aC: (p, c) => p.appendChild(c),
-            _rnd: () => Math.random(),
-            _flr: (n) => Math.floor(n),
-            _now: () => Date.now(),
-            _prf: () => performance.now()
-        };
-        
-        // Runtime bindings
-        const _exec = {
-            copy: null,
-            notify: null,
-            render: null
-        };
+        // ==========================================
+        // Main Application Code
+        // ==========================================
         
         // ==========================================
         // Tool Definitions
@@ -1311,12 +1290,6 @@
             toggle.setAttribute('aria-label', sidebarOpen ? 'Close tools menu' : 'Open tools menu');
             toggle.innerHTML = sidebarOpen ? '<i class="fas fa-times"></i><span>Close</span>' : '<i class="fas fa-bars"></i><span>Tools</span>';
         }
-
-        // Expose core UI handlers for inline attributes
-        window.showHome = showHome;
-        window.toggleSidebar = toggleSidebar;
-        window.closeSidebar = closeSidebar;
-        window.toggleTheme = toggleTheme;
 
         function handleSidebarKeydown(e, index) {
             const buttons = document.querySelectorAll('.sidebar-tools button');
@@ -4613,17 +4586,21 @@
         // ==========================================
         // Initialize
         // ==========================================
+        
         initSidebar();
-        document.body.classList.add('sidebar-open');
+        // Close sidebar on mobile by default
+        if (window.innerWidth <= 768) {
+            document.body.classList.remove('sidebar-open');
+        } else {
+            document.body.classList.add('sidebar-open');
+        }
+        // Render tools grid first, then show home
         renderToolsGrid();
-        // Load Word Counter as default tool
-        showTool('wordCounter');
-        updateSEO('wordCounter');
+        showHome();
+        updateSEO('home');
         console.log('MicroTools loaded with 21 utilities including Advanced Gradient Generator!');
         updateSidebarToggleUI();
         window.addEventListener('resize', updateSidebarToggleUI);
-        
-        })(); // End main application scope
         
         // Additional protection layer
         (function() {
