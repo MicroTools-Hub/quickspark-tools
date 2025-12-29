@@ -1015,6 +1015,100 @@
             }
         }
 
+        /* Footer Styles */
+        .site-footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 2rem 1rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            margin: 0 0 1rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-secondary);
+            text-decoration: underline;
+        }
+
+        .footer-links span {
+            color: var(--border);
+        }
+
+        /* Static Pages Styles */
+        #staticPageView {
+            padding: 2rem 0;
+        }
+
+        .static-page-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            line-height: 1.8;
+        }
+
+        .static-page-content h1 {
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .static-page-content h2 {
+            color: var(--text-primary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .static-page-content p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .static-page-content ul {
+            margin: 1rem 0 1rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .static-page-content ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .static-page-content a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .static-page-content a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 480px) {
             header {
                 padding: 0.75rem 1rem;
@@ -1099,13 +1193,28 @@
         <!-- Tool View -->
         <div id="toolView">
             <div class="tool-container" id="toolContainer">
-                <!-- Active tool will be rendered here -->
+                <!-- Active tool will be rendered here -->\n            </div>
+        </div>
+
+        <!-- Static Pages View -->
+        <div id="staticPageView" class="hidden">
+            <div id="staticPageContent" class="static-page-content">
+                <!-- Static page content will be populated here -->
             </div>
         </div>
     </main>
 
-    <footer>
-        <p>MicroTools © 2024 • No backend required • 100% browser-based</p>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2025 MicroTools. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#" onclick="showStaticPage('privacy'); return false;">Privacy Policy</a>
+                <span>|</span>
+                <a href="#" onclick="showStaticPage('terms'); return false;">Terms of Service</a>
+                <span>|</span>
+                <a href="#" onclick="showStaticPage('contact'); return false;">Contact</a>
+            </div>
+        </div>
     </footer>
 
     <script>
@@ -1323,6 +1432,7 @@
         function showHome() {
             document.getElementById('homeView').classList.remove('hidden');
             document.getElementById('toolView').classList.remove('active');
+            document.getElementById('staticPageView').classList.add('hidden');
             document.getElementById('backBtn').classList.remove('visible');
             document.querySelectorAll('.sidebar-tools button').forEach(btn => {
                 btn.classList.remove('active');
@@ -1333,6 +1443,7 @@
             currentToolId = toolId;
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('toolView').classList.add('active');
+            document.getElementById('staticPageView').classList.add('hidden');
             document.getElementById('backBtn').classList.add('visible');
             document.querySelectorAll('.sidebar-tools button').forEach(btn => {
                 btn.classList.remove('active');
@@ -1340,6 +1451,103 @@
             });
             renderTool(toolId);
             updateSEO(toolId);
+        }
+
+        function showStaticPage(pageId) {
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('toolView').classList.remove('active');
+            document.getElementById('staticPageView').classList.remove('hidden');
+            document.getElementById('backBtn').classList.add('visible');
+            document.querySelectorAll('.sidebar-tools button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            renderStaticPage(pageId);
+            closeSidebar();
+        }
+
+        function renderStaticPage(pageId) {
+            const content = document.getElementById('staticPageContent');
+            let html = '';
+
+            if (pageId === 'privacy') {
+                html = `
+                    <h1>Privacy Policy</h1>
+                    <p><strong>Privacy Policy for MicroTools</strong></p>
+                    <p>At MicroTools, accessible at https://microtools-hub.online, the privacy of our visitors is extremely important to us. This Privacy Policy document explains what information is collected and how it is used.</p>
+                    
+                    <h2>Information We Collect</h2>
+                    <p>MicroTools does not require users to create accounts or provide personal information. Any text, numbers, or data entered into our tools are processed entirely within your browser and are not stored, logged, or transmitted to our servers.</p>
+                    
+                    <h2>Log Files</h2>
+                    <p>MicroTools may use standard server log files. These logs may include IP addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring or exit pages, and clicks. This information is used only for analytics and maintaining site performance.</p>
+                    
+                    <h2>Cookies and Web Beacons</h2>
+                    <p>MicroTools may use cookies to store visitor preferences and improve user experience. Google, as a third-party vendor, uses cookies such as the DoubleClick cookie to serve ads based on users' visits to this and other websites.</p>
+                    
+                    <h2>Google AdSense</h2>
+                    <p>We use Google AdSense to display advertisements. Google AdSense uses cookies to show ads to users based on their visit to this website and other sites on the internet. Users may opt out of personalized advertising through Google Ads Settings.</p>
+                    
+                    <h2>Third-Party Privacy Policies</h2>
+                    <p>MicroTools' Privacy Policy does not apply to other advertisers or websites. We advise users to consult the respective Privacy Policies of third-party ad servers for more detailed information.</p>
+                    
+                    <h2>Consent</h2>
+                    <p>By using our website, you hereby consent to this Privacy Policy and agree to its terms.</p>
+                    
+                    <h2>Contact</h2>
+                    <p>If you have questions about this Privacy Policy, contact us at:<br>
+                    <a href="mailto:microtools12345@gmail.com">microtools12345@gmail.com</a></p>
+                `;
+            } else if (pageId === 'terms') {
+                html = `
+                    <h1>Terms of Service</h1>
+                    <p><strong>Terms of Service for MicroTools</strong></p>
+                    <p>By accessing and using MicroTools, you agree to comply with and be bound by the following terms and conditions.</p>
+                    
+                    <h2>Use of the Website</h2>
+                    <p>All tools provided on MicroTools are free to use for personal and educational purposes. The tools are provided "as is" without warranties of any kind.</p>
+                    
+                    <h2>User Responsibility</h2>
+                    <p>Users are responsible for how they use the tools and any results generated. MicroTools is not responsible for data loss, misuse, or damages resulting from the use of the website.</p>
+                    
+                    <h2>Intellectual Property</h2>
+                    <p>The website design, layout, branding, and original written content are the intellectual property of MicroTools. Unauthorized copying, redistribution, or commercial use without permission is prohibited.</p>
+                    
+                    <h2>Limitation of Liability</h2>
+                    <p>MicroTools shall not be held liable for any direct, indirect, incidental, or consequential damages arising from the use or inability to use the website.</p>
+                    
+                    <h2>Changes to These Terms</h2>
+                    <p>We reserve the right to update or modify these Terms at any time without prior notice. Continued use of the website after changes indicates acceptance of the updated Terms.</p>
+                    
+                    <h2>Governing Law</h2>
+                    <p>These Terms shall be governed in accordance with applicable laws.</p>
+                    
+                    <h2>Contact</h2>
+                    <p>If you have questions regarding these Terms, contact:<br>
+                    <a href="mailto:microtools12345@gmail.com">microtools12345@gmail.com</a></p>
+                `;
+            } else if (pageId === 'contact') {
+                html = `
+                    <h1>About & Contact</h1>
+                    <p><strong>About MicroTools</strong></p>
+                    <p>MicroTools is a collection of fast, simple, and privacy-focused online utilities designed to help users perform everyday text, number, and formatting tasks efficiently.</p>
+                    <p>Our tools work entirely in the browser and do not require registration, downloads, or personal data. The goal of MicroTools is to provide clean, lightweight tools that are accessible to everyone.</p>
+                    
+                    <h2>Why MicroTools</h2>
+                    <ul>
+                        <li>No sign-up required</li>
+                        <li>Instant results</li>
+                        <li>Privacy-friendly client-side processing</li>
+                        <li>Useful for students, writers, developers, and professionals</li>
+                    </ul>
+                    
+                    <h2>Contact Us</h2>
+                    <p>If you have feedback, suggestions, or business inquiries, you can reach us at:</p>
+                    <p><a href="mailto:microtools12345@gmail.com">microtools12345@gmail.com</a></p>
+                    <p>We usually respond within 24–48 hours.</p>
+                `;
+            }
+
+            content.innerHTML = html;
         }
 
         // ==========================================
