@@ -599,6 +599,16 @@
             font-weight: 600;
         }
 
+        /* AdSense Integration */
+        .ad-container {
+            grid-column: 1 / -1;
+            min-height: 0;
+            height: auto;
+            margin: 0.5rem 0;
+            padding: 0;
+            width: 100%;
+        }
+
         /* Tool View */
         #toolView {
             display: none;
@@ -1472,6 +1482,7 @@
         // Navigation
         // ==========================================
         function showHome() {
+            currentRoute = 'home';
             document.getElementById('homeView').classList.remove('hidden');
             document.getElementById('toolView').classList.remove('active');
             document.getElementById('staticPageView').classList.add('hidden');
@@ -1482,6 +1493,9 @@
             
             // Update URL without page reload
             window.history.pushState({ home: true }, '', '/');
+            
+            // Insert homepage ads after grid is visible
+            setTimeout(() => insertHomePageAds(), 150);
         }
 
         function showTool(toolIdOrSlug) {
@@ -1489,6 +1503,7 @@
             const toolId = getToolIdFromSlug(toolIdOrSlug);
             const slug = getSlugFromToolId(toolId);
             
+            currentRoute = 'tool-' + toolId;
             currentToolId = toolId;
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('toolView').classList.add('active');
@@ -1503,11 +1518,15 @@
             
             // Update URL without page reload
             window.history.pushState({ toolId: toolId }, '', '/' + slug);
+            
+            // Insert tool page ads after content is rendered
+            setTimeout(() => insertToolPageAds(), 150);
         }
 
         function showStaticPage(pageId) {
             const slug = getSlugFromToolId(pageId);
             
+            currentRoute = 'page-' + pageId;
             document.getElementById('homeView').classList.add('hidden');
             document.getElementById('toolView').classList.remove('active');
             document.getElementById('staticPageView').classList.remove('hidden');
@@ -1517,6 +1536,9 @@
             });
             renderStaticPage(pageId);
             closeSidebar();
+            
+            // Clear ads on static pages (force clear)
+            clearAllAds(true);
             
             // Update URL without page reload
             window.history.pushState({ pageId: pageId }, '', '/' + slug);
@@ -1628,6 +1650,11 @@
                 `;
                 grid.appendChild(card);
             });
+            
+            // Re-insert ads after grid is re-populated (only on homepage)
+            if (!document.getElementById('homeView').classList.contains('hidden')) {
+                setTimeout(() => insertHomePageAds(), 150);
+            }
         }
 
         // Filter buttons
@@ -5030,6 +5057,170 @@
         window.addEventListener('popstate', function(event) {
             handleRouting();
         });
+
+        // ==========================================
+        // Google AdSense Integration for SPA
+        // ==========================================
+        
+        let currentRoute = '';
+        let adRequestPending = false;
+        let adsLoading = false;
+        
+        /**
+         * Creates and returns a banner ad element (NOT pushed yet)
+         * Reuses the same ad unit configuration
+         */
+        function createBannerAd() {
+            const adContainer = document.createElement('div');
+            adContainer.className = 'ad-container';
+            
+            const ins = document.createElement('ins');
+            ins.className = 'adsbygoogle microtools-banner';
+            ins.style.display = 'block';
+            ins.setAttribute('data-ad-client', 'ca-pub-6119998481340838');
+            ins.setAttribute('data-ad-slot', '7052142787');
+            ins.setAttribute('data-ad-format', 'auto');
+            ins.setAttribute('data-full-width-responsive', 'true');
+            
+            adContainer.appendChild(ins);
+            return adContainer;
+        }
+        
+        /**
+         * Safely requests AdSense to fill all pending ads
+         * Includes delay and duplicate prevention
+         */
+        function requestAds(routeSnapshot) {
+            if (adRequestPending) return;
+            if (typeof window.adsbygoogle === 'undefined') {
+                console.warn('AdSense script not loaded yet');
+                return;
+            }
+            
+            adRequestPending = true;
+            adsLoading = true;
+            
+            // Wait for DOM to be fully painted and stable
+            setTimeout(() => {
+                // Verify we're still on the same route
+                if (routeSnapshot !== currentRoute) {
+                    adRequestPending = false;
+                    adsLoading = false;
+                    return;
+                }
+                
+                try {
+                    const adsToFill = document.querySelectorAll('.adsbygoogle:not([data-ad-status])');
+                    
+                    if (adsToFill.length === 0) {
+                        adRequestPending = false;
+                        adsLoading = false;
+                        return;
+                    }
+                    
+                    adsToFill.forEach(ad => {
+                        try {
+                            (window.adsbygoogle = window.adsbygoogle || []).push({});
+                        } catch (e) {
+                            console.warn('AdSense push failed:', e);
+                        }
+                    });
+                    
+                    // Allow ads to start loading before resetting flags
+                    setTimeout(() => {
+                        adRequestPending = false;
+                        // Keep adsLoading true for 2 more seconds to prevent premature clearing
+                        setTimeout(() => {
+                            adsLoading = false;
+                        }, 2000);
+                    }, 500);
+                    
+                } catch (e) {
+                    console.warn('AdSense batch request failed:', e);
+                    adRequestPending = false;
+                    adsLoading = false;
+                }
+            }, 400);
+        }
+        
+        /**
+         * Removes all existing ads from the page
+         * Essential for SPA route changes
+         * Protected: won't clear if ads are currently loading
+         */
+        function clearAllAds(force = false) {
+            // Don't clear ads if they're currently loading (unless forced)
+            if (adsLoading && !force) {
+                return;
+            }
+            
+            const existingAds = document.querySelectorAll('.ad-container');
+            existingAds.forEach(ad => {
+                try {
+                    ad.remove();
+                } catch (e) {
+                    console.warn('Failed to remove ad:', e);
+                }
+            });
+        }
+        
+        /**
+         * Detects if current viewport is mobile
+         */
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+        
+        /**
+         * Inserts ads on the homepage
+         * Mobile: 1 ad per 3 tool cards (max 6)
+         * Desktop: 1 ad per 6 tool cards (max 3)
+         */
+        function insertHomePageAds() {
+            // Homepage ads disabled - user will add manually
+        }
+        
+        /**
+         * Inserts 3 ads on tool pages
+         * 1. After tool header
+         * 2. Before privacy/terms section
+         * 3. After privacy/terms section
+         */
+        function insertToolPageAds() {
+            clearAllAds(true);
+            
+            setTimeout(() => {
+                const toolHeader = document.querySelector('.tool-header');
+                const seoSection = document.querySelector('.tool-seo-section');
+                
+                if (!toolHeader) {
+                    console.warn('Tool header not found, skipping ads');
+                    return;
+                }
+                
+                let adCount = 0;
+                
+                // Ad 1: BEFORE tool header (at the very top)
+                const ad1 = createBannerAd();
+                toolHeader.parentNode.insertBefore(ad1, toolHeader);
+                adCount++;
+                
+                // Ad 2 & 3: Around SEO section if it exists
+                if (seoSection) {
+                    const ad2 = createBannerAd();
+                    seoSection.parentNode.insertBefore(ad2, seoSection);
+                    adCount++;
+                    
+                    const ad3 = createBannerAd();
+                    seoSection.parentNode.insertBefore(ad3, seoSection.nextSibling);
+                    adCount++;
+                }
+                
+                if (adCount > 0) {
+                    requestAds(currentRoute);
+                }
+            }, 100);
+        }
 
         // ==========================================
         // Initialize
