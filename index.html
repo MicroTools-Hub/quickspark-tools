@@ -845,17 +845,10 @@
             height: 250px;
         }
 
-        .wheel {
-            width: 100%;
-            height: 100%;
+        #wheelCanvas {
+            width: 250px;
+            height: 250px;
             border-radius: 50%;
-            background: conic-gradient(
-                #6366f1, #8b5cf6, #a855f7, #d946ef,
-                #ec4899, #f43f5e, #ef4444, #f97316,
-                #eab308, #84cc16, #22c55e, #10b981
-            );
-            transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1);
-            position: relative;
         }
 
         .wheel-pointer {
@@ -1672,7 +1665,7 @@
                         <div class="input-row">
                             <div class="input-group">
                                 <label>Reading Speed (WPM)</label>
-                                <input type="number" id="wcWPM" value="200" min="50" max="400">
+                                <input type="number" id="wcWPM" value="50" min="10" max="200">
                             </div>
                         </div>
                         <div class="btn-group">
@@ -2061,23 +2054,19 @@
                     html += `
                         <div class="input-group">
                             <label>Enter names (one per line)</label>
-                            <textarea id="nameInput" placeholder="Alice\nBob\nCharlie\nDiana">Alice\nBob\nCharlie\nDiana\nEthan\nFiona</textarea>
+                            <textarea id="nameInput" placeholder="Alice\nBob\nCharlie\nDiana" oninput="updateWheelLive()">Alice\nBob\nCharlie\nDiana\nEthan\nFiona</textarea>
                         </div>
                         <div class="btn-group">
-                            <button class="btn btn-primary" onclick="pickRandomName()"><i class="fas fa-dice"></i> Pick Random</button>
                             <button class="btn btn-warning" onclick="spinWheel()"><i class="fas fa-sync"></i> Spin Wheel</button>
                         </div>
                         <div class="wheel-container">
                             <div class="wheel-wrapper">
                                 <div class="wheel-pointer"></div>
-                                <div class="wheel" id="wheel"></div>
+                                <canvas id="wheelCanvas" width="300" height="300"></canvas>
                                 <div class="wheel-center" id="wheelCenter">?</div>
                             </div>
                         </div>
-                        <div class="result-box">
-                            <div class="result-label">Selected</div>
-                            <div class="result-content" id="nameResult">Click a button to pick a name</div>
-                        </div>
+                        <canvas id="confettiCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas>
                     `;
                     break;
                     
@@ -2461,7 +2450,7 @@
         // Word Counter - Enhanced
         function countWords() {
             const text = document.getElementById('wcInput').value;
-            const wpm = parseInt(document.getElementById('wcWPM').value) || 200;
+            const wpm = parseInt(document.getElementById('wcWPM').value) || 50;
             
             // Basic stats
             const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
@@ -3089,26 +3078,176 @@
         }
         
         // Name Picker
-        function pickRandomName() {
+        let wheelRotation = 0;
+        let isSpinning = false;
+        
+        function updateWheelLive() {
+            if (isSpinning) return;
             const names = document.getElementById('nameInput').value.split('\n').filter(n => n.trim());
-            if (!names.length) return;
-            const picked = names[Math.floor(Math.random() * names.length)];
-            document.getElementById('nameResult').textContent = '🎉 ' + picked;
-            document.getElementById('wheelCenter').textContent = picked;
+            wheelRotation = 0;
+            drawWheel(names, 0);
+        }
+        
+        function drawWheel(names, rotation = 0) {
+            const canvas = document.getElementById('wheelCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = canvas.width / 2 - 10;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (names.length === 0) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.fillStyle = '#1e293b';
+                ctx.fill();
+                ctx.strokeStyle = '#475569';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                return;
+            }
+            
+            const segmentAngle = (2 * Math.PI) / names.length;
+            const colors = ['#6366f1', '#8b5cf6', '#a855f7', '#d946ef', '#ec4899', '#f43f5e', '#ef4444', '#f97316', '#eab308', '#84cc16', '#22c55e', '#10b981'];
+            
+            names.forEach((name, i) => {
+                // Pointer is at top (angle = -PI/2)
+                // Segment 0 starts at -PI/2, segment 1 at -PI/2 + segmentAngle, etc.
+                const startAngle = -Math.PI / 2 + i * segmentAngle + rotation;
+                const endAngle = -Math.PI / 2 + (i + 1) * segmentAngle + rotation;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.strokeStyle = '#1e293b';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw text
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                const textAngle = startAngle + segmentAngle / 2;
+                ctx.rotate(textAngle);
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 14px Arial';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+                ctx.shadowBlur = 3;
+                ctx.fillText(name, radius * 0.65, 0);
+                ctx.restore();
+            });
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+        
+        function createConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const confetti = [];
+            const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#ef4444', '#f97316', '#eab308', '#22c55e'];
+            
+            for (let i = 0; i < 150; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 8 + 4,
+                    speedY: Math.random() * 3 + 2,
+                    speedX: Math.random() * 2 - 1,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rotationSpeed: Math.random() * 10 - 5
+                });
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                let anyVisible = false;
+                confetti.forEach((c) => {
+                    c.y += c.speedY;
+                    c.x += c.speedX;
+                    c.rotation += c.rotationSpeed;
+                    
+                    if (c.y < canvas.height) anyVisible = true;
+                    
+                    ctx.save();
+                    ctx.translate(c.x, c.y);
+                    ctx.rotate((c.rotation * Math.PI) / 180);
+                    ctx.fillStyle = c.color;
+                    ctx.fillRect(-c.size / 2, -c.size / 2, c.size, c.size);
+                    ctx.restore();
+                });
+                
+                if (anyVisible) {
+                    requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            
+            animate();
         }
         
         function spinWheel() {
+            if (isSpinning) return;
+            
             const names = document.getElementById('nameInput').value.split('\n').filter(n => n.trim());
             if (!names.length) return;
-            const wheel = document.getElementById('wheel');
-            const rotation = 1800 + Math.random() * 1800;
-            wheel.style.transform = `rotate(${rotation}deg)`;
             
-            setTimeout(() => {
-                const picked = names[Math.floor(Math.random() * names.length)];
-                document.getElementById('nameResult').textContent = '🎉 ' + picked;
-                document.getElementById('wheelCenter').textContent = picked;
-            }, 4000);
+            isSpinning = true;
+            const wheelCenter = document.getElementById('wheelCenter');
+            
+            // Pick winner
+            const winnerIndex = Math.floor(Math.random() * names.length);
+            
+            // Calculate rotation
+            const segmentAngle = (2 * Math.PI) / names.length;
+            // Pointer is at -PI/2. Winner segment i starts at -PI/2 + i*segmentAngle
+            // We want winner segment CENTER at -PI/2
+            // Winner center is at: -PI/2 + i*segmentAngle + segmentAngle/2
+            // We need to rotate by: -i*segmentAngle - segmentAngle/2
+            const targetAngle = -(winnerIndex * segmentAngle + segmentAngle / 2);
+            
+            const spins = 5 + Math.random() * 2;
+            const targetRotation = spins * 2 * Math.PI + targetAngle;
+            
+            const duration = 3500;
+            const startTime = Date.now();
+            const startRotation = wheelRotation;
+            
+            wheelCenter.textContent = '🎲';
+            
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                
+                wheelRotation = startRotation + targetRotation * easeProgress;
+                drawWheel(names, wheelRotation);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    isSpinning = false;
+                    wheelCenter.textContent = '🎉';
+                    createConfetti();
+                }
+            }
+            
+            animate();
         }
         
         // Password Generator - Enhanced with word-based generation and strength analysis
