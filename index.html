@@ -57,6 +57,32 @@
             box-sizing: border-box;
         }
 
+        /* Remove top space on tool pages */
+        body.tool-active main {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+            padding: 0 1.5rem 2rem 1.5rem !important;
+        }
+        body.tool-active #toolView {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+            display: block !important;
+        }
+        body.tool-active .tool-container {
+            padding-top: 0 !important;
+            margin-top: -4rem !important;
+            display: block !important;
+        }
+        body.tool-active .tool-header {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+            display: block !important;
+        }
+        body.tool-active .tool-header .tool-icon {
+            margin-top: 0 !important;
+            display: flex !important;
+        }
+
         /* Anti-copy CSS protection */
         body, header, nav, main, footer, .sidebar, .tool-container {
             -webkit-user-select: none;
@@ -493,6 +519,27 @@
             padding: 2rem 1.5rem;
         }
 
+        main:has(> #toolView.active) {
+            padding: 0 1.5rem 2rem 1.5rem !important;
+        }
+
+        body.sidebar-open main {
+            margin-left: 250px;
+            padding: 2rem 1.5rem;
+        }
+
+        #toolView {
+            display: none;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        #toolView.active {
+            display: block;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
         /* Home View */
         #homeView {
             display: block;
@@ -589,6 +636,12 @@
             color: var(--text-secondary);
             font-size: 0.9rem;
             line-height: 1.5;
+            min-height: 2.7em;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .tool-card-preview .tool-category {
@@ -612,10 +665,14 @@
         /* Tool View */
         #toolView {
             display: none;
+            padding: 0 !important;
+            margin: 0 !important;
         }
 
         #toolView.active {
             display: block;
+            padding: 0 !important;
+            margin: 0 !important;
         }
 
         #homeView.hidden {
@@ -624,12 +681,24 @@
 
         .tool-container {
             max-width: 700px;
-            margin: 0 auto;
+            margin: 0 auto !important;
+            padding: 0 !important;
+            margin-top: -4rem !important;
+        }
+
+        .tool-container > *:first-child {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
         }
 
         .tool-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin: 0 !important;
+            padding: 0 !important;
+            padding-bottom: 2rem !important;
+            border-bottom: 2px solid var(--border-color);
+            width: 100%;
+            display: block;
         }
 
         .tool-header .tool-icon {
@@ -642,16 +711,34 @@
             justify-content: center;
             font-size: 2rem;
             color: white;
-            margin: 0 auto 1rem;
+            margin: 0 auto 1.5rem !important;
+            margin-top: 0 !important;
+            padding: 0 !important;
         }
 
         .tool-header h2 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            margin: 0 0 1rem 0 !important;
+            font-weight: 700;
         }
 
         .tool-header p {
             color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto !important;
+            white-space: pre-line;
+        }
+
+        .tool-ad-space {
+            margin: 2.5rem auto;
+            padding: 1.5rem 0;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .tool-content {
@@ -1307,27 +1394,27 @@
         // Tool Definitions
         // ==========================================
         const tools = [
-            { id: 'wordCounter', name: 'Word Counter', desc: 'Count words, characters, and lines in your text', icon: 'fa-file-word', category: 'text' },
-            { id: 'quoteGen', name: 'Quote Generator', desc: 'Get inspirational quotes by category', icon: 'fa-quote-right', category: 'quote' },
-            { id: 'passwordGen', name: 'Password Generator', desc: 'Generate secure random passwords', icon: 'fa-key', category: 'random' },
-            { id: 'charCounter', name: 'Character Counter', desc: 'Count characters with and without spaces', icon: 'fa-text-height', category: 'text' },
-            { id: 'caseConverter', name: 'Case Converter', desc: 'Convert text to uppercase, lowercase, title case', icon: 'fa-font', category: 'text' },
-            { id: 'lineBreaks', name: 'Remove Line Breaks', desc: 'Remove line breaks and extra spaces from text', icon: 'fa-align-left', category: 'text' },
-            { id: 'reverseText', name: 'Reverse Text', desc: 'Reverse the order of characters in your text', icon: 'fa-exchange-alt', category: 'text' },
-            { id: 'loremIpsum', name: 'Lorem Ipsum', desc: 'Generate placeholder text for your designs', icon: 'fa-paragraph', category: 'text' },
-            { id: 'findReplace', name: 'Find & Replace', desc: 'Find and replace text in your content', icon: 'fa-search', category: 'text' },
-            { id: 'sortLines', name: 'Sort Lines', desc: 'Sort text lines alphabetically or by length', icon: 'fa-sort-alpha-down', category: 'text' },
-            { id: 'countWord', name: 'Count Specific Word', desc: 'Count occurrences of a specific word', icon: 'fa-search-plus', category: 'text' },
-            { id: 'textDiff', name: 'Text Diff', desc: 'Compare two texts and see differences', icon: 'fa-code-branch', category: 'text' },
-            { id: 'textToSpeech', name: 'Text to Speech', desc: 'Convert text to spoken audio', icon: 'fa-volume-up', category: 'text' },
-            { id: 'randomNumber', name: 'Random Number', desc: 'Generate random numbers in a range', icon: 'fa-dice', category: 'number' },
-            { id: 'numberConverter', name: 'Number Converter', desc: 'Convert between binary, decimal, and hex', icon: 'fa-calculator', category: 'number' },
-            { id: 'colorConverter', name: 'Color Converter', desc: 'Convert between HEX and RGB colors', icon: 'fa-palette', category: 'color' },
-            { id: 'gradientGenerator', name: 'Gradient Generator', desc: 'Create beautiful CSS gradients with live preview', icon: 'fa-fill-drip', category: 'color' },
-            { id: 'urlEncoder', name: 'URL Encoder', desc: 'Encode and decode URLs', icon: 'fa-link', category: 'code' },
-            { id: 'morseCode', name: 'Morse Code', desc: 'Translate text to and from Morse code', icon: 'fa-wifi', category: 'code' },
-            { id: 'asciiArt', name: 'ASCII Art', desc: 'Convert text to ASCII art', icon: 'fa-paint-brush', category: 'code' },
-            { id: 'namePicker', name: 'Name Picker', desc: 'Pick a random name with spinning wheel', icon: 'fa-random', category: 'random' }
+            { id: 'wordCounter', name: 'Word Counter', desc: 'Analyze your text with comprehensive statistics including word count, character count, and reading time.\nGet insights like average word length, readability scores, and top keywords from your content.', icon: 'fa-file-word', category: 'text' },
+            { id: 'quoteGen', name: 'Quote Generator', desc: 'Discover inspirational and motivational quotes across multiple categories.\nGet a fresh source of inspiration for your day with just one click.', icon: 'fa-quote-right', category: 'quote' },
+            { id: 'passwordGen', name: 'Password Generator', desc: 'Create strong and secure random passwords with customizable length and character types.\nEnsure your accounts stay protected with complex password generation.', icon: 'fa-key', category: 'random' },
+            { id: 'charCounter', name: 'Character Counter', desc: 'Count total characters, characters without spaces, and UTF-8 bytes in any text.\nCheck compatibility with social media platforms and character limits.', icon: 'fa-text-height', category: 'text' },
+            { id: 'caseConverter', name: 'Case Converter', desc: 'Transform text between uppercase, lowercase, title case, and sentence case formats.\nQuickly change text formatting for different writing styles and purposes.', icon: 'fa-font', category: 'text' },
+            { id: 'lineBreaks', name: 'Remove Line Breaks', desc: 'Eliminate unwanted line breaks and extra spaces from your text content.\nClean up formatted text for seamless readability and uniform spacing.', icon: 'fa-align-left', category: 'text' },
+            { id: 'reverseText', name: 'Reverse Text', desc: 'Reverse the order of characters, words, or lines in your text instantly.\nUseful for checking palindromes, creating mirrored text, and text manipulation.', icon: 'fa-exchange-alt', category: 'text' },
+            { id: 'loremIpsum', name: 'Lorem Ipsum', desc: 'Generate professional placeholder text for your design and mockup projects.\nCustomize the amount of text you need for layouts and wireframes.', icon: 'fa-paragraph', category: 'text' },
+            { id: 'findReplace', name: 'Find & Replace', desc: 'Quickly locate and replace specific text throughout your entire content.\nSupports multiple replacements with case-sensitive options.', icon: 'fa-search', category: 'text' },
+            { id: 'sortLines', name: 'Sort Lines', desc: 'Sort text lines alphabetically in ascending or descending order.\nAlso sort by line length, remove duplicates, or reverse the order.', icon: 'fa-sort-alpha-down', category: 'text' },
+            { id: 'countWord', name: 'Count Specific Word', desc: 'Find and count the exact number of times a word appears in your text.\nView statistics with case-sensitive or case-insensitive options.', icon: 'fa-search-plus', category: 'text' },
+            { id: 'textDiff', name: 'Text Diff', desc: 'Compare two texts side-by-side to identify additions, deletions, and changes.\nVisually highlight differences between document versions.', icon: 'fa-code-branch', category: 'text' },
+            { id: 'textToSpeech', name: 'Text to Speech', desc: 'Convert written text into natural-sounding audio with multiple voice options.\nAdjust speech rate and pitch for personalized audio output.', icon: 'fa-volume-up', category: 'text' },
+            { id: 'randomNumber', name: 'Random Number', desc: 'Generate random numbers within your specified range with full customization.\nIdeal for games, raffles, sampling, and statistical experiments.', icon: 'fa-dice', category: 'number' },
+            { id: 'numberConverter', name: 'Number Converter', desc: 'Convert numbers between binary, decimal, octal, and hexadecimal number systems.\nSupports large numbers and displays results in all formats instantly.', icon: 'fa-calculator', category: 'number' },
+            { id: 'colorConverter', name: 'Color Converter', desc: 'Convert colors between HEX, RGB, and HSL formats with live preview.\nPerfect for designers and developers working with web colors.', icon: 'fa-palette', category: 'color' },
+            { id: 'gradientGenerator', name: 'Gradient Generator', desc: 'Create stunning CSS gradients with linear, radial, and conic gradient types.\nCustomize colors, angles, and export as CSS code for your projects.', icon: 'fa-fill-drip', category: 'color' },
+            { id: 'urlEncoder', name: 'URL Encoder', desc: 'Encode and decode URLs to handle special characters and ensure compatibility.\nEssential for working with query parameters and URL manipulation.', icon: 'fa-link', category: 'code' },
+            { id: 'morseCode', name: 'Morse Code', desc: 'Translate text to Morse code and decode Morse back to readable text.\nFun tool for communication, learning, and creative text encoding.', icon: 'fa-wifi', category: 'code' },
+            { id: 'asciiArt', name: 'ASCII Art', desc: 'Transform regular text into creative ASCII art using various font styles.\nGenerate eye-catching text art for comments, signatures, and designs.', icon: 'fa-paint-brush', category: 'code' },
+            { id: 'namePicker', name: 'Name Picker', desc: 'Pick a random name from your custom list with an exciting spinning wheel.\nGreat for games, drawings, classroom activities, and team selections.', icon: 'fa-random', category: 'random' }
         ];
 
         // ==========================================
@@ -1491,6 +1578,10 @@
                 btn.classList.remove('active');
             });
             
+            // Restore padding and remove tool-active class
+            document.body.classList.remove('tool-active');
+            document.querySelector('main').style.cssText = 'padding-top: 2rem;';
+            
             // Update URL without page reload
             window.history.pushState({ home: true }, '', '/');
             
@@ -1513,6 +1604,12 @@
                 btn.classList.remove('active');
                 if (btn.dataset.toolId === toolId) btn.classList.add('active');
             });
+            
+            // Remove ALL top spacing when showing tool
+            document.body.classList.add('tool-active');
+            document.querySelector('main').style.cssText = 'padding-top: 0 !important; margin-top: 0 !important;';
+            document.getElementById('toolView').style.cssText = 'padding-top: 0 !important; margin-top: 0 !important;';
+            
             renderTool(toolId);
             updateSEO(toolId, slug);
             
@@ -1673,11 +1770,20 @@
             const container = document.getElementById('toolContainer');
             const tool = tools.find(t => t.id === toolId);
             
+            // Force remove any top spacing
+            container.style.marginTop = '0';
+            container.style.paddingTop = '0';
+            container.parentElement.style.marginTop = '0';
+            container.parentElement.style.paddingTop = '0';
+            
             let html = `
-                <div class="tool-header">
-                    <div class="tool-icon"><i class="fas ${tool.icon}"></i></div>
+                <div class="tool-header" style="margin-top:0!important;padding-top:0!important;">
+                    <div class="tool-icon" style="margin-top:0!important;"><i class="fas ${tool.icon}"></i></div>
                     <h2>${tool.name}</h2>
                     <p>${tool.desc}</p>
+                </div>
+                <div class="tool-ad-space">
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6119998481340838" data-ad-slot="7890123456" data-ad-format="horizontal"></ins>
                 </div>
                 <div class="tool-content">
             `;
