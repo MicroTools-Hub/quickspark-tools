@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service | MicroTools</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a class="logo" href="../index.html" title="Back to Home">⚡ <span>MicroTools</span></a>
+      <div class="header-actions">
+        <button class="back-btn" id="backBtn" onclick="window.history.back()" aria-label="Go back">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle dark/light theme">
+          <i class="fas fa-sun"></i>
+        </button>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <nav class="sidebar" id="sidebar" role="navigation" aria-label="Tools Navigation">
+    <div class="sidebar-header">Tools</div>
+    <div class="sidebar-note">Quick access to all your favorite utilities</div>
+    <ul class="sidebar-tools" id="sidebarTools"></ul>
+  </nav>
+  <main id="mainContent" role="main">
+    <div class="tool-container">
+      <div class="tool-header">
+        <div class="tool-icon"><i class="fas fa-file-contract"></i></div>
+        <h1>Terms of Service</h1>
+        <p>Please review these terms before using MicroTools.</p>
+      </div>
+      <div class="tool-ad-space"></div>
+      <div class="tool-content">
+        <h2>Usage</h2>
+        <p>MicroTools is provided "as is" without warranty. By using the site, you agree not to misuse the tools or attempt to disrupt service.</p>
+        <h2>Content</h2>
+        <p>The tools produce content based on user input. You are responsible for how you use any generated content.</p>
+        <h2>Liability</h2>
+        <p>We are not liable for any damages resulting from the use of this site.</p>
+        <h2>Changes</h2>
+        <p>We may update these terms at any time. Continued use signifies acceptance of the updated terms.</p>
+        <p style="color: var(--text-secondary); margin-top: 1rem">Last updated: Jan 2026</p>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; 2024 MicroTools.</p>
+      <div class="footer-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <span>•</span>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <span>•</span>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <script src="../js/shared.js"></script>
+</body>
+</html>

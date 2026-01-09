@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Morse Code | MicroTools</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a class="logo" href="../index.html" title="Back to Home">⚡ <span>MicroTools</span></a>
+      <div class="header-actions">
+        <button class="back-btn" id="backBtn" onclick="window.history.back()" aria-label="Go back">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="all-tools-btn" onclick="window.location.href='../index.html'" aria-label="View all tools">
+          <i class="fas fa-th"></i> All Tools
+        </button>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle dark/light theme">
+          <i class="fas fa-sun"></i>
+        </button>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <nav class="sidebar" id="sidebar" role="navigation" aria-label="Tools Navigation">
+    <div class="sidebar-header">Tools</div>
+    <div class="sidebar-note">Quick access to all your favorite utilities</div>
+    <ul class="sidebar-tools" id="sidebarTools"></ul>
+  </nav>
+  <main id="mainContent" role="main">
+    <div class="tool-container">
+      <div class="tool-header">
+        <div class="tool-icon"><i class="fas fa-wifi"></i></div>
+        <h1>Morse Code</h1>
+        <p>Translate text to Morse and decode Morse to text.</p>
+      </div>
+      <div class="tool-ad-space"></div>
+      <div class="tool-content">
+        <div class="input-group">
+          <label for="morseInput">Enter text or Morse code</label>
+          <textarea id="morseInput" placeholder="Text: HELLO | Morse: .... . .-.. .-.. ---"></textarea>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm" onclick="textToMorse()">Text → Morse</button>
+          <button class="btn btn-secondary btn-sm" onclick="morseToText()">Morse → Text</button>
+        </div>
+        <div class="result-box">
+          <div class="result-label">Result <button class="copy-btn" onclick="copyToClipboard(document.getElementById('morseResult').textContent)"><i class="fas fa-copy"></i> Copy</button></div>
+          <div class="result-content" id="morseResult"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; 2024 MicroTools.</p>
+      <div class="footer-links">
+        <a href="../pages/privacy-policy.html">Privacy Policy</a>
+        <span>•</span>
+        <a href="../pages/terms-of-service.html">Terms of Service</a>
+        <span>•</span>
+        <a href="../pages/contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="seo-content" style="margin-top: 3rem; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius); border: 1px solid var(--border-color); margin-bottom: 2rem;"><h2 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.8rem;">Morse Code Translator - Encode and Decode Messages</h2><p style="line-height: 1.8; margin-bottom: 1rem;">Morse code represents text using sequences of dots (·) and dashes (—), developed in the 1830s-1840s for telegraph communication. This encoding system remains relevant for amateur radio, aviation, military communication, emergency signaling, and educational purposes, valued for its simplicity and effectiveness in challenging conditions.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">How Morse Code Works</h3><p style="line-height: 1.8; margin-bottom: 1rem;">Each letter, number, and punctuation mark has a unique pattern. Letter "E" (most common in English) is a single dot (·), while "T" is a single dash (—). More complex patterns represent less common letters: "Q" is ——·—. Spaces separate letters, and longer spaces separate words.</p><p style="line-height: 1.8; margin-bottom: 1rem;">The famous distress signal "SOS" is ··· ——— ··· (three dots, three dashes, three dots), chosen for its distinctive, easy-to-recognize pattern rather than abbreviating specific words.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Modern Applications</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Amateur Radio:</strong> Ham radio operators worldwide use Morse code (CW - continuous wave) for long-distance communication. Morse signals penetrate noise and interference better than voice, enabling communication when other methods fail.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Emergency Communication:</strong> Morse code works with flashlights, mirrors, sound, or any binary signaling method. Simple on-off patterns make it ideal when sophisticated equipment isn't available.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Learning and Puzzles:</strong> Educators teach Morse code for historical understanding and pattern recognition. Escape rooms, geocaching, and puzzles incorporate Morse for challenges and hidden messages.</p><p style="line-height: 1.8; margin-bottom: 1rem;">Aviation still uses Morse code identification for navigation beacons (VOR stations), and military forces maintain Morse proficiency for backup communication channels.</p></div>
+
+  <script src="../js/shared.js"></script>
+  <script src="../js/tools/morse-code.js"></script>
+</body>
+</html>

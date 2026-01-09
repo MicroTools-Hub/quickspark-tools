@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Color Converter | MicroTools</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a class="logo" href="../index.html" title="Back to Home">⚡ <span>MicroTools</span></a>
+      <div class="header-actions">
+        <button class="back-btn" id="backBtn" onclick="window.history.back()" aria-label="Go back">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="all-tools-btn" onclick="window.location.href='../index.html'" aria-label="View all tools">
+          <i class="fas fa-th"></i> All Tools
+        </button>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle dark/light theme">
+          <i class="fas fa-sun"></i>
+        </button>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <nav class="sidebar" id="sidebar" role="navigation" aria-label="Tools Navigation">
+    <div class="sidebar-header">Tools</div>
+    <div class="sidebar-note">Quick access to all your favorite utilities</div>
+    <ul class="sidebar-tools" id="sidebarTools"></ul>
+  </nav>
+  <main id="mainContent" role="main">
+    <div class="tool-container">
+      <div class="tool-header">
+        <div class="tool-icon"><i class="fas fa-palette"></i></div>
+        <h1>Color Converter</h1>
+        <p>Convert between HEX and RGB with live preview.</p>
+      </div>
+      <div class="tool-ad-space"></div>
+      <div class="tool-content">
+        <div class="input-row">
+          <div class="input-group">
+            <label for="colorHex">HEX</label>
+            <input type="text" id="colorHex" placeholder="#FF0000" value="#FF0000">
+          </div>
+          <div class="input-group">
+            <label for="colorRgb">RGB</label>
+            <input type="text" id="colorRgb" placeholder="rgb(255, 0, 0)" value="rgb(255, 0, 0)">
+          </div>
+        </div>
+        <div class="color-preview" id="colorPreview"></div>
+        <div class="result-box">
+          <div class="result-label">Converted</div>
+          <div class="result-content" id="colorResult">HEX: #FF0000 | RGB: rgb(255, 0, 0)</div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; 2024 MicroTools.</p>
+      <div class="footer-links">
+        <a href="../pages/privacy-policy.html">Privacy Policy</a>
+        <span>•</span>
+        <a href="../pages/terms-of-service.html">Terms of Service</a>
+        <span>•</span>
+        <a href="../pages/contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="seo-content" style="margin-top: 3rem; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius); border: 1px solid var(--border-color); margin-bottom: 2rem;"><h2 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.8rem;">Color Converter - HEX, RGB, HSL Format Conversion</h2><p style="line-height: 1.8; margin-bottom: 1rem;">Convert colors between HEX, RGB, and HSL formats instantly. Different color models serve different purposes in web design, graphic design, CSS styling, and image editing. Our converter enables seamless translation between formats, letting you work in your preferred color space while generating code for any platform.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Color Format Comparison</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>HEX (#RRGGBB):</strong> Hexadecimal color codes are most common in web development and design. Six characters represent red, green, and blue values in base-16 (00-FF). Compact notation makes HEX ideal for CSS, HTML attributes, and design tools. Example: #3498DB</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>RGB (Red, Green, Blue):</strong> Specifies color using decimal values 0-255 for red, green, and blue channels. RGB matches how screens create colors by mixing light. CSS rgb() and rgba() (with alpha transparency) functions use this format. Example: rgb(52, 152, 219)</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>HSL (Hue, Saturation, Lightness):</strong> More intuitive for designers—adjust hue (color wheel position 0-360°), saturation (color intensity 0-100%), and lightness (brightness 0-100%) independently. HSL simplifies creating color variations and accessible color schemes. Example: hsl(204, 70%, 53%)</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Why Convert Between Formats?</h3><p style="line-height: 1.8; margin-bottom: 1rem;">Design tools export HEX, but CSS animations work better with HSL. Brand guidelines specify RGB, but you need HEX for web implementation. Color picker provides one format, but your framework requires another. Instant conversion eliminates manual calculation and ensures color consistency across platforms and tools.</p></div>
+
+  <script src="../js/shared.js"></script>
+  <script src="../js/tools/color-converter.js"></script>
+</body>
+</html>

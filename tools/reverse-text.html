@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Reverse the order of characters, words, or lines in your text instantly. Useful for checking palindromes, creating mirrored text, and text manipulation.">
+    <meta name="theme-color" content="#0a0a0f">
+    <title>Reverse Text - Reverse Characters Online | MicroTools</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6119998481340838" crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-6119998481340838">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' font-weight='bold' fill='%23b9ff49'%3E⚡%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a class="logo" href="../index.html" title="Back to Home">⚡ <span>MicroTools</span></a>
+            <div class="header-actions">
+                <button class="back-btn" id="backBtn" onclick="window.history.back()" aria-label="Go back"><i class="fas fa-arrow-left"></i> Back</button>
+                <button class="all-tools-btn" onclick="window.location.href='../index.html'" aria-label="View all tools"><i class="fas fa-th"></i> All Tools</button>
+                <button class="theme-btn" id="themeBtn" aria-label="Toggle dark/light theme"><i class="fas fa-sun"></i></button>
+                <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <nav class="sidebar" id="sidebar" role="navigation" aria-label="Tools Navigation">
+        <div class="sidebar-header">Tools</div>
+        <div class="sidebar-note">Quick access to all your favorite utilities</div>
+        <ul class="sidebar-tools" id="sidebarTools"></ul>
+    </nav>
+    <main id="mainContent" role="main">
+        <div class="tool-container">
+            <div class="tool-header">
+                <div class="tool-icon"><i class="fas fa-exchange-alt"></i></div>
+                <h1>Reverse Text</h1>
+                <p>Reverse the order of characters, words, or lines in your text instantly.
+Useful for checking palindromes, creating mirrored text, and text manipulation.</p>
+            </div>
+            <div class="tool-ad-space">
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6119998481340838" data-ad-slot="7890123456" data-ad-format="horizontal"></ins>
+            </div>
+            <div class="tool-content">
+                <div class="input-group">
+                    <label for="revInput">Enter your text</label>
+                    <textarea id="revInput" placeholder="Type or paste your text here..."></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="reverseText()"><i class="fas fa-exchange-alt"></i> Reverse</button>
+                <div class="result-box">
+                    <div class="result-label">Result <button class="copy-btn" onclick="copyToClipboard(document.getElementById('revResult').textContent)"><i class="fas fa-copy"></i> Copy</button></div>
+                    <div class="result-content" id="revResult"></div>
+                </div>
+            </div>
+
+            <div class="seo-content" style="margin-top: 3rem; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius); border: 1px solid var(--border-color);">
+                <h2 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.8rem;">Reverse Text Tool - Multiple Reversal Options</h2>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Our Reverse Text tool offers three distinct reversal modes: character reversal (reverses the order of all characters), word reversal (reverses the order of words while keeping word spelling intact), and line reversal (reverses the order of lines in multi-line text). Each mode serves different creative and practical purposes.</p>
+                
+                <h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Use Cases and Applications</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Palindrome Testing:</strong> Character reversal helps identify palindromes—words or phrases that read the same forwards and backwards like "racecar" or "A man, a plan, a canal: Panama."</p>
+
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Creative Writing and Art:</strong> Reverse text creates interesting visual effects for graphic design, social media posts, artistic projects, and cryptographic puzzles. Some users create mirror text for decorative purposes or hidden messages.</p>
+
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Data Processing:</strong> Developers use text reversal for algorithm testing, data transformation tasks, and validating text processing functions. Word reversal helps reorganize data structures and test parsing logic.</p>
+
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Language Learning:</strong> Reversing text can help language learners practice reading comprehension and pattern recognition by forcing the brain to process familiar text in unfamiliar ways.</p>
+
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Line Organization:</strong> Line reversal is useful for reordering lists, inverting data sequences, or simply experimenting with different text arrangements without manual cut-and-paste operations.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-content">
+            <p>&copy; 2024 MicroTools. Built with <i class="fas fa-heart" style="color: var(--accent-primary);"></i> for productivity.</p>
+            <div class="footer-links">
+                <a href="../pages/privacy-policy.html">Privacy Policy</a><span>•</span>
+                <a href="../pages/terms-of-service.html">Terms of Service</a><span>•</span>
+                <a href="../pages/contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+    <script src="../js/shared.js"></script>
+    <script src="../js/tools/reverse-text.js"></script>
+</body>
+</html>

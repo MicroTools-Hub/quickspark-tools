@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>URL Encoder | MicroTools</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a class="logo" href="../index.html" title="Back to Home">⚡ <span>MicroTools</span></a>
+      <div class="header-actions">
+        <button class="back-btn" id="backBtn" onclick="window.history.back()" aria-label="Go back">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="all-tools-btn" onclick="window.location.href='../index.html'" aria-label="View all tools">
+          <i class="fas fa-th"></i> All Tools
+        </button>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle dark/light theme">
+          <i class="fas fa-sun"></i>
+        </button>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <nav class="sidebar" id="sidebar" role="navigation" aria-label="Tools Navigation">
+    <div class="sidebar-header">Tools</div>
+    <div class="sidebar-note">Quick access to all your favorite utilities</div>
+    <ul class="sidebar-tools" id="sidebarTools"></ul>
+  </nav>
+  <main id="mainContent" role="main">
+    <div class="tool-container">
+      <div class="tool-header">
+        <div class="tool-icon"><i class="fas fa-link"></i></div>
+        <h1>URL Encoder</h1>
+        <p>Encode and decode URLs safely.</p>
+      </div>
+      <div class="tool-ad-space"></div>
+      <div class="tool-content">
+        <div class="input-group">
+          <label for="urlInput">Enter URL or text</label>
+          <textarea id="urlInput" placeholder="Type or paste here..."></textarea>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm" onclick="encodeUrl()">Encode</button>
+          <button class="btn btn-secondary btn-sm" onclick="decodeUrl()">Decode</button>
+        </div>
+        <div class="result-box">
+          <div class="result-label">Result <button class="copy-btn" onclick="copyToClipboard(document.getElementById('urlResult').textContent)"><i class="fas fa-copy"></i> Copy</button></div>
+          <div class="result-content" id="urlResult"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; 2024 MicroTools.</p>
+      <div class="footer-links">
+        <a href="../pages/privacy-policy.html">Privacy Policy</a>
+        <span>•</span>
+        <a href="../pages/terms-of-service.html">Terms of Service</a>
+        <span>•</span>
+        <a href="../pages/contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="seo-content" style="margin-top: 3rem; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius); border: 1px solid var(--border-color); margin-bottom: 2rem;"><h2 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.8rem;">URL Encoder & Decoder - Safe URL Parameter Formatting</h2><p style="line-height: 1.8; margin-bottom: 1rem;">URL encoding (percent-encoding) converts special characters into safe formats for transmission in URLs. Spaces, symbols, and non-ASCII characters must be encoded to prevent broken links and ensure proper data transmission across web applications, APIs, and browsers.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Why URL Encoding Is Necessary</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Reserved Characters:</strong> URLs use specific characters (?, &, =, #) for syntax purposes. Using these literally in parameters breaks URL structure. Encoding converts "?" to %3F, "&" to %26, etc., preserving URL integrity.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Spaces and Special Characters:</strong> URLs cannot contain spaces or many punctuation marks. Spaces become %20 or +, making "hello world" into "hello%20world" for safe transmission.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>International Characters:</strong> Non-ASCII characters (Chinese, Arabic, emoji) must be UTF-8 encoded. "café" becomes "caf%C3%A9" to work globally across all systems and browsers.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Common Use Cases</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>API Development:</strong> Developers encode query parameters for API requests, ensuring search terms, user inputs, and filters transmit correctly without breaking endpoint URLs.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Search Engine URLs:</strong> Search queries with spaces and special characters need encoding: "best coffee shops" becomes "best+coffee+shops" in search URLs.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Email Links:</strong> mailto: links with subject lines and body text require encoding to handle spaces, line breaks, and special characters properly.</p><p style="line-height: 1.8; margin-bottom: 1rem;">Decoding reverses the process, converting %20 back to spaces and %3F to "?", making encoded URLs human-readable for debugging and analysis.</p></div>
+
+  <script src="../js/shared.js"></script>
+  <script src="../js/tools/url-encoder.js"></script>
+</body>
+</html>

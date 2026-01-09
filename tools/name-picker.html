@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Name Picker | MicroTools</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <a class="logo" href="../index.html" title="Back to Home">⚡ <span>MicroTools</span></a>
+      <div class="header-actions">
+        <button class="back-btn" id="backBtn" onclick="window.history.back()" aria-label="Go back">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="all-tools-btn" onclick="window.location.href='../index.html'" aria-label="View all tools">
+          <i class="fas fa-th"></i> All Tools
+        </button>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle dark/light theme">
+          <i class="fas fa-sun"></i>
+        </button>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <nav class="sidebar" id="sidebar" role="navigation" aria-label="Tools Navigation">
+    <div class="sidebar-header">Tools</div>
+    <div class="sidebar-note">Quick access to all your favorite utilities</div>
+    <ul class="sidebar-tools" id="sidebarTools"></ul>
+  </nav>
+  <main id="mainContent" role="main">
+    <div class="tool-container">
+      <div class="tool-header">
+        <div class="tool-icon"><i class="fas fa-random"></i></div>
+        <h1>Name Picker</h1>
+        <p>Pick a random name from your list with a spinning wheel.</p>
+      </div>
+      <div class="tool-ad-space"></div>
+      <div class="tool-content">
+        <div class="input-group">
+          <label for="nameInput">Enter names (one per line)</label>
+          <textarea id="nameInput" placeholder="Alice\nBob\nCharlie" oninput="updateWheelLive()"></textarea>
+        </div>
+        <canvas id="wheelCanvas" width="360" height="360" style="border: 1px solid var(--border-color); border-radius: 12px; display:block; margin: 0 auto 1rem"></canvas>
+        <canvas id="confettiCanvas" width="360" height="360" style="position:fixed; left:0; top:0; pointer-events:none"></canvas>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm" onclick="isSpinning || (isSpinning = true, (function spin(){let i=0;const names=document.getElementById('nameInput').value.split('\n').filter(n=>n.trim());(function step(){wheelRotation += 0.25; drawWheel(names, wheelRotation); if (i++ < 200) requestAnimationFrame(step); else {isSpinning=false; createConfetti();}})();})())"><i class="fas fa-compact-disc"></i> Spin</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+      <p>&copy; 2024 MicroTools.</p>
+      <div class="footer-links">
+        <a href="../pages/privacy-policy.html">Privacy Policy</a>
+        <span>•</span>
+        <a href="../pages/terms-of-service.html">Terms of Service</a>
+        <span>•</span>
+        <a href="../pages/contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="seo-content" style="margin-top: 3rem; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius); border: 1px solid var(--border-color); margin-bottom: 2rem;"><h2 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.8rem;">Random Name Picker - Fair and Unbiased Selection</h2><p style="line-height: 1.8; margin-bottom: 1rem;">The Random Name Picker tool selects winners, assigns tasks, creates teams, and makes fair choices from any list of names or items. Using cryptographically secure random selection, this tool ensures truly unbiased results without favoritism, patterns, or predictability—perfect for classrooms, workplaces, contests, and decision-making.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Why Use Random Selection?</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Eliminates Bias:</strong> Human choice unconsciously favors certain options. Random selection removes personal bias, ensuring every entry has equal probability of selection. Particularly important for contests, giveaways, and prize drawings where fairness is essential.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Saves Time:</strong> Instead of deliberating over who should present first, which team handles which project, or who wins a raffle, instant random selection provides immediate answers without discussion or debate.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Creates Accountability:</strong> Random selection process is transparent and defensible. "The tool picked you" is inarguable, preventing complaints about unfair manual selection.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Common Use Cases</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Classroom Activities:</strong> Teachers randomly select students for presentations, answering questions, demonstrations, or leadership roles. Ensures participation distribution and prevents always choosing volunteers.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Team Formation:</strong> Project managers assign team members to projects, rotate responsibilities, or select meeting facilitators fairly without manual decision fatigue.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Contests and Giveaways:</strong> Social media influencers, businesses, and organizations conduct fair prize drawings from participant lists, ensuring compliance with contest regulations requiring random selection.</p><p style="line-height: 1.8; margin-bottom: 1rem;">Enter names one per line, click pick, and get your random selection. Simple, fast, and provably fair.</p></div>
+
+  <script src="../js/shared.js"></script>
+  <script src="../js/tools/name-picker.js"></script>
+</body>
+</html>

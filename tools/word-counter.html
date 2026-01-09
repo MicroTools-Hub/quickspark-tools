@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Analyze your text with comprehensive statistics including word count, character count, and reading time. Get insights like average word length, readability scores, and top keywords from your content.">
+    <meta name="theme-color" content="#0a0a0f">
+    <title>Word Counter - Count Words & Characters Online | MicroTools</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6119998481340838" crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-6119998481340838">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' font-weight='bold' fill='%23b9ff49'%3E⚡%3C/text%3E%3C/svg%3E">
+    <link rel="canonical" href="https://example.com/word-counter.html">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a class="logo" href="../index.html" title="Back to Home">⚡ <span>MicroTools</span></a>
+            <div class="header-actions">
+                <button class="back-btn" id="backBtn" onclick="window.history.back()" aria-label="Go back">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button class="all-tools-btn" onclick="window.location.href='../index.html'" aria-label="View all tools">
+                    <i class="fas fa-th"></i> All Tools
+                </button>
+                <button class="theme-btn" id="themeBtn" aria-label="Toggle dark/light theme">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <nav class="sidebar" id="sidebar" role="navigation" aria-label="Tools Navigation">
+        <div class="sidebar-header">Tools</div>
+        <div class="sidebar-note">Quick access to all your favorite utilities</div>
+        <ul class="sidebar-tools" id="sidebarTools"></ul>
+    </nav>
+
+    <main id="mainContent" role="main">
+        <div class="tool-container">
+            <div class="tool-header">
+                <div class="tool-icon"><i class="fas fa-file-word"></i></div>
+                <h1>Word Counter</h1>
+                <p>Analyze your text with comprehensive statistics including word count, character count, and reading time.
+Get insights like average word length, readability scores, and top keywords from your content.</p>
+            </div>
+
+            <div class="tool-ad-space">
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6119998481340838" data-ad-slot="7890123456" data-ad-format="horizontal"></ins>
+            </div>
+
+            <div class="tool-content">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+                    <!-- Left Column: Input -->
+                    <div>
+                        <div class="input-group">
+                            <label for="wcInput">Enter your text</label>
+                            <textarea id="wcInput" placeholder="Type or paste your text here..."></textarea>
+                        </div>
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="wcWPM">Reading Speed (WPM)</label>
+                                <input type="number" id="wcWPM" value="50" min="10" max="200">
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-sm" onclick="countWords()"><i class="fas fa-calculator"></i> Update Stats</button>
+                            <button class="btn btn-secondary btn-sm" onclick="removeExtraSpaces()"><i class="fas fa-compress"></i> Clean Spaces</button>
+                            <button class="btn btn-secondary btn-sm" onclick="fixCapitalization()"><i class="fas fa-font"></i> Fix Caps</button>
+                            <button class="btn btn-secondary btn-sm" onclick="removeHTMLTags()"><i class="fas fa-code"></i> Remove HTML</button>
+                            <button class="btn btn-secondary btn-sm" onclick="clearWCText()"><i class="fas fa-trash"></i> Clear</button>
+                        </div>
+                    </div>
+                    <!-- Right Column: Results -->
+                    <div>
+                        <div class="result-box">
+                            <div class="result-label">Basic Stats <button class="copy-btn" onclick="copyWCStats()"><i class="fas fa-copy"></i> Copy</button></div>
+                            <div class="result-content" id="wcResult">Words: 0 | Characters: 0 | Sentences: 0 | Paragraphs: 0</div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Advanced Stats</div>
+                            <div class="result-content" id="wcAdvanced">
+                                <div>Reading time: <strong id="wcReadingTime">0 min</strong></div>
+                                <div>Speaking time: <strong id="wcSpeakingTime">0 min</strong></div>
+                                <div>Avg. word length: <strong id="wcAvgWordLen">0</strong> chars</div>
+                                <div>Readability (Flesch-Kincaid): <strong id="wcReadability">N/A</strong></div>
+                            </div>
+                        </div>
+                        <div class="result-box">
+                            <div class="result-label">Top 5 Keywords</div>
+                            <div class="result-content" id="wcKeywords">No keywords yet</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEO Content Section -->
+            <div class="seo-content">
+                <h2>About Word Counter</h2>
+                <p>Our Word Counter is a powerful tool designed to help you analyze your text content quickly and efficiently. Whether you're writing an essay, blog post, article, or any other document, this tool provides detailed statistics about your text.</p>
+
+                <h3>Key Features</h3>
+                <p>The Word Counter provides:</p>
+                <ul style="color: var(--text-secondary); line-height: 1.8; margin-left: 1.5rem;">
+                    <li><strong>Word Count</strong> - Total number of words in your text</li>
+                    <li><strong>Character Count</strong> - Total characters including spaces</li>
+                    <li><strong>Character Count (no spaces)</strong> - Character count excluding spaces</li>
+                    <li><strong>Sentence Count</strong> - Number of sentences detected</li>
+                    <li><strong>Paragraph Count</strong> - Number of paragraphs in your text</li>
+                    <li><strong>Reading Time</strong> - Estimated time to read your content</li>
+                    <li><strong>Speaking Time</strong> - Estimated time to speak your text aloud</li>
+                    <li><strong>Average Word Length</strong> - Average number of characters per word</li>
+                    <li><strong>Readability Score</strong> - Flesch-Kincaid grade level</li>
+                    <li><strong>Keyword Extraction</strong> - Top 5 most frequently used words</li>
+                </ul>
+
+                <h3>How to Use</h3>
+                <p>Using the Word Counter is simple:</p>
+                <ol style="color: var(--text-secondary); line-height: 1.8; margin-left: 1.5rem;">
+                    <li>Paste your text into the input field or type directly</li>
+                    <li>The statistics update automatically as you type</li>
+                    <li>Adjust the reading speed (WPM) to calculate reading time based on your preferences</li>
+                    <li>Use the utility buttons to clean extra spaces, fix capitalization, or remove HTML tags</li>
+                    <li>Copy the statistics with a single click</li>
+                </ol>
+
+                <div class="seo-faq">
+                    <h3>Frequently Asked Questions</h3>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What is reading time?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Reading time is estimated based on the average reading speed (words per minute). The default is 50 WPM, which represents a moderate reading pace. You can adjust this value based on your reading speed.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What does Flesch-Kincaid score mean?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            The Flesch-Kincaid Grade Level indicates the U.S. school grade level needed to understand the text. For example, a score of 8.5 means the text is suitable for an 8th-9th grade reading level. Lower scores indicate easier readability.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>How are keywords extracted?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Keywords are extracted by analyzing word frequency, excluding common stop words (like "the", "and", "is"). The tool identifies the most frequently used meaningful words and displays the top 5 with their frequency and percentage of total words.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Can I use this for academic papers?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Yes! The Word Counter is excellent for academic writing. It helps you meet word count requirements, analyze readability for your target audience, and identify key terms in your research. It's also great for essays, theses, and dissertations.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Is my text data saved or shared?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            No. All analysis is done locally in your browser. Your text is never sent to any server, saved, or shared with anyone. Your privacy is completely protected.
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;">Why Use Our Word Counter Tool?</h2>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">In today's digital age, word count matters more than ever. Whether you're a student working on an essay, a professional writer crafting content, a blogger optimizing for SEO, or a social media manager staying within character limits, our Word Counter tool provides instant, accurate analysis of your text. This free online tool eliminates the guesswork and manual counting, giving you comprehensive statistics in real-time as you type or paste your content.</p>
+                
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Unlike basic word counters that only show word and character counts, our advanced tool provides detailed insights including sentence count, paragraph count, reading time estimation, speaking time, average word length, readability scores, and even extracts your top keywords. This makes it an indispensable tool for anyone working with text, from content creators to academics to business professionals.</p>
+
+                <h2 style="color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;">Key Features and Benefits</h2>
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Comprehensive Text Analysis</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Our word counter goes beyond simple counting. It analyzes your text across multiple dimensions: word count for meeting article requirements, character count for social media posts and SMS messages, sentence count for assessing text complexity, and paragraph count for evaluating document structure. Each metric provides valuable insights into your writing, helping you optimize content for different platforms and purposes.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Reading and Speaking Time Estimates</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Planning a presentation or podcast? Our tool calculates estimated reading time based on customizable words-per-minute rates (default 50 WPM for careful reading) and speaking time based on average speaking speed (150 WPM). This helps content creators, public speakers, and podcasters plan their content duration accurately, ensuring they stay within time constraints while delivering complete messages.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Readability Analysis</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Understanding your content's readability is crucial for reaching your target audience. Our tool calculates the Flesch-Kincaid readability grade, which indicates the education level required to understand your text. Lower scores indicate easier reading, while higher scores suggest more complex content. This metric helps writers adjust their language complexity to match their audience's comprehension level, whether writing for general readers or specialized professionals.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Keyword Extraction</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">SEO professionals and content marketers will appreciate our automatic keyword extraction feature. The tool identifies your top 5 most frequently used words, showing their count and percentage of total word usage. This helps you understand your content's focus, identify potential keyword stuffing, and ensure proper keyword distribution for search engine optimization. You can quickly see if you're overusing certain terms or if important keywords need more emphasis.</p>
+
+                <h2 style="color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;">Common Use Cases</h2>
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Academic Writing</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Students and researchers frequently face strict word count requirements for essays, research papers, dissertations, and thesis submissions. Professors set these limits to ensure concise writing and equal evaluation standards. Our Word Counter helps students stay within required limits, whether it's a 500-word reflection essay or a 10,000-word dissertation chapter. The tool's real-time counting means you never have to worry about exceeding or falling short of requirements, allowing you to focus on crafting quality content rather than manually counting words.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Content Marketing and SEO</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">SEO best practices recommend specific word counts for different content types. Blog posts typically perform better with 1,000-2,000 words, while comprehensive guides may need 3,000+ words to rank well in search engines. Content marketers use our tool to ensure their articles meet these benchmarks while maintaining quality. The keyword extraction feature helps verify that target keywords appear naturally throughout the content without over-optimization, which could trigger search engine penalties.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Social Media Management</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Different social media platforms impose varying character limits: Twitter allows 280 characters, Facebook posts work best under 80 characters for engagement, LinkedIn has a 3,000 character limit for posts, and Instagram captions can contain up to 2,200 characters. Social media managers rely on word and character counters to optimize their posts for each platform, ensuring messages are complete yet concise, maximizing engagement while staying within platform constraints.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Professional Writing and Editing</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Freelance writers, journalists, and copywriters often work with strict word count assignments from clients or editors. Magazine articles, website copy, product descriptions, and press releases all come with specific length requirements. Our tool helps writers deliver exactly what's requested, meeting professional standards and client expectations. Editors use it to assess submission lengths and ensure consistency across publications.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Speech and Presentation Preparation</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Public speakers, presenters, and video content creators need to estimate how long their written content will take to deliver verbally. Our speaking time calculation helps them prepare scripts that fit within allocated time slots, whether it's a 5-minute pitch, a 20-minute TED-style talk, or an hour-long webinar. This prevents running overtime or finishing too early, ensuring polished, professional presentations.</p>
+
+                <h2 style="color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;">Tips for Effective Use</h2>
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Adjust Reading Speed:</strong> The default reading speed is set to 50 words per minute, which represents careful, analytical reading. Adjust this value based on your audience: use 200-250 WPM for casual reading, 150-200 WPM for average reading, and 50-100 WPM for technical or complex material. This customization ensures more accurate time estimates for your specific content and audience.</p>
+
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Monitor Readability Scores:</strong> Aim for a Flesch-Kincaid grade level that matches your target audience. For general audiences, shoot for grades 6-8. Business writing typically falls in grades 8-10. Academic and technical writing may range from grades 12-16. If your score is too high for your intended audience, simplify sentence structure, use shorter words, and break up long paragraphs to improve accessibility.</p>
+
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Check Keyword Distribution:</strong> When writing for SEO, ensure your primary keywords appear naturally throughout your content. The keyword extraction feature helps you verify that important terms are used enough to signal relevance to search engines, but not so much that it appears spammy. A keyword density of 1-2% is generally considered optimal for SEO purposes.</p>
+
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Use for Editing and Revision:</strong> The average word length statistic can reveal writing style issues. Extremely low averages (under 4 letters) might indicate oversimplification, while very high averages (over 6 letters) might suggest unnecessarily complex language. Use this insight to balance your writing style, making it sophisticated yet accessible.</p>
+
+                <h2 style="color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;">Understanding the Metrics</h2>
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Word Count:</strong> Calculated by splitting text on whitespace. This is the most fundamental metric for most writing requirements. Note that hyphenated words count as one word, and contractions (like "don't") count as one word. Numbers and symbols are generally counted as words when separated by spaces.</p>
+
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Character Count:</strong> Includes all characters - letters, numbers, punctuation, and spaces. This metric is essential for platforms with character limits like Twitter, SMS messages, and meta descriptions for SEO. Some platforms count emoji as multiple characters due to Unicode encoding, so always verify within the actual platform.</p>
+
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Sentence Count:</strong> Detected by identifying sentence-ending punctuation (periods, exclamation marks, question marks). Accurate sentence counting helps assess text complexity and readability. More sentences in fewer words typically indicate simpler, more digestible content, while fewer sentences with more words suggest more complex, sophisticated writing.</p>
+
+                <p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Paragraph Count:</strong> Identified by double line breaks in the text. Proper paragraphing improves readability and user experience, especially for online content where readers tend to scan rather than read every word. Web content benefits from shorter paragraphs (2-4 sentences) compared to print material, which traditionally uses longer paragraphs.</p>
+
+                <h2 style="color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;">Frequently Asked Questions</h2>
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">How accurate is the word count?</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Our word counter uses industry-standard algorithms that match the counting methods used by major word processors like Microsoft Word and Google Docs. Words are identified by splitting text on whitespace characters, which is the universally accepted definition of a "word" for counting purposes. The accuracy is 99.9% for standard text, with minor variations possible only for unusual formatting or special characters.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Does the tool save my text?</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">No, absolutely not. Our Word Counter operates entirely within your web browser using client-side JavaScript. No text is sent to any server or stored anywhere. When you close the page, your text is completely erased. This ensures complete privacy and security for sensitive or confidential documents. You can use this tool with full confidence that your content remains private.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Can I use this for different languages?</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Yes, the word and character counting works accurately for all languages that use spaces to separate words, including English, Spanish, French, German, and most European languages. However, readability scores are calibrated for English text and may not be accurate for other languages. Languages without word separation (like Chinese or Japanese) will not count words accurately, though character counting will still work perfectly.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">What's a good readability score?</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">It depends on your audience. A score of 6-8 (middle school level) is ideal for general web content and mass-market publications. Business communications typically score 8-12 (high school to college level). Academic papers might score 12-16 (college to graduate level). Lower scores indicate easier reading, which is generally preferable for web content where readers skim quickly. High scores aren't necessarily better - they just indicate more complex language.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">How does keyword extraction help with SEO?</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem;">Keyword extraction shows which words appear most frequently in your content, helping you verify that your target keywords are prominently featured. For good SEO, your primary keyword should typically appear as 1-2% of total words (for a 1000-word article, that's 10-20 times). The tool helps you avoid keyword stuffing (overusing keywords) which can hurt SEO rankings, while ensuring important terms appear often enough to signal relevance to search engines.</p>
+
+                <h3 style="color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.4rem;">Related Tools</h3>
+                <p style="line-height: 1.8; margin-bottom: 0.5rem;">If you found the Word Counter helpful, you might also like:</p>
+                <ul style="color: var(--text-secondary); line-height: 1.8; margin-left: 1.5rem; margin-bottom: 2rem;">
+                    <li><a href="character-counter.html" style="color: var(--accent-primary); text-decoration: none;">Character Counter</a> - Count characters and check social media limits</li>
+                    <li><a href="case-converter.html" style="color: var(--accent-primary); text-decoration: none;">Case Converter</a> - Change text between different case styles</li>
+                    <li><a href="find-replace.html" style="color: var(--accent-primary); text-decoration: none;">Find & Replace</a> - Quickly locate and replace text</li>
+                    <li><a href="text-to-speech.html" style="color: var(--accent-primary); text-decoration: none;">Text to Speech</a> - Convert text to audio</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-content">
+            <p>&copy; 2024 MicroTools. Built with <i class="fas fa-heart" style="color: var(--accent-primary);"></i> for productivity.</p>
+            <div class="footer-links">
+                <a href="../pages/privacy-policy.html">Privacy Policy</a>
+                <span>•</span>
+                <a href="../pages/terms-of-service.html">Terms of Service</a>
+                <span>•</span>
+                <a href="../pages/contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/tools/word-counter.js"></script>
+</body>
+</html>
