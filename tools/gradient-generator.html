@@ -41,14 +41,56 @@
       <div class="tool-header">
         <div class="tool-icon"><i class="fas fa-fill-drip"></i></div>
         <h1>Gradient Generator</h1>
-        <p>Create stunning CSS gradients with multiple types and export options.</p>
+        <p>Create stunning CSS gradients with linear, radial, and conic types. Export as CSS or SVG.</p>
       </div>
       <div class="tool-ad-space"></div>
       <div class="tool-content">
-        <p style="color: var(--text-secondary)">Controls and preview will appear here. Implementation in progress.</p>
+        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius); margin-bottom: 1.5rem;">
+          <label style="display: block; margin-bottom: 0.75rem; color: var(--text-primary); font-weight: 500;">Gradient Type</label>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-secondary gradient-type-btn" data-type="linear" onclick="setGradientType('linear')"><i class="fas fa-arrow-right"></i> Linear</button>
+            <button class="btn btn-secondary gradient-type-btn" data-type="radial" onclick="setGradientType('radial')"><i class="fas fa-circle"></i> Radial</button>
+            <button class="btn btn-secondary gradient-type-btn" data-type="conic" onclick="setGradientType('conic')"><i class="fas fa-circle-notch"></i> Conic</button>
+          </div>
+        </div>
+        
+        <div id="angleControl" style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius); margin-bottom: 1.5rem;">
+          <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">Angle: <span id="angleDisplay">135°</span></label>
+          <input type="range" min="0" max="360" value="135" oninput="setAngle(this.value)" style="width: 100%; cursor: pointer;">
+        </div>
+        
+        <div id="radialControl" style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius); margin-bottom: 1.5rem; display: none;">
+          <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">Radial Shape</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-secondary btn-sm" onclick="setRadialShape('circle')">Circle</button>
+            <button class="btn btn-secondary btn-sm" onclick="setRadialShape('ellipse')">Ellipse</button>
+          </div>
+        </div>
+        
+        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius); margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <label style="color: var(--text-primary); font-weight: 500;">Color Stops</label>
+            <button class="btn btn-secondary btn-sm" onclick="addColorStop()"><i class="fas fa-plus"></i> Add Stop</button>
+          </div>
+          <div id="colorStopsContainer"></div>
+        </div>
+        
+        <div class="btn-group" style="justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-primary" onclick="randomizeGradient()"><i class="fas fa-magic"></i> Random</button>
+          <button class="btn btn-secondary" onclick="copyCSS()"><i class="fas fa-copy"></i> Copy CSS</button>
+          <button class="btn btn-secondary" onclick="copyCSSVariable()"><i class="fas fa-code"></i> Copy Variable</button>
+          <button class="btn btn-secondary" onclick="downloadAsCSS()"><i class="fas fa-download"></i> Download CSS</button>
+          <button class="btn btn-secondary" onclick="downloadAsSVG()"><i class="fas fa-download"></i> Download SVG</button>
+        </div>
+        
+        <div style="margin: 1.5rem 0;">
+          <label style="display: block; margin-bottom: 0.75rem; color: var(--text-primary); font-weight: 500;">Presets</label>
+          <div id="presetsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem;"></div>
+        </div>
+        
         <div class="result-box">
-          <div class="result-label">CSS Output</div>
-          <div class="result-content" id="ggCSS"></div>
+          <div class="result-label">CSS Code</div>
+          <div class="result-content" id="ggCSS" style="font-family: monospace; font-size: 0.9rem; word-break: break-all;"></div>
         </div>
       </div>
     </div>
@@ -66,7 +108,7 @@
     </div>
   </footer>
 
-  <div class="seo-content" style="margin-top: 3rem; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius); border: 1px solid var(--border-color); margin-bottom: 2rem;"><h2 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.8rem;">CSS Gradient Generator - Create Beautiful Color Gradients</h2><p style="line-height: 1.8; margin-bottom: 1rem;">The CSS Gradient Generator creates smooth color transitions for website backgrounds, buttons, headers, and design elements. Modern web design heavily relies on gradients for visual depth, professional aesthetics, and brand identity. Our tool generates production-ready CSS code with customizable colors, angles, and transition types.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Gradient Types Explained</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Linear Gradients:</strong> Colors transition in straight lines at specified angles. Top-to-bottom (180°) creates vertical fades, left-to-right (90°) creates horizontal transitions, and diagonal angles (45°, 135°) create dynamic directional flows.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Radial Gradients:</strong> Colors radiate from a central point outward in circular or elliptical patterns. Perfect for spotlight effects, vignettes, or creating depth perception in backgrounds.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Conic Gradients:</strong> Colors transition around a central point in circular fashion, like color wheels. Used for pie charts, progress indicators, and creative geometric patterns.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Design Applications</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Hero Sections:</strong> Landing pages use gradients for eye-catching headers that draw attention without overwhelming content. Subtle gradients add sophistication; vibrant gradients create energy.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Buttons and CTAs:</strong> Gradient buttons appear more clickable and modern than flat colors. Subtle shading creates depth that signals interactivity.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Background Overlays:</strong> Gradients overlay images to ensure text readability, transitioning from dark to light or vice versa to maintain contrast.</p><p style="line-height: 1.8; margin-bottom: 1rem;">Generated CSS code works across all modern browsers with automatic vendor prefixes for maximum compatibility. Copy-paste directly into stylesheets for instant implementation.</p></div>
+  <div class="seo-content" style="margin-top: 3rem; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius); border: 1px solid var(--border-color); margin-bottom: 2rem;"><h2 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.8rem;">CSS Gradient Generator - Create Beautiful Color Gradients</h2><p style="line-height: 1.8; margin-bottom: 1rem;">The CSS Gradient Generator creates smooth color transitions for website backgrounds, buttons, headers, and design elements. Modern web design heavily relies on gradients for visual depth, professional aesthetics, and brand identity. Our god-tier tool generates production-ready CSS code with customizable colors, angles, and transition types, plus preset libraries and export options.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Gradient Types Explained</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Linear Gradients:</strong> Colors transition in straight lines at specified angles. Top-to-bottom (180°) creates vertical fades, left-to-right (90°) creates horizontal transitions, and diagonal angles (45°, 135°) create dynamic directional flows perfect for modern design.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Radial Gradients:</strong> Colors radiate from a central point outward in circular or elliptical patterns. Perfect for spotlight effects, vignettes, or creating depth perception in backgrounds. Great for button hover states and focus indicators.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Conic Gradients:</strong> Colors transition around a central point in circular fashion, like color wheels. Used for pie charts, progress indicators, donut charts, and creative geometric patterns.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Advanced Features</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Multiple Color Stops:</strong> Add up to 5 color stops with precise position control. Each stop includes color picker and position slider for pixel-perfect gradient design. Remove stops individually with one click.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Preset Library:</strong> 12 professionally designed presets including Sunset, Ocean, Forest, Flamingo, Midnight, and more. Apply any preset with a single click and customize from there.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Random Generation:</strong> Click "Random" to generate unexpected gradient combinations. Perfect for inspiration when you're unsure what direction to take or want to explore new color combinations.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Export Options:</strong> Copy CSS code directly to clipboard, export as CSS file for your project, or download as SVG for use in graphics editors or web projects.</p><h3 style="color: var(--text-primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.4rem;">Design Applications</h3><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Hero Sections:</strong> Landing pages use gradients for eye-catching headers that draw attention without overwhelming content. Subtle gradients add sophistication; vibrant gradients create energy and excitement.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Buttons and CTAs:</strong> Gradient buttons appear more clickable and modern than flat colors. Subtle shading creates depth that signals interactivity, increasing click-through rates.</p><p style="line-height: 1.8; margin-bottom: 1rem;"><strong>Background Overlays:</strong> Gradients overlay images to ensure text readability, transitioning from dark to light or vice versa to maintain contrast. Essential for readable text over photo backgrounds.</p><p style="line-height: 1.8; margin-bottom: 1rem;">Generated CSS code works across all modern browsers with automatic vendor prefixes for maximum compatibility. Copy-paste directly into stylesheets for instant implementation without any setup.</p></div>
 
   <script src="../js/shared.js"></script>
   <script src="../js/tools/gradient-generator.js"></script>

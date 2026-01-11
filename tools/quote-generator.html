@@ -45,6 +45,11 @@
       </div>
       <div class="tool-ad-space"></div>
       <div class="tool-content">
+        <div style="margin-bottom: 1.5rem;">
+          <label for="quoteCategory" style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">Category</label>
+          <select id="quoteCategory" class="select-input" onchange="updateCategoryInfo(); generateQuote();" style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 0.5rem; background: var(--bg-input); color: var(--text-primary); font-size: 1rem; cursor: pointer;"></select>
+          <small id="categoryQuoteCount" style="display: block; margin-top: 0.3rem; color: var(--text-secondary);">Loading...</small>
+        </div>
         <div class="result-box">
           <div class="result-label">Quote</div>
           <div class="result-content" id="quoteText">"Click Generate to get a quote"</div>
@@ -57,6 +62,7 @@
           <button class="btn btn-primary btn-sm" onclick="generateQuote()"><i class="fas fa-wand-magic-sparkles"></i> Generate</button>
           <button class="btn btn-secondary btn-sm" onclick="copyQuote()"><i class="fas fa-copy"></i> Copy</button>
           <button class="btn btn-secondary btn-sm" onclick="shareQuote()"><i class="fas fa-share"></i> Share</button>
+          <button class="btn btn-secondary btn-sm" onclick="tweetQuote()" title="Share on Twitter"><i class="fab fa-twitter"></i> Tweet</button>
         </div>
 
         <h2 style="color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;">The Power of Inspirational Quotes</h2>

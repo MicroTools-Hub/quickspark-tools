@@ -45,13 +45,33 @@ Useful for checking palindromes, creating mirrored text, and text manipulation.<
                 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6119998481340838" data-ad-slot="7890123456" data-ad-format="horizontal"></ins>
             </div>
             <div class="tool-content">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.75rem; color: var(--text-primary); font-weight: 500;">Reversal Mode</label>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button class="btn btn-secondary mode-btn" data-mode="characters" onclick="setReverseMode('characters')">
+                            <i class="fas fa-font"></i> Reverse Characters
+                        </button>
+                        <button class="btn btn-secondary mode-btn" data-mode="words" onclick="setReverseMode('words')">
+                            <i class="fas fa-spell-check"></i> Reverse Words
+                        </button>
+                        <button class="btn btn-secondary mode-btn" data-mode="lines" onclick="setReverseMode('lines')">
+                            <i class="fas fa-list"></i> Reverse Lines
+                        </button>
+                    </div>
+                </div>
+                
                 <div class="input-group">
                     <label for="revInput">Enter your text</label>
                     <textarea id="revInput" placeholder="Type or paste your text here..."></textarea>
                 </div>
-                <button class="btn btn-primary" onclick="reverseText()"><i class="fas fa-exchange-alt"></i> Reverse</button>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="reverseText()"><i class="fas fa-exchange-alt"></i> Reverse</button>
+                    <button class="btn btn-secondary" onclick="clearReverseText()"><i class="fas fa-trash"></i> Clear</button>
+                </div>
+                
                 <div class="result-box">
-                    <div class="result-label">Result <button class="copy-btn" onclick="copyToClipboard(document.getElementById('revResult').textContent)"><i class="fas fa-copy"></i> Copy</button></div>
+                    <div class="result-label">Result <button class="copy-btn" onclick="copyReversedText()"><i class="fas fa-copy"></i> Copy</button></div>
                     <div class="result-content" id="revResult"></div>
                 </div>
             </div>
